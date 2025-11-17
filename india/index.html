@@ -2425,7 +2425,16 @@ We, Kaleidofin Private Limited, in our capacity as the Portfolio Monitoring Agen
 ------------------------------------------------
 We confirm that, in our reasonable opinion based on the information provided, there are no breaches of the Tested Eligibility Criteria with respect to the Receivables in the portfolio as of the Month-End Reporting Cut-Off Date.
 
-Status: ✓ NO BREACHES IDENTIFIED
+Specific Eligibility Criteria Tested:
+   ✓ Minimum Loan Amount: All receivables ≥ ₹5,000
+   ✓ Maximum Loan Amount: All receivables ≤ ₹500,000
+   ✓ Minimum Remaining Tenor: All receivables have ≥ 6 months remaining
+   ✓ Maximum DPD at Origination: All receivables had 0 DPD when originated
+   ✓ Loan Purpose: All receivables fall within approved categories
+   ✓ Documentation: All receivables have complete documentation
+   ✓ Borrower Eligibility: All borrowers meet approved criteria
+
+Status: ✓ NO BREACHES IDENTIFIED - ALL CRITERIA SATISFIED
 
 2. CONSISTENCY AND CALCULATIONS
 --------------------------------
@@ -2560,8 +2569,188 @@ Next Report Due: 2 Business Days after next Month-End Servicer Report
 
             function previewPMAReport(txId) {
                 const reportData = generatePMAReport(txId);
-                document.getElementById('previewModalTitle').textContent = 'PMA Letter Preview';
-                document.getElementById('reportPreviewContent').innerHTML = `<pre class="whitespace-pre-wrap">${reportData.content}</pre>`;
+                document.getElementById('previewModalTitle').textContent = 'PMA Letter Preview - Visual Dashboard';
+                
+                // Create visual preview with charts and tables
+                const previewHTML = `
+                    <div class="space-y-6">
+                        <!-- Header -->
+                        <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+                            <h3 class="font-bold text-lg text-gray-900">Portfolio Monitoring Agent Report</h3>
+                            <p class="text-sm text-gray-600">Transaction: ${reportData.transaction.name} | Period: ${reportData.monthName} ${reportData.year}</p>
+                        </div>
+
+                        <!-- 1. Tested Eligibility Criteria -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-3">1. Tested Eligibility Criteria Status</h4>
+                            <div class="grid grid-cols-2 gap-3 text-sm">
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span class="font-medium">Minimum Loan Amount (₹5,000)</span>
+                                    <span class="text-green-700 font-bold">✓ PASS</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span class="font-medium">Maximum Loan Amount (≤₹500,000)</span>
+                                    <span class="text-green-700 font-bold">✓ PASS</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span class="font-medium">Minimum Remaining Tenor (≥6 months)</span>
+                                    <span class="text-green-700 font-bold">✓ PASS</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span class="font-medium">Maximum DPD (0 days at origination)</span>
+                                    <span class="text-green-700 font-bold">✓ PASS</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span class="font-medium">Loan Purpose (Approved Categories)</span>
+                                    <span class="text-green-700 font-bold">✓ PASS</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span class="font-medium">Documentation Complete</span>
+                                    <span class="text-green-700 font-bold">✓ PASS</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Key Calculations -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-3">2. Consistency and Calculations</h4>
+                            <div class="grid grid-cols-3 gap-4 mb-3">
+                                <div class="text-center p-3 bg-blue-50 rounded">
+                                    <p class="text-xs text-gray-600 mb-1">Delinquency Ratio</p>
+                                    <p class="text-2xl font-bold text-blue-700">4.4%</p>
+                                </div>
+                                <div class="text-center p-3 bg-blue-50 rounded">
+                                    <p class="text-xs text-gray-600 mb-1">Dynamic Default Ratio</p>
+                                    <p class="text-2xl font-bold text-blue-700">0.42%</p>
+                                </div>
+                                <div class="text-center p-3 bg-blue-50 rounded">
+                                    <p class="text-xs text-gray-600 mb-1">Repayment Speed (CPR)</p>
+                                    <p class="text-2xl font-bold text-blue-700">8.5%</p>
+                                </div>
+                            </div>
+                            <p class="text-xs text-green-700 font-semibold">✓ No manifest errors identified in Servicer data</p>
+                        </div>
+
+                        <!-- 3. Concentration Limits -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-3">3. Portfolio Concentration Limits</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                    <span>Highest Single State Concentration</span>
+                                    <span class="font-bold">26.7% <span class="text-green-600">(Limit: 30%)</span></span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                    <span>Top 5 States Concentration</span>
+                                    <span class="font-bold">85.5% <span class="text-green-600">(Limit: 90%)</span></span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                    <span>Single Product Concentration</span>
+                                    <span class="font-bold">45% <span class="text-green-600">(Limit: 50%)</span></span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                    <span>Single Borrower Concentration</span>
+                                    <span class="font-bold">0.12% <span class="text-green-600">(Limit: 2%)</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Discounted Balance & Collections -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-3">4. Discounted Balance and Collections Reconciliation</h4>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div class="p-3 bg-gray-50 rounded">
+                                    <p class="text-gray-600 mb-1">Discounted Balance (excl. Defaulted)</p>
+                                    <p class="text-xl font-bold text-gray-900">₹93.5 Cr</p>
+                                    <p class="text-xs text-gray-500 mt-1">PV Factor: 0.952 | CPR: 8.5%</p>
+                                </div>
+                                <div class="p-3 bg-gray-50 rounded">
+                                    <p class="text-gray-600 mb-1">Collections Reconciliation</p>
+                                    <p class="text-sm"><span class="font-medium">Servicer Report:</span> ₹8.5 Cr</p>
+                                    <p class="text-sm"><span class="font-medium">Transaction Account:</span> ₹8.5 Cr</p>
+                                    <p class="text-sm font-bold text-green-700 mt-1">Difference: ₹0.00 ✓</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 5. Portfolio Summary -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-3">Portfolio Summary (Month-End)</h4>
+                            <div class="grid grid-cols-4 gap-3 text-sm text-center">
+                                <div class="p-2 bg-teal-50 rounded">
+                                    <p class="text-xs text-gray-600">Pool Size</p>
+                                    <p class="text-lg font-bold text-teal-700">₹93.5 Cr</p>
+                                </div>
+                                <div class="p-2 bg-teal-50 rounded">
+                                    <p class="text-xs text-gray-600">Total Loans</p>
+                                    <p class="text-lg font-bold text-teal-700">9,450</p>
+                                </div>
+                                <div class="p-2 bg-teal-50 rounded">
+                                    <p class="text-xs text-gray-600">Avg. Size</p>
+                                    <p class="text-lg font-bold text-teal-700">₹99K</p>
+                                </div>
+                                <div class="p-2 bg-teal-50 rounded">
+                                    <p class="text-xs text-gray-600">WAY</p>
+                                    <p class="text-lg font-bold text-teal-700">22.5%</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <p class="text-xs font-semibold text-gray-700 mb-2">Delinquency Distribution:</p>
+                                <div class="space-y-1 text-xs">
+                                    <div class="flex items-center">
+                                        <div class="w-24">Current (0 DPD)</div>
+                                        <div class="flex-1 bg-gray-200 rounded h-5 relative">
+                                            <div class="bg-green-500 h-5 rounded" style="width: 92.6%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-center text-white font-bold">92.6%</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-24">1-30 DPD</div>
+                                        <div class="flex-1 bg-gray-200 rounded h-5 relative">
+                                            <div class="bg-yellow-500 h-5 rounded" style="width: 4.4%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">4.4%</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-24">31-60 DPD</div>
+                                        <div class="flex-1 bg-gray-200 rounded h-5 relative">
+                                            <div class="bg-orange-500 h-5 rounded" style="width: 1.9%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">1.9%</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-24">61-90 DPD</div>
+                                        <div class="flex-1 bg-gray-200 rounded h-5 relative">
+                                            <div class="bg-red-400 h-5 rounded" style="width: 0.6%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">0.6%</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-24">90+ DPD</div>
+                                        <div class="flex-1 bg-gray-200 rounded h-5 relative">
+                                            <div class="bg-red-700 h-5 rounded" style="width: 0.4%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">0.4%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conclusion -->
+                        <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                            <h4 class="font-semibold text-green-900 mb-2">Conclusion - All Checks Passed</h4>
+                            <ul class="text-sm text-green-800 space-y-1">
+                                <li>✓ No material breaches of eligibility criteria</li>
+                                <li>✓ No manifest errors identified</li>
+                                <li>✓ All concentration limits satisfied</li>
+                                <li>✓ Collections properly reconciled</li>
+                                <li>✓ Servicer Report approved for publication</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('reportPreviewContent').innerHTML = previewHTML;
                 document.getElementById('reportPreviewModal').classList.remove('hidden');
                 document.getElementById('downloadFromPreview').onclick = () => downloadPMAReportPDF(txId);
             }
@@ -2572,6 +2761,10 @@ Next Report Due: 2 Business Days after next Month-End Servicer Report
 
             function generateCashManagerReport(txId) {
                 const transaction = state.transactions.find(t => t.id === txId) || state.transactions[0];
+                const reportMonth = document.getElementById('reportMonthSelector')?.value || '2025-11';
+                const [year, month] = reportMonth.split('-');
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const monthName = monthNames[parseInt(month) - 1];
                 
                 // Generate Cash Manager Report content
                 const reportContent = `
@@ -2579,16 +2772,17 @@ CASH MANAGER INVESTOR REPORT
 ==============================
 Transaction: ${transaction.name}
 Originator: ${transaction.originator}
-Report Date: ${new Date().toLocaleDateString('en-IN')}
+Reporting Date: ${new Date().toLocaleDateString('en-IN')}
+Reporting Period: ${monthName} ${year}
+Collection Period: 01-${monthName.substring(0,3)}-${year} to ${new Date(year, month, 0).getDate()}-${monthName.substring(0,3)}-${year}
 Payment Date: 01-Dec-2025
 
-TRANSACTION OVERVIEW
---------------------
-Original Pool Size: ₹100.0 Cr
-Current Pool Balance: ₹93.5 Cr
-Number of Loans: 9,450
+RECEIVABLES PORTFOLIO SUMMARY
+------------------------------
+Opening Principal Balance: ₹100.0 Cr
+Current Principal Balance: ₹93.5 Cr
+Number of Active Loans: 9,450
 Transaction Structure: ${transaction.structure}
-KI Score Grade: ${transaction.grade}
 
 CASH FLOW SUMMARY (THIS MONTH)
 -------------------------------
@@ -2609,27 +2803,68 @@ Total Outflows: ₹8.3 Cr
 
 Closing Balance: ₹94.0 Cr
 
-PAYMENT WATERFALL
------------------
-1. Senior Fees & Expenses: ₹0.5 Cr ✓ Paid
-2. Interest on Senior Tranche: ₹2.5 Cr ✓ Paid
-3. Principal on Senior Tranche: ₹3.5 Cr ✓ Paid
-4. Interest on Mezzanine Tranche: ₹0.7 Cr ✓ Paid
-5. Principal on Mezzanine Tranche: ₹0.6 Cr ✓ Paid
-6. Reserve Account (if below target): ₹0.5 Cr ✓ Funded
-7. Residual to Originator: ₹0.5 Cr ✓ Paid
+PRIORITY OF PAYMENTS (WATERFALL)
+---------------------------------
+Available Receipts This Period: ₹8.8 Cr
 
-RESERVE ACCOUNTS
-----------------
+1. Senior Fees & Expenses: ₹0.5 Cr ✓ PAID IN FULL
+   - Cash Manager Fees: ₹0.15 Cr
+   - Servicer Fees: ₹0.25 Cr
+   - Other Senior Expenses: ₹0.10 Cr
+
+2. Interest on Senior Notes (Class A): ₹2.5 Cr ✓ PAID IN FULL
+   - Contractual Amount Due: ₹2.5 Cr
+   - Amount Paid: ₹2.5 Cr
+   - Shortfall: ₹0.00
+
+3. Principal on Senior Notes (Class A): ₹3.5 Cr ✓ PAID IN FULL
+   - Scheduled Amortization: ₹3.5 Cr
+   - Amount Paid: ₹3.5 Cr
+   - Shortfall: ₹0.00
+
+4. Interest on Mezzanine Notes (Class B): ₹0.7 Cr ✓ PAID IN FULL
+   - Contractual Amount Due: ₹0.7 Cr
+   - Amount Paid: ₹0.7 Cr
+   - Shortfall: ₹0.00
+
+5. Principal on Mezzanine Notes (Class B): ₹0.6 Cr ✓ PAID IN FULL
+   - Scheduled Amortization: ₹0.6 Cr
+   - Amount Paid: ₹0.6 Cr
+   - Shortfall: ₹0.00
+
+6. Reserve Account Top-up (if below target): ₹0.5 Cr ✓ FUNDED
+   - Target Balance: ₹2.0 Cr
+   - Balance Before Top-up: ₹1.5 Cr
+   - Amount Funded: ₹0.5 Cr
+
+7. Residual to Junior Noteholder/Originator: ₹0.5 Cr ✓ PAID
+
+RESERVE ACCOUNTS & CREDIT ENHANCEMENT
+--------------------------------------
 Cash Reserve Account:
-- Required Balance: ₹2.0 Cr
+- Required Balance (Target): ₹2.0 Cr (2% of original pool)
 - Current Balance: ₹2.0 Cr
-- Status: ✓ Fully Funded
+- Status: ✓ FULLY FUNDED
 
-Credit Enhancement:
-- Initial: 15.0%
-- Current: 15.5%
-- Status: ✓ Above Minimum
+Credit Enhancement Tracking:
+- Initial Credit Enhancement (Day 0): 15.0%
+- Current Credit Enhancement: 15.5%
+- Change from Day 0: +0.5% (CUSHION INCREASED)
+- Minimum Required: 12.0%
+- Buffer Above Minimum: 3.5%
+- Status: ✓ WELL ABOVE MINIMUM
+
+Credit Enhancement Triggers Status:
+- Trigger Level 1 (10%): ✓ NOT BREACHED (5.5% buffer)
+- Trigger Level 2 (8%): ✓ NOT BREACHED (7.5% buffer)
+- Trigger Level 3 (5%): ✓ NOT BREACHED (10.5% buffer)
+
+Month-on-Month Credit Enhancement Trend:
+- 3 Months Ago: 14.8%
+- 2 Months Ago: 15.1%
+- Last Month: 15.3%
+- This Month: 15.5%
+- Trend: ↑ IMPROVING (+0.7% over 3 months)
 
 INVESTOR ALLOCATIONS
 --------------------
@@ -2647,12 +2882,56 @@ Mezzanine Tranche (Class B):
 - This Month Interest: ₹0.7 Cr
 - This Month Principal: ₹0.6 Cr
 
+TESTS (COVENANT COMPLIANCE)
+----------------------------
+Test Name                 | Actual  | Threshold | Status
+--------------------------|---------|-----------|----------
+Cumulative Payment Rate   | 98.8%   | ≥ 95.0%   | ✓ PASS
+PAR30 (30+ DPD)          | 4.4%    | ≤ 8.0%    | ✓ PASS
+PAR60 (60+ DPD)          | 1.0%    | ≤ 5.0%    | ✓ PASS
+PAR90 (90+ DPD)          | 0.4%    | ≤ 3.0%    | ✓ PASS
+LTV (Loan-to-Value)      | 78.5%   | ≤ 85.0%   | ✓ PASS
+
+All Tests: ✓ PASSED
+
 PORTFOLIO PERFORMANCE
 ---------------------
 Weighted Average Coupon: 22.5%
 Gross NPA: 3.2%
 Collection Efficiency: 98.8%
 Prepayment Rate (CPR): 8.5% annualized
+
+COMPARISON: ACTUAL VS INITIAL PROJECTIONS
+------------------------------------------
+At Deal Execution (Day 0), projected cashflows for Month 14:
+
+Metric                    | Initial Projection | Actual This Month | Variance
+--------------------------|-------------------|-------------------|----------
+Principal Collections     | ₹7.5 Cr          | ₹7.2 Cr          | -4.0%
+Interest Collections      | ₹1.4 Cr          | ₹1.3 Cr          | -7.1%
+Total Collections         | ₹8.9 Cr          | ₹8.5 Cr          | -4.5%
+Collection Efficiency     | 97.5%            | 98.8%            | +1.3pp
+GNPA                      | 3.8%             | 3.2%             | -0.6pp
+Pool Balance              | ₹95.2 Cr         | ₹93.5 Cr         | -1.8%
+
+Overall Performance vs Projections: BETTER THAN EXPECTED (Lower GNPA, Higher CE)
+Cumulative Pool Performance: ON TRACK (99.2% of projected balance)
+
+COMPARISON: ACTUAL VS CONTRACTUAL DEMANDS
+------------------------------------------
+Contractual payment obligations for this period:
+
+Payment Obligation        | Contractual Demand | Actual Paid | Status
+--------------------------|-------------------|-------------|--------
+Senior Notes Interest     | ₹2.5 Cr          | ₹2.5 Cr    | ✓ PAID IN FULL
+Senior Notes Principal    | ₹3.5 Cr          | ₹3.5 Cr    | ✓ PAID IN FULL
+Mezzanine Interest        | ₹0.7 Cr          | ₹0.7 Cr    | ✓ PAID IN FULL
+Mezzanine Principal       | ₹0.6 Cr          | ₹0.6 Cr    | ✓ PAID IN FULL
+Senior Fees & Expenses    | ₹0.5 Cr          | ₹0.5 Cr    | ✓ PAID IN FULL
+Reserve Account Target    | ₹2.0 Cr          | ₹2.0 Cr    | ✓ MET
+
+All Contractual Demands: ✓ SATISFIED IN FULL
+No Shortfalls or Deferrals
 
 UPCOMING OBLIGATIONS
 --------------------
@@ -2715,8 +2994,274 @@ Contact: cashmanagement@kaleidofin.com
 
             function previewCashReport(txId) {
                 const reportData = generateCashManagerReport(txId);
-                document.getElementById('previewModalTitle').textContent = 'Cash Manager Investor Report Preview';
-                document.getElementById('reportPreviewContent').innerHTML = `<pre class="whitespace-pre-wrap">${reportData.content}</pre>`;
+                document.getElementById('previewModalTitle').textContent = 'Cash Manager Investor Report - Visual Dashboard';
+                
+                const previewHTML = `
+                    <div class="space-y-6">
+                        <!-- Header -->
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <h3 class="font-bold text-lg text-gray-900">Cash Manager Investor Report</h3>
+                            <p class="text-sm text-gray-600">Transaction: ${reportData.transaction.name} | Period: ${reportData.monthName} ${reportData.year}</p>
+                        </div>
+
+                        <!-- Priority of Payments Waterfall with Tranches -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-3">Priority of Payments (Waterfall)</h4>
+                            <p class="text-sm font-medium mb-3">Available Receipts: <span class="text-teal-700 text-lg">₹8.8 Cr</span></p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="p-3 bg-gray-50 rounded border-l-4 border-gray-400">
+                                    <div class="flex justify-between font-semibold mb-1">
+                                        <span>1. Senior Fees & Expenses</span>
+                                        <span class="text-gray-700">₹0.5 Cr ✓</span>
+                                    </div>
+                                    <div class="text-xs text-gray-600 ml-4 space-y-0.5">
+                                        <div>• Cash Manager: ₹0.15 Cr</div>
+                                        <div>• Servicer: ₹0.25 Cr</div>
+                                        <div>• Other: ₹0.10 Cr</div>
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                    <div class="flex justify-between font-semibold mb-1">
+                                        <span>2. Senior Notes (Class A) - Interest</span>
+                                        <span class="text-blue-700">₹2.5 Cr ✓</span>
+                                    </div>
+                                    <div class="text-xs text-gray-600 ml-4 space-y-0.5">
+                                        <div>• Contractual Due: ₹2.5 Cr</div>
+                                        <div>• Paid: ₹2.5 Cr</div>
+                                        <div>• Shortfall: ₹0.00</div>
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                    <div class="flex justify-between font-semibold mb-1">
+                                        <span>3. Senior Notes (Class A) - Principal</span>
+                                        <span class="text-blue-700">₹3.5 Cr ✓</span>
+                                    </div>
+                                    <div class="text-xs text-gray-600 ml-4 space-y-0.5">
+                                        <div>• Scheduled Amortization: ₹3.5 Cr</div>
+                                        <div>• Paid: ₹3.5 Cr</div>
+                                        <div>• Shortfall: ₹0.00</div>
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-indigo-50 rounded border-l-4 border-indigo-500">
+                                    <div class="flex justify-between font-semibold mb-1">
+                                        <span>4. Mezzanine Notes (Class B) - Interest</span>
+                                        <span class="text-indigo-700">₹0.7 Cr ✓</span>
+                                    </div>
+                                    <div class="text-xs text-gray-600 ml-4 space-y-0.5">
+                                        <div>• Contractual Due: ₹0.7 Cr</div>
+                                        <div>• Paid: ₹0.7 Cr</div>
+                                        <div>• Shortfall: ₹0.00</div>
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-indigo-50 rounded border-l-4 border-indigo-500">
+                                    <div class="flex justify-between font-semibold mb-1">
+                                        <span>5. Mezzanine Notes (Class B) - Principal</span>
+                                        <span class="text-indigo-700">₹0.6 Cr ✓</span>
+                                    </div>
+                                    <div class="text-xs text-gray-600 ml-4 space-y-0.5">
+                                        <div>• Scheduled Amortization: ₹0.6 Cr</div>
+                                        <div>• Paid: ₹0.6 Cr</div>
+                                        <div>• Shortfall: ₹0.00</div>
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-yellow-50 rounded border-l-4 border-yellow-500">
+                                    <div class="flex justify-between font-semibold mb-1">
+                                        <span>6. Reserve Account Top-up</span>
+                                        <span class="text-yellow-700">₹0.5 Cr ✓</span>
+                                    </div>
+                                    <div class="text-xs text-gray-600 ml-4">
+                                        <div>Target: ₹2.0 Cr | Funded: ₹0.5 Cr</div>
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                    <div class="flex justify-between font-semibold">
+                                        <span>7. Residual to Junior/Originator</span>
+                                        <span class="text-green-700">₹0.5 Cr ✓</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Credit Enhancement Status -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-3">Credit Enhancement & Triggers</h4>
+                            
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div class="p-3 bg-teal-50 rounded">
+                                    <p class="text-xs text-gray-600 mb-1">Current Credit Enhancement</p>
+                                    <p class="text-3xl font-bold text-teal-700">15.5%</p>
+                                    <p class="text-xs text-green-600 mt-1">↑ +0.5% vs Day 0</p>
+                                </div>
+                                <div class="p-3 bg-blue-50 rounded">
+                                    <p class="text-xs text-gray-600 mb-1">Buffer Above Minimum</p>
+                                    <p class="text-3xl font-bold text-blue-700">3.5%</p>
+                                    <p class="text-xs text-gray-600 mt-1">Min Required: 12.0%</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <p class="text-xs font-semibold text-gray-700 mb-2">Credit Enhancement Triggers:</p>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between p-2 bg-green-50 rounded">
+                                        <span>Trigger Level 1 (10%)</span>
+                                        <span class="font-bold text-green-700">✓ NOT BREACHED (5.5% buffer)</span>
+                                    </div>
+                                    <div class="flex justify-between p-2 bg-green-50 rounded">
+                                        <span>Trigger Level 2 (8%)</span>
+                                        <span class="font-bold text-green-700">✓ NOT BREACHED (7.5% buffer)</span>
+                                    </div>
+                                    <div class="flex justify-between p-2 bg-green-50 rounded">
+                                        <span>Trigger Level 3 (5%)</span>
+                                        <span class="font-bold text-green-700">✓ NOT BREACHED (10.5% buffer)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <p class="text-xs font-semibold text-gray-700 mb-2">Month-on-Month Trend:</p>
+                                <div class="flex items-end justify-between h-24 bg-gray-50 rounded p-2">
+                                    <div class="flex flex-col items-center flex-1">
+                                        <div class="bg-teal-500 w-8 rounded-t" style="height: 74%"></div>
+                                        <span class="text-xs mt-1">-3M</span>
+                                        <span class="text-xs font-bold">14.8%</span>
+                                    </div>
+                                    <div class="flex flex-col items-center flex-1">
+                                        <div class="bg-teal-500 w-8 rounded-t" style="height: 80%"></div>
+                                        <span class="text-xs mt-1">-2M</span>
+                                        <span class="text-xs font-bold">15.1%</span>
+                                    </div>
+                                    <div class="flex flex-col items-center flex-1">
+                                        <div class="bg-teal-600 w-8 rounded-t" style="height: 87%"></div>
+                                        <span class="text-xs mt-1">-1M</span>
+                                        <span class="text-xs font-bold">15.3%</span>
+                                    </div>
+                                    <div class="flex flex-col items-center flex-1">
+                                        <div class="bg-teal-700 w-8 rounded-t" style="height: 100%"></div>
+                                        <span class="text-xs mt-1">Now</span>
+                                        <span class="text-xs font-bold">15.5%</span>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-green-600 font-semibold mt-2 text-center">↑ IMPROVING (+0.7% over 3 months)</p>
+                            </div>
+                        </div>
+
+                        <!-- Tests -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-3">Covenant Tests</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span>Cumulative Payment Rate: <strong>98.8%</strong></span>
+                                    <span class="text-green-700 font-bold">✓ PASS (≥95%)</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span>PAR30: <strong>4.4%</strong></span>
+                                    <span class="text-green-700 font-bold">✓ PASS (≤8%)</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span>PAR60: <strong>1.0%</strong></span>
+                                    <span class="text-green-700 font-bold">✓ PASS (≤5%)</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span>PAR90: <strong>0.4%</strong></span>
+                                    <span class="text-green-700 font-bold">✓ PASS (≤3%)</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span>LTV: <strong>78.5%</strong></span>
+                                    <span class="text-green-700 font-bold">✓ PASS (≤85%)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actual vs Initial Projections -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-3">Actual vs Initial Projections (Deal Execution)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th class="text-left p-2">Metric</th>
+                                            <th class="text-right p-2">Projected</th>
+                                            <th class="text-right p-2">Actual</th>
+                                            <th class="text-right p-2">Variance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-xs">
+                                        <tr class="border-t">
+                                            <td class="p-2">Principal Collections</td>
+                                            <td class="text-right p-2">₹7.5 Cr</td>
+                                            <td class="text-right p-2">₹7.2 Cr</td>
+                                            <td class="text-right p-2 text-orange-600">-4.0%</td>
+                                        </tr>
+                                        <tr class="border-t">
+                                            <td class="p-2">Interest Collections</td>
+                                            <td class="text-right p-2">₹1.4 Cr</td>
+                                            <td class="text-right p-2">₹1.3 Cr</td>
+                                            <td class="text-right p-2 text-orange-600">-7.1%</td>
+                                        </tr>
+                                        <tr class="border-t">
+                                            <td class="p-2">Collection Efficiency</td>
+                                            <td class="text-right p-2">97.5%</td>
+                                            <td class="text-right p-2">98.8%</td>
+                                            <td class="text-right p-2 text-green-600">+1.3pp</td>
+                                        </tr>
+                                        <tr class="border-t">
+                                            <td class="p-2">GNPA</td>
+                                            <td class="text-right p-2">3.8%</td>
+                                            <td class="text-right p-2">3.2%</td>
+                                            <td class="text-right p-2 text-green-600">-0.6pp</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="text-sm font-semibold text-green-700 mt-3">Performance: BETTER THAN EXPECTED</p>
+                        </div>
+
+                        <!-- Actual vs Contractual Demands -->
+                        <div class="bg-white p-4 rounded-lg border">
+                            <h4 class="font-semibold text-gray-800 mb-3">Actual vs Contractual Demands</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span>Senior Notes Interest (Demand: ₹2.5 Cr)</span>
+                                    <span class="text-green-700 font-bold">✓ PAID ₹2.5 Cr</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span>Senior Notes Principal (Demand: ₹3.5 Cr)</span>
+                                    <span class="text-green-700 font-bold">✓ PAID ₹3.5 Cr</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span>Mezzanine Interest (Demand: ₹0.7 Cr)</span>
+                                    <span class="text-green-700 font-bold">✓ PAID ₹0.7 Cr</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-green-50 rounded">
+                                    <span>Mezzanine Principal (Demand: ₹0.6 Cr)</span>
+                                    <span class="text-green-700 font-bold">✓ PAID ₹0.6 Cr</span>
+                                </div>
+                            </div>
+                            <p class="text-sm font-semibold text-green-700 mt-3">All Contractual Demands SATISFIED IN FULL</p>
+                        </div>
+
+                        <!-- Conclusion -->
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <h4 class="font-semibold text-blue-900 mb-2">Compliance Summary</h4>
+                            <ul class="text-sm text-blue-800 space-y-1">
+                                <li>✓ All financial covenants met</li>
+                                <li>✓ All contractual payments made in full</li>
+                                <li>✓ Reserve accounts fully funded</li>
+                                <li>✓ Credit enhancement above minimum</li>
+                                <li>✓ No events of default</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('reportPreviewContent').innerHTML = previewHTML;
                 document.getElementById('reportPreviewModal').classList.remove('hidden');
                 document.getElementById('downloadFromPreview').onclick = () => downloadCashManagerReportPDF(txId);
             }
