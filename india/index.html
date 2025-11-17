@@ -932,15 +932,39 @@
                                     </div>
                                 </div>
 
-                                <!-- Actual vs Projections Comparison -->
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">Collections: Actual vs Day 0 Projection</h4>
+                                <!-- Covenant Tests & Compliance -->
+                                <div class="mb-8">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Covenant Tests & Triggers</h4>
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                         <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportCollectionsComparisonChart"></canvas></div>
+                                            <div class="chart-container h-64"><canvas id="reportCovenantTestsChart"></canvas></div>
                                         </div>
-                                        <p class="text-xs text-gray-600 mt-2">Comparing actual collections vs initial deal execution forecast</p>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportCETriggerChart"></canvas></div>
+                                        </div>
                                     </div>
+                                </div>
+
+                                <!-- Tranche-Level Payment Breakdown -->
+                                <div class="mb-8">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Tranche-Level Payments (This Month)</h4>
+                                    <div class="bg-white border rounded-lg p-4">
+                                        <div class="chart-container h-80"><canvas id="reportTranchePaymentsChart"></canvas></div>
+                                    </div>
+                                    <p class="text-xs text-gray-600 mt-2">Detailed breakdown of Senior (Class A) and Mezzanine (Class B) payments</p>
+                                </div>
+
+                                <!-- 3-Way Comparison: Actual vs Day 0 vs Demand -->
+                                <div class="mb-8">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Collections: 3-Way Comparison</h4>
+                                    <div class="bg-white border rounded-lg p-4">
+                                        <div class="chart-container h-80"><canvas id="reportThreeWayComparisonChart"></canvas></div>
+                                    </div>
+                                    <p class="text-xs text-gray-600 mt-2">Comparing Actual vs Day 0 Projections vs Contractual Demands across months</p>
+                                </div>
+
+                                <!-- Credit Enhancement Detailed -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                     <div>
                                         <h4 class="font-semibold text-gray-800 mb-3">Credit Enhancement: Actual vs Day 0</h4>
                                         <div class="bg-white border rounded-lg p-4">
@@ -948,6 +972,22 @@
                                         </div>
                                         <p class="text-xs text-gray-600 mt-2">CE cushion trend showing improvement vs initial day</p>
                                     </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Reserve Account Status</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportReserveAccountChart"></canvas></div>
+                                        </div>
+                                        <p class="text-xs text-gray-600 mt-2">Reserve account balance vs target requirement</p>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Performance vs Obligations -->
+                                <div class="mb-8">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Payment Performance vs Contractual Obligations</h4>
+                                    <div class="bg-white border rounded-lg p-4">
+                                        <div class="chart-container h-64"><canvas id="reportPaymentComplianceChart"></canvas></div>
+                                    </div>
+                                    <p class="text-xs text-gray-600 mt-2">All contractual obligations met in full</p>
                                 </div>
                             </div>
 
@@ -2297,18 +2337,30 @@
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, min: 96, max: 100 } } }
                 });
 
-                // Cash Flow Waterfall
+                // Cash Flow Waterfall (Simplified Summary)
                 createOrUpdateChart('reportWaterfallChart', {
                     type: 'bar',
                     data: {
-                        labels: ['Collections', 'Fees & Charges', 'Senior Expenses', 'Interest Payment', 'Principal Payment', 'Reserve Account', 'Residual'],
+                        labels: ['Inflows', 'Senior Fees', 'Interest Paid', 'Principal Paid', 'Reserve Top-up', 'Residual'],
                         datasets: [{
                             label: 'Amount (₹ Cr)',
-                            data: [8.5, 0.3, -0.5, -3.2, -4.1, -0.5, 0.5],
-                            backgroundColor: ['#14b8a6', '#5eead4', '#ef4444', '#ef4444', '#ef4444', '#f59e0b', '#10b981']
+                            data: [8.8, -0.5, -3.2, -4.1, -0.5, 0.5],
+                            backgroundColor: ['#14b8a6', '#9CA3AF', '#EF4444', '#DC2626', '#F59E0B', '#10B981']
                         }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { display: false },
+                            title: { display: true, text: 'Simplified Waterfall (See Tranche chart for detailed breakdown)' }
+                        },
+                        scales: {
+                            y: {
+                                title: { display: true, text: '₹ Crores' }
+                            }
+                        }
+                    }
                 });
 
                 // DPD Bucket Analysis
@@ -2456,6 +2508,247 @@
                                 min: 10,
                                 max: 18,
                                 title: { display: true, text: 'Credit Enhancement %' }
+                            }
+                        }
+                    }
+                });
+
+                // Covenant Tests Chart
+                createOrUpdateChart('reportCovenantTestsChart', {
+                    type: 'bar',
+                    data: {
+                        labels: ['Cumulative\nPayment Rate', 'PAR30', 'PAR60', 'PAR90', 'LTV'],
+                        datasets: [
+                            {
+                                label: 'Actual',
+                                data: [98.8, 4.4, 1.0, 0.4, 78.5],
+                                backgroundColor: 'rgba(20, 184, 166, 0.7)',
+                                borderColor: '#14b8a6',
+                                borderWidth: 2
+                            },
+                            {
+                                label: 'Threshold',
+                                data: [95.0, 8.0, 5.0, 3.0, 85.0],
+                                backgroundColor: 'rgba(239, 68, 68, 0.3)',
+                                borderColor: '#ef4444',
+                                borderWidth: 2,
+                                borderDash: [5, 5]
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            title: { display: true, text: 'All Tests: PASS ✓' }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: { display: true, text: 'Percentage %' }
+                            }
+                        }
+                    }
+                });
+
+                // Credit Enhancement Triggers Chart
+                createOrUpdateChart('reportCETriggerChart', {
+                    type: 'bar',
+                    data: {
+                        labels: ['Current CE', 'Minimum\nRequired', 'Trigger\nLevel 1', 'Trigger\nLevel 2', 'Trigger\nLevel 3'],
+                        datasets: [{
+                            label: 'Credit Enhancement %',
+                            data: [15.5, 12.0, 10.0, 8.0, 5.0],
+                            backgroundColor: [
+                                'rgba(20, 184, 166, 0.8)',
+                                'rgba(239, 68, 68, 0.6)',
+                                'rgba(251, 191, 36, 0.6)',
+                                'rgba(251, 191, 36, 0.4)',
+                                'rgba(251, 191, 36, 0.2)'
+                            ],
+                            borderColor: ['#14b8a6', '#ef4444', '#fbbf24', '#fbbf24', '#fbbf24'],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: true, text: 'CE Triggers: All Safe ✓ (+3.5% buffer)' }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 18,
+                                title: { display: true, text: 'Credit Enhancement %' }
+                            }
+                        }
+                    }
+                });
+
+                // Tranche-Level Payments Chart (Detailed Waterfall)
+                createOrUpdateChart('reportTranchePaymentsChart', {
+                    type: 'bar',
+                    data: {
+                        labels: ['Senior Fees', 'Class A\nInterest', 'Class A\nPrincipal', 'Class B\nInterest', 'Class B\nPrincipal', 'Reserve\nTop-up', 'Residual'],
+                        datasets: [{
+                            label: 'Amount (₹ Cr)',
+                            data: [0.5, 2.5, 3.5, 0.7, 0.6, 0.5, 0.5],
+                            backgroundColor: [
+                                '#9CA3AF',
+                                '#3B82F6',
+                                '#2563EB',
+                                '#8B5CF6',
+                                '#7C3AED',
+                                '#F59E0B',
+                                '#10B981'
+                            ],
+                            borderColor: [
+                                '#6B7280',
+                                '#2563EB',
+                                '#1D4ED8',
+                                '#7C3AED',
+                                '#6D28D9',
+                                '#D97706',
+                                '#059669'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: true, text: 'Priority of Payments - All Levels Paid in Full ✓' }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: '₹ Crores' }
+                            }
+                        }
+                    }
+                });
+
+                // 3-Way Comparison: Actual vs Day 0 vs Demand
+                createOrUpdateChart('reportThreeWayComparisonChart', {
+                    type: 'line',
+                    data: {
+                        labels: ['Month 1', 'Month 3', 'Month 6', 'Month 9', 'Month 12', 'Month 14 (Current)'],
+                        datasets: [
+                            {
+                                label: 'Day 0 Projected Collections',
+                                data: [8.2, 8.4, 8.6, 8.7, 8.9, 8.9],
+                                borderColor: '#9CA3AF',
+                                backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                fill: false,
+                                tension: 0.3
+                            },
+                            {
+                                label: 'Actual Collections',
+                                data: [8.3, 8.5, 8.7, 8.6, 8.4, 8.5],
+                                borderColor: '#14b8a6',
+                                backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.3
+                            },
+                            {
+                                label: 'Contractual Demand',
+                                data: [7.8, 8.0, 8.1, 8.2, 8.4, 8.6],
+                                borderColor: '#3B82F6',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                borderWidth: 2,
+                                borderDash: [10, 3],
+                                fill: false,
+                                tension: 0.3
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            title: { display: true, text: 'All Demands Met | Actual tracking close to Projections' }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 7,
+                                max: 10,
+                                title: { display: true, text: 'Collections (₹ Cr)' }
+                            }
+                        }
+                    }
+                });
+
+                // Reserve Account Status Chart
+                createOrUpdateChart('reportReserveAccountChart', {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Current Balance', 'Required (Unfunded)'],
+                        datasets: [{
+                            data: [2.0, 0.0],
+                            backgroundColor: ['#14b8a6', '#E5E7EB'],
+                            borderColor: ['#0D9488', '#D1D5DB'],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            title: { 
+                                display: true, 
+                                text: 'Reserve: ₹2.0 Cr / ₹2.0 Cr Target ✓ FULLY FUNDED',
+                                font: { size: 12 }
+                            }
+                        }
+                    }
+                });
+
+                // Payment Compliance Chart
+                createOrUpdateChart('reportPaymentComplianceChart', {
+                    type: 'bar',
+                    data: {
+                        labels: ['Senior Int.', 'Senior Prin.', 'Mezz Int.', 'Mezz Prin.', 'Fees', 'Reserve'],
+                        datasets: [
+                            {
+                                label: 'Contractual Demand',
+                                data: [2.5, 3.5, 0.7, 0.6, 0.5, 2.0],
+                                backgroundColor: 'rgba(239, 68, 68, 0.3)',
+                                borderColor: '#ef4444',
+                                borderWidth: 2,
+                                borderDash: [5, 5]
+                            },
+                            {
+                                label: 'Actual Paid',
+                                data: [2.5, 3.5, 0.7, 0.6, 0.5, 2.0],
+                                backgroundColor: 'rgba(20, 184, 166, 0.7)',
+                                borderColor: '#14b8a6',
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            title: { display: true, text: 'All Obligations Met in Full ✓ No Shortfalls' }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: 'Amount (₹ Cr)' }
                             }
                         }
                     }
