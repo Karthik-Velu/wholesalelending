@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -803,9 +804,9 @@
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                                 </svg>
-                                                <span>Download Letter</span>
+                                                <span>Download PDF</span>
                                             </button>
-                                            <button class="px-4 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 text-sm text-gray-700">Preview</button>
+                                            <button id="previewPMAReport" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 text-sm text-gray-700">Preview</button>
                                         </div>
                                         <div class="mt-3 text-xs text-gray-500">
                                             <span>Due: 2 Business Days after Servicer Report</span>
@@ -841,9 +842,9 @@
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                                 </svg>
-                                                <span>Download Report</span>
+                                                <span>Download PDF</span>
                                             </button>
-                                            <button class="px-4 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 text-sm text-gray-700">Preview</button>
+                                            <button id="previewCashReport" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 text-sm text-gray-700">Preview</button>
                                         </div>
                                         <div class="mt-3 text-xs text-gray-500">
                                             <span>Due: 5 Business Days before Payment Date</span>
@@ -1138,6 +1139,28 @@
                 </div>
             </div>
         </main>
+    </div>
+    
+    <!-- Report Preview Modal -->
+    <div id="reportPreviewModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-5xl shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 class="text-xl font-bold text-gray-900" id="previewModalTitle">Report Preview</h3>
+                <button onclick="closeReportPreview()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
+            </div>
+            <div class="mt-4 max-h-[70vh] overflow-y-auto">
+                <div id="reportPreviewContent" class="prose prose-sm max-w-none p-6 bg-gray-50 rounded-lg font-mono text-xs"></div>
+            </div>
+            <div class="flex justify-end items-center pt-4 border-t gap-3">
+                <button onclick="closeReportPreview()" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold">Close</button>
+                <button id="downloadFromPreview" class="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-semibold flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <span>Download PDF</span>
+                </button>
+            </div>
+        </div>
     </div>
     
     <script>
@@ -2503,16 +2526,48 @@ CONFIDENTIAL - FOR AUTHORIZED RECIPIENTS ONLY
 Next Report Due: 2 Business Days after next Month-End Servicer Report
 `;
 
-                // Create and download the report
-                const blob = new Blob([reportContent], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `PMA_Report_${transaction.name}_${new Date().toISOString().split('T')[0]}.txt`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                // Return report content for preview/download
+                return { content: reportContent, transaction, reportMonth, monthName, year };
+            }
+
+            function downloadPMAReportPDF(txId) {
+                const {jsPDF} = window.jspdf;
+                const reportData = generatePMAReport(txId);
+                const doc = new jsPDF();
+                
+                // Title
+                doc.setFontSize(16);
+                doc.setFont(undefined, 'bold');
+                doc.text('PORTFOLIO MONITORING AGENT LETTER', 105, 20, {align: 'center'});
+                
+                // Content
+                doc.setFontSize(9);
+                doc.setFont(undefined, 'normal');
+                const lines = doc.splitTextToSize(reportData.content, 180);
+                let y = 35;
+                
+                lines.forEach(line => {
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    doc.text(line, 15, y);
+                    y += 5;
+                });
+                
+                doc.save(`PMA_Letter_${reportData.transaction.name}_${reportData.monthName}_${reportData.year}.pdf`);
+            }
+
+            function previewPMAReport(txId) {
+                const reportData = generatePMAReport(txId);
+                document.getElementById('previewModalTitle').textContent = 'PMA Letter Preview';
+                document.getElementById('reportPreviewContent').innerHTML = `<pre class="whitespace-pre-wrap">${reportData.content}</pre>`;
+                document.getElementById('reportPreviewModal').classList.remove('hidden');
+                document.getElementById('downloadFromPreview').onclick = () => downloadPMAReportPDF(txId);
+            }
+
+            function closeReportPreview() {
+                document.getElementById('reportPreviewModal').classList.add('hidden');
             }
 
             function generateCashManagerReport(txId) {
@@ -2626,31 +2681,82 @@ Next Report Date: 01-Jan-2026
 Contact: cashmanagement@kaleidofin.com
 `;
 
-                // Create and download the report
-                const blob = new Blob([reportContent], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `CashManager_Report_${transaction.name}_${new Date().toISOString().split('T')[0]}.txt`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                // Return report content for preview/download
+                return { content: reportContent, transaction, reportMonth, monthName, year };
+            }
+
+            function downloadCashManagerReportPDF(txId) {
+                const {jsPDF} = window.jspdf;
+                const reportData = generateCashManagerReport(txId);
+                const doc = new jsPDF();
+                
+                // Title
+                doc.setFontSize(16);
+                doc.setFont(undefined, 'bold');
+                doc.text('CASH MANAGER INVESTOR REPORT', 105, 20, {align: 'center'});
+                
+                // Content
+                doc.setFontSize(9);
+                doc.setFont(undefined, 'normal');
+                const lines = doc.splitTextToSize(reportData.content, 180);
+                let y = 35;
+                
+                lines.forEach(line => {
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    doc.text(line, 15, y);
+                    y += 5;
+                });
+                
+                doc.save(`CashManager_Report_${reportData.transaction.name}_${reportData.monthName}_${reportData.year}.pdf`);
+            }
+
+            function previewCashReport(txId) {
+                const reportData = generateCashManagerReport(txId);
+                document.getElementById('previewModalTitle').textContent = 'Cash Manager Investor Report Preview';
+                document.getElementById('reportPreviewContent').innerHTML = `<pre class="whitespace-pre-wrap">${reportData.content}</pre>`;
+                document.getElementById('reportPreviewModal').classList.remove('hidden');
+                document.getElementById('downloadFromPreview').onclick = () => downloadCashManagerReportPDF(txId);
             }
 
             // Event listeners for reports
             document.getElementById('downloadPMAReport')?.addEventListener('click', () => {
                 const txId = document.getElementById('reportsTransactionSelector')?.value || state.transactions.filter(t => t.covenantsSet)[0]?.id;
-                if (txId) generatePMAReport(txId);
+                if (txId) downloadPMAReportPDF(txId);
+            });
+
+            document.getElementById('previewPMAReport')?.addEventListener('click', () => {
+                const txId = document.getElementById('reportsTransactionSelector')?.value || state.transactions.filter(t => t.covenantsSet)[0]?.id;
+                if (txId) previewPMAReport(txId);
             });
 
             document.getElementById('downloadCashReport')?.addEventListener('click', () => {
                 const txId = document.getElementById('reportsTransactionSelector')?.value || state.transactions.filter(t => t.covenantsSet)[0]?.id;
-                if (txId) generateCashManagerReport(txId);
+                if (txId) downloadCashManagerReportPDF(txId);
+            });
+
+            document.getElementById('previewCashReport')?.addEventListener('click', () => {
+                const txId = document.getElementById('reportsTransactionSelector')?.value || state.transactions.filter(t => t.covenantsSet)[0]?.id;
+                if (txId) previewCashReport(txId);
             });
 
             document.getElementById('reportsTransactionSelector')?.addEventListener('change', (e) => {
                 renderReportsPage(e.target.value);
+            });
+
+            document.getElementById('reportMonthSelector')?.addEventListener('change', (e) => {
+                const [year, month] = e.target.value.split('-');
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const monthName = monthNames[parseInt(month) - 1];
+                document.getElementById('reportPeriodDisplay').textContent = `${monthName} ${year}`;
+                const startDate = `01-${monthName.substring(0,3)}-${year}`;
+                const endDate = new Date(year, month, 0).getDate() + `-${monthName.substring(0,3)}-${year}`;
+                document.getElementById('collectionPeriodDisplay').textContent = `${startDate} to ${endDate}`;
+                const nextMonth = parseInt(month) === 12 ? 1 : parseInt(month) + 1;
+                const nextYear = parseInt(month) === 12 ? parseInt(year) + 1 : year;
+                document.getElementById('paymentDateDisplay').textContent = `01-${monthNames[nextMonth - 1].substring(0,3)}-${nextYear}`;
             });
 
             transactionSelector.addEventListener('change', (e) => {
