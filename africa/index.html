@@ -2607,21 +2607,23 @@
                 });
 
                 // Credit Enhancement Triggers Chart
+                // Overcollateralization: 20% of Pool (KES 95.17M)
+                // Junior Liquidity Facility: 12% of Pool (KES 57.10M) = Total CE 32%
                 createOrUpdateChart('reportCETriggerChart', {
                     type: 'bar',
                     data: {
-                        labels: ['Current CE', 'Minimum\nRequired', 'Trigger\nLevel 1', 'Trigger\nLevel 2', 'Trigger\nLevel 3'],
+                        labels: ['Current CE\n(OC + JLF)', 'Overcollat.\nOnly', 'Liquidity\nFacility', 'Minimum\nRequired', 'Early\nAmort Trigger'],
                         datasets: [{
                             label: 'Credit Enhancement %',
-                            data: [15.5, 12.0, 10.0, 8.0, 5.0],
+                            data: [32.0, 20.0, 12.0, 15.0, 10.0],
                             backgroundColor: [
                                 'rgba(20, 184, 166, 0.8)',
+                                'rgba(34, 197, 94, 0.7)',
+                                'rgba(59, 130, 246, 0.7)',
                                 'rgba(239, 68, 68, 0.6)',
-                                'rgba(251, 191, 36, 0.6)',
-                                'rgba(251, 191, 36, 0.4)',
-                                'rgba(251, 191, 36, 0.2)'
+                                'rgba(251, 191, 36, 0.6)'
                             ],
-                            borderColor: ['#14b8a6', '#ef4444', '#fbbf24', '#fbbf24', '#fbbf24'],
+                            borderColor: ['#14b8a6', '#22c55e', '#3b82f6', '#ef4444', '#fbbf24'],
                             borderWidth: 2
                         }]
                     },
@@ -2630,12 +2632,12 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { display: false },
-                            title: { display: true, text: 'CE Triggers: All Safe ✓ (+3.5% buffer)' }
+                            title: { display: true, text: 'Total CE: 32% (20% OC + 12% JLF) ✓ +17% above minimum' }
                         },
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                max: 18,
+                                max: 35,
                                 title: { display: true, text: 'Credit Enhancement %' }
                             }
                         }
@@ -2643,13 +2645,16 @@
                 });
 
                 // Tranche-Level Payments Chart (Detailed Waterfall)
+                // Based on ki platform PCC Series 1: Apollo Agriculture
+                // Senior: KES 286.51M | Mezzanine: KES 75.00M | Pool: KES 475.87M
+                // Note: Bullet structure - Principal paid at maturity, only interest monthly
                 createOrUpdateChart('reportTranchePaymentsChart', {
                     type: 'bar',
                     data: {
-                        labels: ['Senior Fees', 'Class A\nInterest', 'Class A\nPrincipal', 'Class B\nInterest', 'Class B\nPrincipal', 'Reserve\nTop-up', 'Residual'],
+                        labels: ['Statutory\n& Fees', 'Class A\nInterest\n(14% XIRR)', 'Class A\nPrincipal\n(at maturity)', 'Class B\nInterest\n(14.5% XIRR)', 'Class B\nPrincipal\n(at maturity)', 'Liquidity\nReimbursement', 'Residual'],
                         datasets: [{
                             label: 'Amount (KES M)',
-                            data: [1.2, 6.2, 8.8, 1.8, 1.5, 1.2, 1.3],
+                            data: [2.5, 3.35, 0, 0.91, 0, 0, 3.2],
                             backgroundColor: [
                                 '#9CA3AF',
                                 '#3B82F6',
@@ -2676,12 +2681,12 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { display: false },
-                            title: { display: true, text: 'Priority of Payments - All Levels Paid in Full ✓' }
+                            title: { display: true, text: 'Monthly Payments - Bullet Structure (Principal at Final Maturity)' }
                         },
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                title: { display: true, text: 'KES Millions' }
+                                title: { display: true, text: 'KES Millions (Monthly)' }
                             }
                         }
                     }
@@ -2742,13 +2747,14 @@
                     }
                 });
 
-                // Reserve Account Status Chart
+                // Junior Liquidity Facility Status Chart
+                // Fixed deposit by Originator: 12% of pool = KES 57.10M
                 createOrUpdateChart('reportReserveAccountChart', {
                     type: 'doughnut',
                     data: {
-                        labels: ['Current Balance', 'Required (Unfunded)'],
+                        labels: ['Liquidity Facility (Fixed Deposit)', 'Available if Needed'],
                         datasets: [{
-                            data: [5.0, 0.0],
+                            data: [57.10, 0.0],
                             backgroundColor: ['#14b8a6', '#E5E7EB'],
                             borderColor: ['#0D9488', '#D1D5DB'],
                             borderWidth: 2
@@ -2761,22 +2767,23 @@
                             legend: { position: 'bottom' },
                             title: { 
                                 display: true, 
-                                text: 'Reserve: KES 5.0M / KES 5.0M Target ✓ FULLY FUNDED',
-                                font: { size: 12 }
+                                text: 'Junior Liquidity Facility: KES 57.10M (12% of Pool) ✓ FULLY FUNDED',
+                                font: { size: 11 }
                             }
                         }
                     }
                 });
 
                 // Payment Compliance Chart
+                // Based on actual deal structure: Bullet payment, only interest monthly
                 createOrUpdateChart('reportPaymentComplianceChart', {
                     type: 'bar',
                     data: {
-                        labels: ['Senior Int.', 'Senior Prin.', 'Mezz Int.', 'Mezz Prin.', 'Fees', 'Reserve'],
+                        labels: ['Statutory\n& Fees', 'Senior Int.\n(14% XIRR)', 'Mezz Int.\n(14.5% XIRR)', 'Liquidity\nFacility', 'Residual'],
                         datasets: [
                             {
                                 label: 'Contractual Demand',
-                                data: [6.2, 8.8, 1.8, 1.5, 1.2, 5.0],
+                                data: [2.5, 3.35, 0.91, 0, 3.2],
                                 backgroundColor: 'rgba(239, 68, 68, 0.3)',
                                 borderColor: '#ef4444',
                                 borderWidth: 2,
@@ -2784,7 +2791,7 @@
                             },
                             {
                                 label: 'Actual Paid',
-                                data: [6.2, 8.8, 1.8, 1.5, 1.2, 5.0],
+                                data: [2.5, 3.35, 0.91, 0, 3.2],
                                 backgroundColor: 'rgba(20, 184, 166, 0.7)',
                                 borderColor: '#14b8a6',
                                 borderWidth: 2
@@ -2796,22 +2803,22 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { position: 'bottom' },
-                            title: { display: true, text: 'All Obligations Met in Full ✓ No Shortfalls' }
+                            title: { display: true, text: 'Monthly Obligations Met ✓ Principal Due at Final Maturity Only' }
                         },
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                title: { display: true, text: 'Amount (KES M)' }
+                                title: { display: true, text: 'Amount (KES M Monthly)' }
                             }
                         }
                     }
                 });
 
-                // Update key metrics with actual data
-                document.getElementById('reportPoolSize').textContent = 'KES 234.5M';
-                document.getElementById('reportTotalLoans').textContent = '4,850';
-                document.getElementById('reportGNPA').textContent = '3.2%';
-                document.getElementById('reportYield').textContent = '18.5%';
+                // Update key metrics with actual data (ki platform PCC Series 1: Apollo Agriculture)
+                document.getElementById('reportPoolSize').textContent = 'KES 475.87M';
+                document.getElementById('reportTotalLoans').textContent = '12,450';
+                document.getElementById('reportGNPA').textContent = '2.8%';
+                document.getElementById('reportYield').textContent = '14.0%';
             }
 
             function generatePMAReport(txId) {
@@ -3193,110 +3200,162 @@ Reporting Period: ${monthName} ${year}
 Collection Period: 01-${monthName.substring(0,3)}-${year} to ${new Date(year, month, 0).getDate()}-${monthName.substring(0,3)}-${year}
 Payment Date: 01-Dec-2025
 
+DEAL STRUCTURE: ki platform PCC Series 1 - Apollo Agriculture
+---------------------------------------------------------------
+Issuer: ki platform PCC (Mauritius Protected Cell Company)
+Originator: Apollo Agriculture Limited (Kenya)
+Servicer: Apollo Agriculture Limited (Kenya)
+Servicer Performance Guarantor: Apollo Agriculture, Inc. (Parent Company)
+
 RECEIVABLES PORTFOLIO SUMMARY
 ------------------------------
-Opening Principal Balance: KES 250.0M
-Current Principal Balance: KES 234.5M
-Number of Active Loans: 4,850
+Pool Cashflows: KES 475.87M (incl. overcollateralization)
+Senior Notes (Class A): KES 286.51M | Expected XIRR: 14.00%
+Mezzanine Notes (Class B): KES 75.00M | Expected XIRR: 14.50%
+Overcollateralization: KES 95.17M (20% of pool)
+Junior Liquidity Facility: KES 57.10M (12% of pool - Fixed Deposit)
+
+Total Credit Enhancement: 32% (20% OC + 12% JLF)
+
+Number of Active Loans: 12,450
 Transaction Structure: ${transaction.structure}
+Legal Final Maturity: 10-Nov-2026
+Expected Final Maturity: Aug-2026 (Senior), Sep-2026 (Mezz)
 
 CASH FLOW SUMMARY (THIS MONTH)
 -------------------------------
-Opening Balance: KES 234.5M
+Opening Pool Balance: KES 475.87M
 
 Inflows:
-- Principal Collections: KES 18.0M
-- Interest Collections: KES 3.2M
-- Fees & Other Income: KES 0.8M
-Total Inflows: KES 22.0M
+- Principal Collections: KES 36.5M
+- Interest Collections: KES 6.8M
+- Fees & Other Income: KES 1.5M
+Total Inflows: KES 44.8M
 
-Outflows:
-- Senior Expenses (Servicing): KES 1.2M
-- Interest Payment to Investors: KES 8.0M
-- Principal Payment to Investors: KES 10.3M
-- Reserve Account Top-up: KES 1.2M
-Total Outflows: KES 20.7M
+Outflows (Monthly - Bullet Structure):
+- Statutory & Regulatory Dues: KES 0.8M
+- Trustee & Service Provider Fees: KES 1.7M
+- Interest Payment to Senior Notes: KES 3.35M (14% XIRR)
+- Interest Payment to Mezzanine Notes: KES 0.91M (14.5% XIRR)
+- Residual to Originator: KES 3.2M
+Total Monthly Outflows: KES 9.96M
 
-Closing Balance: KES 235.8M
+Note: Principal payments (Senior KES 286.51M, Mezz KES 75M) due at Legal Final Maturity (10-Nov-2026)
+Junior Liquidity Facility (KES 57.10M) available if needed at maturity
 
-PRIORITY OF PAYMENTS (WATERFALL)
----------------------------------
-Available Receipts This Period: KES 22.0M
+PRIORITY OF PAYMENTS (WATERFALL) - As per Term Sheet
+------------------------------------------------------
+Available Receipts This Period: KES 44.8M
 
-1. Senior Fees & Expenses: KES 1.2M ✓ PAID IN FULL
-   - Cash Manager Fees: KES 0.38M
-   - Servicer Fees: KES 0.62M
-   - Other Senior Expenses: KES 0.20M
+TILL SENIOR NOTES OUTSTANDING:
 
-2. Interest on Senior Notes (Class A): KES 6.2M ✓ PAID IN FULL
-   - Contractual Amount Due: KES 6.2M
-   - Amount Paid: KES 6.2M
+1. Statutory and Regulatory Dues: KES 0.8M ✓ PAID IN FULL
+   - Government taxes and compliance fees
+
+2. Trustee & Service Provider Fees: KES 1.7M ✓ PAID IN FULL
+   - Trustee Fees: KES 0.45M
+   - Servicer Fees: KES 0.95M
+   - Independent Credit Platform (Kaleidofin): KES 0.30M
+
+3. Expected Yield Payout to Senior Notes: KES 3.35M ✓ PAID IN FULL
+   - Expected XIRR: 14.00% p.a.
+   - Contractual Amount Due: KES 3.35M
+   - Amount Paid: KES 3.35M
    - Shortfall: KES 0.00
 
-3. Principal on Senior Notes (Class A): KES 8.8M ✓ PAID IN FULL
-   - Scheduled Amortization: KES 8.8M
-   - Amount Paid: KES 8.8M
-   - Shortfall: KES 0.00
+4. Expected Senior Notes Principal: KES 0.00 (Due at Final Maturity Only)
+   - Original Balance: KES 286.51M
+   - Outstanding Balance: KES 286.51M
+   - Payment Due Date: 10-Nov-2026 (Legal Final Maturity)
+   - Note: Bullet structure - no monthly principal payments
 
-4. Interest on Mezzanine Notes (Class B): KES 1.8M ✓ PAID IN FULL
-   - Contractual Amount Due: KES 1.8M
-   - Amount Paid: KES 1.8M
-   - Shortfall: KES 0.00
+5. Overdue Senior Principal (if any): KES 0.00
+   - Only applicable on/after Final Maturity Date
 
-5. Principal on Mezzanine Notes (Class B): KES 1.5M ✓ PAID IN FULL
-   - Scheduled Amortization: KES 1.5M
-   - Amount Paid: KES 1.5M
-   - Shortfall: KES 0.00
+6. Overdue Senior Interest (if any): KES 0.00
+   
+ON PAYMENT OF SENIOR NOTES IN FULL:
 
-6. Reserve Account Top-up (if below target): KES 1.2M ✓ FUNDED
-   - Target Balance: KES 5.0M
-   - Balance Before Top-up: KES 3.8M
-   - Amount Funded: KES 1.2M
+7. Expected Interest Payout to Mezzanine Notes: KES 0.91M ✓ PAID IN FULL
+   - Expected XIRR: 14.50% p.a.
+   - Contractual Amount Due: KES 0.91M
+   - Amount Paid: KES 0.91M
 
-7. Residual to Junior Noteholder/Originator: KES 1.3M ✓ PAID
+8. Expected Mezzanine Notes Principal: KES 0.00 (Due at Final Maturity Only)
+   - Original Balance: KES 75.00M
+   - Outstanding Balance: KES 75.00M
+   - Payment Due Date: 10-Nov-2026 (Legal Final Maturity)
+   - Note: Bullet structure - no monthly principal payments
 
-RESERVE ACCOUNTS & CREDIT ENHANCEMENT
---------------------------------------
-Cash Reserve Account:
-- Required Balance (Target): KES 5.0M (2% of original pool)
-- Current Balance: KES 5.0M
-- Status: ✓ FULLY FUNDED
+9. Reimbursement of Junior Liquidity Facility: KES 0.00
+   - Facility Amount: KES 57.10M (Fixed Deposit)
+   - Drawn to Date: KES 0.00
+   - To be reimbursed if drawn
+
+ON PAYMENT OF SENIOR AND MEZZANINE NOTES IN FULL:
+
+10. Residual to Originator (Residual Beneficiary): KES 3.2M ✓ PAID
+    - All excess cashflows after senior obligations
+
+CREDIT ENHANCEMENT STRUCTURE
+-----------------------------
+Total Credit Enhancement: 32.0% of Pool Cashflows
+
+Components:
+1. Overcollateralization: KES 95.17M (20.0% of Pool)
+   - Pool Cashflows: KES 475.87M
+   - Investment Amount (Senior + Mezz): KES 361.51M
+   - Overcollateralization: KES 95.17M
+   - Status: ✓ FULLY IN PLACE
+
+2. Junior Liquidity Facility: KES 57.10M (12.0% of Pool)
+   - Fixed Deposit by Originator
+   - Placed prior to transaction settlement
+   - Available on Legal Final Maturity Date if collections insufficient
+   - Priority: First to Senior Notes, then to Mezzanine Notes
+   - Status: ✓ FULLY FUNDED
 
 Credit Enhancement Tracking:
-- Initial Credit Enhancement (Day 0): 15.0%
-- Current Credit Enhancement: 15.5%
-- Change from Day 0: +0.5% (CUSHION INCREASED)
-- Minimum Required: 12.0%
-- Buffer Above Minimum: 3.5%
+- Initial Credit Enhancement (Day 0): 32.0%
+- Current Credit Enhancement: 32.0%
+- Change from Day 0: 0.0% (STABLE)
+- Minimum Required (Assumed): 15.0%
+- Buffer Above Minimum: 17.0%
 - Status: ✓ WELL ABOVE MINIMUM
 
 Credit Enhancement Triggers Status:
-- Trigger Level 1 (10%): ✓ NOT BREACHED (5.5% buffer)
-- Trigger Level 2 (8%): ✓ NOT BREACHED (7.5% buffer)
-- Trigger Level 3 (5%): ✓ NOT BREACHED (10.5% buffer)
+- Early Amortization Trigger (10%): ✓ NOT BREACHED (+22.0% buffer)
+- Servicer Performance Guarantee: ✓ IN PLACE
+   Guarantor: Apollo Agriculture, Inc. (Parent Company)
+   Coverage: Full performance guarantee for servicing obligations
 
 Month-on-Month Credit Enhancement Trend:
-- 3 Months Ago: 14.8%
-- 2 Months Ago: 15.1%
-- Last Month: 15.3%
-- This Month: 15.5%
-- Trend: ↑ IMPROVING (+0.7% over 3 months)
+- 3 Months Ago: 32.0%
+- 2 Months Ago: 32.0%
+- Last Month: 32.0%
+- This Month: 32.0%
+- Trend: → STABLE (Structural, not performance-based)
 
-INVESTOR ALLOCATIONS
---------------------
+INVESTOR ALLOCATIONS (Bullet Structure)
+-----------------------------------------
 Senior Tranche (Class A):
-- Original Balance: KES 187.5M
-- Current Balance: KES 176.2M
-- Interest Rate: 9.5% p.a.
-- This Month Interest: KES 6.2M
-- This Month Principal: KES 8.8M
+- Original Balance: KES 286.51M
+- Current Outstanding: KES 286.51M (100% - no amortization)
+- Expected XIRR: 14.00% p.a.
+- This Month Interest: KES 3.35M
+- Principal Payment: KES 0.00 (Due at Final Maturity: 10-Nov-2026)
+- Status: Interest payments current ✓
 
 Mezzanine Tranche (Class B):
-- Original Balance: KES 25.0M
-- Current Balance: KES 23.5M
-- Interest Rate: 11.5% p.a.
-- This Month Interest: KES 1.8M
-- This Month Principal: KES 1.5M
+- Original Balance: KES 75.00M
+- Current Outstanding: KES 75.00M (100% - no amortization)
+- Expected XIRR: 14.50% p.a. (Senior XIRR + 50 bps)
+- This Month Interest: KES 0.91M
+- Principal Payment: KES 0.00 (Due at Final Maturity: 10-Nov-2026)
+- Status: Interest payments current ✓
+
+Note: Bullet payment structure - Full principal due at Legal Final Maturity
+      Liquidity Facility available if pool collections insufficient at maturity
 
 TESTS (COVENANT COMPLIANCE)
 ----------------------------
