@@ -917,7 +917,7 @@
                                 </div>
 
                                 <!-- Geographic & Vintage Analysis -->
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                     <div>
                                         <h4 class="font-semibold text-gray-800 mb-3">Geographic Concentration</h4>
                                         <div class="bg-white border rounded-lg p-4">
@@ -931,41 +931,26 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Additional Reports -->
-                            <div class="bg-white p-6 rounded-lg border shadow-sm">
-                                <h3 class="font-semibold text-lg text-gray-800 mb-4">Additional Reports & Exports</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <button class="border rounded-lg p-4 hover:bg-gray-50 text-left transition-colors">
-                                        <div class="flex items-center space-x-3 mb-2">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                            </svg>
-                                            <span class="font-semibold text-gray-800">Loan-Level Data</span>
+                                <!-- Actual vs Projections Comparison -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Collections: Actual vs Day 0 Projection</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportCollectionsComparisonChart"></canvas></div>
                                         </div>
-                                        <p class="text-sm text-gray-600">Export detailed loan tape</p>
-                                    </button>
-                                    <button class="border rounded-lg p-4 hover:bg-gray-50 text-left transition-colors">
-                                        <div class="flex items-center space-x-3 mb-2">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
-                                            </svg>
-                                            <span class="font-semibold text-gray-800">Covenant Compliance</span>
+                                        <p class="text-xs text-gray-600 mt-2">Comparing actual collections vs initial deal execution forecast</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Credit Enhancement: Actual vs Day 0</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportCreditEnhancementChart"></canvas></div>
                                         </div>
-                                        <p class="text-sm text-gray-600">Covenant tracking report</p>
-                                    </button>
-                                    <button class="border rounded-lg p-4 hover:bg-gray-50 text-left transition-colors">
-                                        <div class="flex items-center space-x-3 mb-2">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                            </svg>
-                                            <span class="font-semibold text-gray-800">Performance Summary</span>
-                                        </div>
-                                        <p class="text-sm text-gray-600">Executive summary report</p>
-                                    </button>
+                                        <p class="text-xs text-gray-600 mt-2">CE cushion trend showing improvement vs initial day</p>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div id="insightsPage" class="page-view">
@@ -1146,13 +1131,13 @@
         <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-5xl shadow-lg rounded-md bg-white">
             <div class="flex justify-between items-center pb-3 border-b">
                 <h3 class="text-xl font-bold text-gray-900" id="previewModalTitle">Report Preview</h3>
-                <button onclick="closeReportPreview()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
+                <button id="closePreviewModalX" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
             </div>
             <div class="mt-4 max-h-[70vh] overflow-y-auto">
                 <div id="reportPreviewContent" class="prose prose-sm max-w-none p-6 bg-gray-50 rounded-lg font-mono text-xs"></div>
             </div>
             <div class="flex justify-end items-center pt-4 border-t gap-3">
-                <button onclick="closeReportPreview()" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold">Close</button>
+                <button id="closePreviewModalBtn" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold">Close</button>
                 <button id="downloadFromPreview" class="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-semibold flex items-center space-x-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
@@ -2382,6 +2367,105 @@
                     },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
                 });
+
+                // Collections Comparison: Actual vs Day 0 Projections
+                createOrUpdateChart('reportCollectionsComparisonChart', {
+                    type: 'bar',
+                    data: {
+                        labels: ['Month 1', 'Month 3', 'Month 6', 'Month 9', 'Month 12', 'Month 14 (Current)'],
+                        datasets: [
+                            {
+                                label: 'Day 0 Projected',
+                                data: [8.2, 8.4, 8.6, 8.7, 8.8, 8.9],
+                                backgroundColor: 'rgba(156, 163, 175, 0.5)',
+                                borderColor: '#9CA3AF',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Actual Collections',
+                                data: [8.3, 8.5, 8.7, 8.6, 8.4, 8.5],
+                                backgroundColor: 'rgba(20, 184, 166, 0.7)',
+                                borderColor: '#14b8a6',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            title: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 7.5,
+                                max: 9.5,
+                                title: { display: true, text: 'Collections (₹ Cr)' }
+                            }
+                        }
+                    }
+                });
+
+                // Credit Enhancement Trend vs Day 0
+                createOrUpdateChart('reportCreditEnhancementChart', {
+                    type: 'line',
+                    data: {
+                        labels: ['Day 0', 'Month 3', 'Month 6', 'Month 9', 'Month 12', 'Month 14 (Current)'],
+                        datasets: [
+                            {
+                                label: 'Day 0 Baseline',
+                                data: [15.0, 15.0, 15.0, 15.0, 15.0, 15.0],
+                                borderColor: '#9CA3AF',
+                                backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                                borderDash: [5, 5],
+                                borderWidth: 2,
+                                fill: false
+                            },
+                            {
+                                label: 'Actual CE %',
+                                data: [15.0, 14.8, 15.1, 15.3, 15.3, 15.5],
+                                borderColor: '#14b8a6',
+                                backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Minimum Required (12%)',
+                                data: [12.0, 12.0, 12.0, 12.0, 12.0, 12.0],
+                                borderColor: '#ef4444',
+                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                borderDash: [10, 5],
+                                borderWidth: 2,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            title: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 10,
+                                max: 18,
+                                title: { display: true, text: 'Credit Enhancement %' }
+                            }
+                        }
+                    }
+                });
+
+                // Update key metrics with actual data
+                document.getElementById('reportPoolSize').textContent = '₹93.5 Cr';
+                document.getElementById('reportTotalLoans').textContent = '9,450';
+                document.getElementById('reportGNPA').textContent = '3.2%';
+                document.getElementById('reportYield').textContent = '22.5%';
             }
 
             function generatePMAReport(txId) {
@@ -3302,6 +3386,15 @@ Contact: cashmanagement@kaleidofin.com
                 const nextMonth = parseInt(month) === 12 ? 1 : parseInt(month) + 1;
                 const nextYear = parseInt(month) === 12 ? parseInt(year) + 1 : year;
                 document.getElementById('paymentDateDisplay').textContent = `01-${monthNames[nextMonth - 1].substring(0,3)}-${nextYear}`;
+            });
+
+            // Modal close event listeners
+            document.getElementById('closePreviewModalX')?.addEventListener('click', closeReportPreview);
+            document.getElementById('closePreviewModalBtn')?.addEventListener('click', closeReportPreview);
+            document.getElementById('reportPreviewModal')?.addEventListener('click', (e) => {
+                if (e.target.id === 'reportPreviewModal') {
+                    closeReportPreview();
+                }
             });
 
             transactionSelector.addEventListener('change', (e) => {
