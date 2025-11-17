@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -768,6 +769,240 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Reports Page -->
+                    <div id="reportsPage" class="page-view">
+                        <div class="max-w-7xl mx-auto">
+                            <div class="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
+                                <h1 class="text-2xl font-bold text-gray-800">Compliance & Dynamic Reporting</h1>
+                                <div class="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                                    <div class="flex items-center space-x-2">
+                                        <label for="reportMonthSelector" class="text-sm font-medium text-gray-700 whitespace-nowrap">Report Month:</label>
+                                        <input type="month" id="reportMonthSelector" class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm" value="2025-11" />
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <label for="reportsTransactionSelector" class="text-sm font-medium text-gray-700 whitespace-nowrap">Transaction:</label>
+                                        <select id="reportsTransactionSelector" class="border border-gray-300 rounded-lg px-4 py-1.5 text-sm"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Date Information Banner -->
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <p class="text-xs font-semibold text-blue-700 uppercase mb-1">Report Period</p>
+                                        <p id="reportPeriodDisplay" class="text-sm font-medium text-gray-800">November 2025</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-semibold text-blue-700 uppercase mb-1">Collection Period</p>
+                                        <p id="collectionPeriodDisplay" class="text-sm font-medium text-gray-800">01-Nov-2025 to 30-Nov-2025</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-semibold text-blue-700 uppercase mb-1">Payment Date</p>
+                                        <p id="paymentDateDisplay" class="text-sm font-medium text-gray-800">01-Dec-2025</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Standard Reports Section -->
+                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-8">
+                                <h3 class="font-semibold text-lg text-gray-800 mb-6">Compliance Reports</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- PMA Report -->
+                                    <div class="border rounded-lg p-5 hover:shadow-md transition-shadow">
+                                        <div class="flex items-start justify-between mb-3">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="bg-teal-100 p-2 rounded-lg">
+                                                    <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-semibold text-gray-800">Portfolio Monitoring Agent Report</h4>
+                                                    <p class="text-sm text-gray-500">Monthly PMA Report</p>
+                                                </div>
+                                            </div>
+                                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded">Required</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-3">Official PMA Letter covering:</p>
+                                        <ul class="text-xs text-gray-600 space-y-1 mb-4 ml-4">
+                                            <li>✓ Tested Eligibility Criteria verification</li>
+                                            <li>✓ Delinquency Ratio, Dynamic Default Ratio calculations</li>
+                                            <li>✓ Portfolio Concentration Limits confirmation</li>
+                                            <li>✓ Discounted Balance & Collections reconciliation</li>
+                                            <li>✓ Manifest errors identification</li>
+                                        </ul>
+                                        <div class="flex space-x-2">
+                                            <button id="downloadPMAReport" class="flex-1 bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-teal-700 text-sm flex items-center justify-center space-x-2">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                                </svg>
+                                                <span>Download PDF</span>
+                                            </button>
+                                            <button id="previewPMAReport" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 text-sm text-gray-700">Preview</button>
+                                        </div>
+                                        <div class="mt-3 text-xs text-gray-500">
+                                            <span>Due: 2 Business Days after Servicer Report</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cash Manager Report -->
+                                    <div class="border rounded-lg p-5 hover:shadow-md transition-shadow">
+                                        <div class="flex items-start justify-between mb-3">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="bg-blue-100 p-2 rounded-lg">
+                                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-semibold text-gray-800">Cash Manager Investor Report</h4>
+                                                    <p class="text-sm text-gray-500">Monthly Cash Flow Report</p>
+                                                </div>
+                                            </div>
+                                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded">Required</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-3">Monthly Investor Report including:</p>
+                                        <ul class="text-xs text-gray-600 space-y-1 mb-4 ml-4">
+                                            <li>✓ Receivables Portfolio Summary</li>
+                                            <li>✓ Senior/Mezzanine/Junior Notes balances</li>
+                                            <li>✓ Tests: PAR30, PAR60, PAR90, LTV</li>
+                                            <li>✓ Priority of Payments waterfall</li>
+                                            <li>✓ Available Receipts breakdown</li>
+                                        </ul>
+                                        <div class="flex space-x-2">
+                                            <button id="downloadCashReport" class="flex-1 bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-teal-700 text-sm flex items-center justify-center space-x-2">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                                </svg>
+                                                <span>Download PDF</span>
+                                            </button>
+                                            <button id="previewCashReport" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 text-sm text-gray-700">Preview</button>
+                                        </div>
+                                        <div class="mt-3 text-xs text-gray-500">
+                                            <span>Due: 5 Business Days before Payment Date</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dynamic Reporting Dashboards -->
+                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-8">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="font-semibold text-lg text-gray-800">Dynamic Reporting & Analytics</h3>
+                                    <button class="text-teal-600 hover:text-teal-700 text-sm font-semibold">Export All Data</button>
+                                </div>
+                                
+                                <!-- Key Metrics Summary -->
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Pool Size</p>
+                                        <p id="reportPoolSize" class="text-2xl font-bold text-gray-800">KES 234.5M</p>
+                                        <p class="text-xs text-green-600 mt-1">▲ 2.1% from last month</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Total Loans</p>
+                                        <p id="reportTotalLoans" class="text-2xl font-bold text-gray-800">4,850</p>
+                                        <p class="text-xs text-gray-600 mt-1">Active accounts</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">GNPA %</p>
+                                        <p id="reportGNPA" class="text-2xl font-bold text-gray-800">3.2%</p>
+                                        <p class="text-xs text-green-600 mt-1">▼ 0.3% improvement</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Avg Yield</p>
+                                        <p id="reportYield" class="text-2xl font-bold text-gray-800">18.5%</p>
+                                        <p class="text-xs text-gray-600 mt-1">Portfolio weighted</p>
+                                    </div>
+                                </div>
+
+                                <!-- Collection & Cash Flow Analysis -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Collection Efficiency Trend</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportCollectionChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Cash Flow Waterfall (This Month)</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportWaterfallChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Delinquency & Portfolio Composition -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">DPD Bucket Analysis</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportDPDChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Portfolio Composition</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportCompositionChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Geographic & Vintage Analysis -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Geographic Concentration</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportGeoChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Vintage Analysis</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportVintageChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Additional Reports -->
+                            <div class="bg-white p-6 rounded-lg border shadow-sm">
+                                <h3 class="font-semibold text-lg text-gray-800 mb-4">Additional Reports & Exports</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <button class="border rounded-lg p-4 hover:bg-gray-50 text-left transition-colors">
+                                        <div class="flex items-center space-x-3 mb-2">
+                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                            </svg>
+                                            <span class="font-semibold text-gray-800">Loan-Level Data</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Export detailed loan tape</p>
+                                    </button>
+                                    <button class="border rounded-lg p-4 hover:bg-gray-50 text-left transition-colors">
+                                        <div class="flex items-center space-x-3 mb-2">
+                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                                            </svg>
+                                            <span class="font-semibold text-gray-800">Covenant Compliance</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Covenant tracking report</p>
+                                    </button>
+                                    <button class="border rounded-lg p-4 hover:bg-gray-50 text-left transition-colors">
+                                        <div class="flex items-center space-x-3 mb-2">
+                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                            <span class="font-semibold text-gray-800">Performance Summary</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Executive summary report</p>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="insightsPage" class="page-view">
                          <div class="text-center mb-8">
                             <h1 class="text-2xl font-bold text-gray-800">Performance Insights</h1>
@@ -952,6 +1187,28 @@
                 </div>
             </div>
         </main>
+    </div>
+    
+    <!-- Report Preview Modal -->
+    <div id="reportPreviewModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-5xl shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 class="text-xl font-bold text-gray-900" id="previewModalTitle">Report Preview</h3>
+                <button onclick="closeReportPreview()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
+            </div>
+            <div class="mt-4 max-h-[70vh] overflow-y-auto">
+                <div id="reportPreviewContent" class="prose prose-sm max-w-none p-6 bg-gray-50 rounded-lg font-mono text-xs"></div>
+            </div>
+            <div class="flex justify-end items-center pt-4 border-t gap-3">
+                <button onclick="closeReportPreview()" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold">Close</button>
+                <button id="downloadFromPreview" class="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-semibold flex items-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <span>Download PDF</span>
+                </button>
+            </div>
+        </div>
     </div>
     
     <script>
@@ -1270,6 +1527,8 @@
                 const currentTxId = txId || transactionSelector.value;
                 if (pageId === 'covenantMonitoringPage') {
                     renderCovenantMonitoringPage(currentTxId);
+                } else if (pageId === 'reportsPage') {
+                    renderReportsPage(currentTxId);
                 } else if (pageId === 'performancePage') {
                     renderPerformancePage(currentTxId);
                 } else if (pageId === 'impactPage') {
@@ -2072,6 +2331,471 @@
                     options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
                 });
             }
+
+            function renderReportsPage(txId) {
+                // Populate transaction selector for reports
+                const reportsSelector = document.getElementById('reportsTransactionSelector');
+                if (reportsSelector) {
+                    reportsSelector.innerHTML = '';
+                    state.transactions.filter(t => t.covenantsSet).forEach(tx => {
+                        const option = document.createElement('option');
+                        option.value = tx.id;
+                        option.textContent = tx.name;
+                        option.selected = tx.id === txId;
+                        reportsSelector.appendChild(option);
+                    });
+                }
+
+                // Collection Efficiency Trend
+                createOrUpdateChart('reportCollectionChart', {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        datasets: [{
+                            label: 'Collection Efficiency %',
+                            data: [97.2, 97.5, 98.1, 97.8, 98.3, 98.5, 98.2, 98.7, 98.4, 98.9, 99.1, 98.8],
+                            borderColor: '#14b8a6',
+                            backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, min: 96, max: 100 } } }
+                });
+
+                // Cash Flow Waterfall
+                createOrUpdateChart('reportWaterfallChart', {
+                    type: 'bar',
+                    data: {
+                        labels: ['Collections', 'Fees & Charges', 'Senior Expenses', 'Interest Payment', 'Principal Payment', 'Reserve Account', 'Residual'],
+                        datasets: [{
+                            label: 'Amount (KES M)',
+                            data: [21.2, 0.8, -1.2, -8.0, -10.3, -1.2, 1.3],
+                            backgroundColor: ['#14b8a6', '#5eead4', '#ef4444', '#ef4444', '#ef4444', '#f59e0b', '#10b981']
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                });
+
+                // DPD Bucket Analysis
+                createOrUpdateChart('reportDPDChart', {
+                    type: 'bar',
+                    data: {
+                        labels: ['Current', '1-30 DPD', '31-60 DPD', '61-90 DPD', '90+ DPD'],
+                        datasets: [{
+                            label: 'Number of Loans',
+                            data: [4485, 210, 90, 40, 25],
+                            backgroundColor: ['#10b981', '#f59e0b', '#fb923c', '#f97316', '#ef4444']
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                });
+
+                // Portfolio Composition
+                createOrUpdateChart('reportCompositionChart', {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Boda Boda', 'SME Loans', 'Agri-Finance', 'Personal Loans', 'Other'],
+                        datasets: [{
+                            data: [45, 25, 15, 10, 5],
+                            backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4']
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+                });
+
+                // Geographic Concentration
+                createOrUpdateChart('reportGeoChart', {
+                    type: 'bar',
+                    data: {
+                        labels: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret', 'Thika', 'Others'],
+                        datasets: [{
+                            label: 'AUM (KES M)',
+                            data: [62, 45, 38, 30, 25, 20, 14],
+                            backgroundColor: '#14b8a6'
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
+                });
+
+                // Vintage Analysis
+                createOrUpdateChart('reportVintageChart', {
+                    type: 'line',
+                    data: {
+                        labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025'],
+                        datasets: [{
+                            label: 'GNPA %',
+                            data: [3.8, 3.5, 3.2, 3.0, 2.8, 3.2],
+                            borderColor: '#14b8a6',
+                            backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                            fill: true
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                });
+            }
+
+            function generatePMAReport(txId) {
+                const transaction = state.transactions.find(t => t.id === txId) || state.transactions[0];
+                const reportMonth = document.getElementById('reportMonthSelector')?.value || '2025-11';
+                const [year, month] = reportMonth.split('-');
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const monthName = monthNames[parseInt(month) - 1];
+                const reportDate = new Date().toLocaleDateString('en-KE', { day: '2-digit', month: 'long', year: 'numeric' });
+                
+                const reportContent = `
+PORTFOLIO MONITORING AGENT LETTER
+=====================================
+
+${reportDate}
+
+Required Recipients:
+[Issuer Name]
+[Security Trustee Name]
+[Cash Manager Name]
+[Senior Note Agent Name]
+[Servicer Name]
+
+Dear Required Recipients,
+
+Re: Portfolio Monitoring Agent Services - ${transaction.name}
+
+We, Kaleidofin Private Limited, in our capacity as the Portfolio Monitoring Agent, hereby provide this letter to the Required Recipients in accordance with Clause 3.1 (Services) and subject to, without limitation, Clause 7.1 (Portfolio Monitoring Agent limitation of liability) of the Portfolio Monitoring Agreement. This letter serves to specify the determinations and confirmations to be made by us for the reporting period ending ${monthName} ${year}, as outlined below:
+
+1. DETERMINATION OF TESTED ELIGIBILITY CRITERIA
+------------------------------------------------
+We confirm that, in our reasonable opinion based on the information provided, there are no breaches of the Tested Eligibility Criteria with respect to the Receivables in the portfolio as of the Month-End Reporting Cut-Off Date.
+
+Status: ✓ NO BREACHES IDENTIFIED
+
+2. CONSISTENCY AND CALCULATIONS
+--------------------------------
+We have reviewed the information provided in the Monthly Receivables Data Tape we received on ${reportDate} and compared it with the information in the systems used by the Servicer to service, administer, collect and manage the Portfolio Receivables which we have access to.
+
+We hereby confirm that: NO MANIFEST ERRORS HAVE BEEN IDENTIFIED
+
+The information in the Draft Servicer Report and Monthly Receivables Data Tape regarding Defaulted Receivables, Delinquent Receivables, and Repayment Speed is materially consistent with the information available in the Servicer's systems.
+
+Additionally, we have calculated the following metrics:
+
+   Delinquency Ratio: 4.4%
+   Dynamic Default Ratio: 0.42%
+   Repayment Speed: 8.5% CPR
+
+Calculation Details:
+- Delinquency Ratio = (Delinquent Receivables / Total Portfolio Balance) × 100
+- Dynamic Default Ratio = (Defaulted Receivables in Period / Beginning Portfolio Balance) × 100
+- Repayment Speed = Annualized prepayment rate (CPR method)
+
+3. CONCENTRATION LIMITS
+-----------------------
+We confirm that the Portfolio Concentration Limits are satisfied with respect to the current portfolio composition.
+
+Geographic Concentration:
+   - Highest single county concentration: 26.4% (within limit)
+   - Top 5 counties represent: 85.5% (within limit)
+
+Product Concentration:
+   - Highest single product: 45% (within limit)
+   - Diversification index: Satisfactory
+
+Status: ✓ ALL CONCENTRATION LIMITS SATISFIED
+
+4. DISCOUNTED BALANCE AND COLLECTIONS
+--------------------------------------
+Using the information in the Monthly Receivables Data Tape made available to us by the Servicer on ${reportDate}, we calculate that:
+
+a) The Discounted Balance of all Portfolio Receivables (excluding Defaulted Receivables) is:
+   KES 234.5M
+
+b) Present Value Factor Applied: 0.952
+
+c) Repayment Speed Applied: 8.5% CPR
+
+d) Minimum Remaining Tenor Confirmation: All receivables have minimum remaining tenor of not shorter than 6 months ✓
+
+e) Collections Reconciliation:
+   - Collections specified in Draft Servicer Report: KES 21.2M
+   - Amount in Transaction Account (as provided by Cash Manager): KES 21.2M
+   - Difference: KES 0.00
+
+Status: ✓ RECONCILIATION COMPLETE - NO MATERIAL DIFFERENCES
+
+5. SERVICER REPORT VALIDATION
+------------------------------
+We have liaised with the Servicer regarding the Monthly Servicer Report and confirm that we are reasonably satisfied with the form and content of the proposed Monthly Servicer Report for ${monthName} ${year}.
+
+Status: ✓ APPROVED FOR PUBLICATION
+
+PORTFOLIO SUMMARY (as of Month-End)
+------------------------------------
+Pool Size: KES 234.5M
+Number of Receivables: 4,850
+Average Receivable Size: KES 48,350
+Weighted Average Yield: 18.5%
+Weighted Average Remaining Tenor: 18 months
+
+Delinquency Status:
+- Current (0 DPD): 92.5% (4,485 receivables)
+- 1-30 DPD: 4.3% (210 receivables)
+- 31-60 DPD: 1.9% (90 receivables)
+- 61-90 DPD: 0.8% (40 receivables)
+- 90+ DPD: 0.5% (25 receivables)
+
+CONCLUSION
+----------
+Based on our review and analysis, we confirm that:
+✓ No material breaches of eligibility criteria
+✓ No manifest errors identified
+✓ All concentration limits satisfied
+✓ Collections properly reconciled
+✓ Servicer Report approved
+
+Should you require any further information or clarification, please do not hesitate to contact us.
+
+Yours faithfully,
+
+_______________________________
+[Portfolio Monitoring Agent Representative Name]
+Kaleidofin Private Limited
+Portfolio Monitoring Agent
+Email: pma@kaleidofin.com
+Date: ${reportDate}
+
+---
+CONFIDENTIAL - FOR AUTHORIZED RECIPIENTS ONLY
+Next Report Due: 2 Business Days after next Month-End Servicer Report
+`;
+
+                return { content: reportContent, transaction, reportMonth, monthName, year };
+            }
+
+            function downloadPMAReportPDF(txId) {
+                const {jsPDF} = window.jspdf;
+                const reportData = generatePMAReport(txId);
+                const doc = new jsPDF();
+                
+                doc.setFontSize(16);
+                doc.setFont(undefined, 'bold');
+                doc.text('PORTFOLIO MONITORING AGENT LETTER', 105, 20, {align: 'center'});
+                
+                doc.setFontSize(9);
+                doc.setFont(undefined, 'normal');
+                const lines = doc.splitTextToSize(reportData.content, 180);
+                let y = 35;
+                
+                lines.forEach(line => {
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    doc.text(line, 15, y);
+                    y += 5;
+                });
+                
+                doc.save(`PMA_Letter_${reportData.transaction.name}_${reportData.monthName}_${reportData.year}.pdf`);
+            }
+
+            function previewPMAReport(txId) {
+                const reportData = generatePMAReport(txId);
+                document.getElementById('previewModalTitle').textContent = 'PMA Letter Preview';
+                document.getElementById('reportPreviewContent').innerHTML = `<pre class="whitespace-pre-wrap">${reportData.content}</pre>`;
+                document.getElementById('reportPreviewModal').classList.remove('hidden');
+                document.getElementById('downloadFromPreview').onclick = () => downloadPMAReportPDF(txId);
+            }
+
+            function closeReportPreview() {
+                document.getElementById('reportPreviewModal').classList.add('hidden');
+            }
+
+            function generateCashManagerReport(txId) {
+                const transaction = state.transactions.find(t => t.id === txId) || state.transactions[0];
+                const reportMonth = document.getElementById('reportMonthSelector')?.value || '2025-11';
+                const [year, month] = reportMonth.split('-');
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const monthName = monthNames[parseInt(month) - 1];
+                
+                const reportContent = `
+CASH MANAGER INVESTOR REPORT
+==============================
+Transaction: ${transaction.name}
+Originator: ${transaction.originator}
+Report Date: ${new Date().toLocaleDateString('en-KE')}
+Payment Date: 01-Dec-2025
+
+TRANSACTION OVERVIEW
+--------------------
+Original Pool Size: KES 250.0M
+Current Pool Balance: KES 234.5M
+Number of Loans: 4,850
+Transaction Structure: ${transaction.structure}
+KI Score Grade: ${transaction.grade}
+
+CASH FLOW SUMMARY (THIS MONTH)
+-------------------------------
+Opening Balance: KES 234.5M
+
+Inflows:
+- Principal Collections: KES 18.0M
+- Interest Collections: KES 3.2M
+- Fees & Other Income: KES 0.8M
+Total Inflows: KES 22.0M
+
+Outflows:
+- Senior Expenses (Servicing): KES 1.2M
+- Interest Payment to Investors: KES 8.0M
+- Principal Payment to Investors: KES 10.3M
+- Reserve Account Top-up: KES 1.2M
+Total Outflows: KES 20.7M
+
+Closing Balance: KES 235.8M
+
+PAYMENT WATERFALL
+-----------------
+1. Senior Fees & Expenses: KES 1.2M ✓ Paid
+2. Interest on Senior Tranche: KES 6.2M ✓ Paid
+3. Principal on Senior Tranche: KES 8.8M ✓ Paid
+4. Interest on Mezzanine Tranche: KES 1.8M ✓ Paid
+5. Principal on Mezzanine Tranche: KES 1.5M ✓ Paid
+6. Reserve Account (if below target): KES 1.2M ✓ Funded
+7. Residual to Originator: KES 1.3M ✓ Paid
+
+RESERVE ACCOUNTS
+----------------
+Cash Reserve Account:
+- Required Balance: KES 5.0M
+- Current Balance: KES 5.0M
+- Status: ✓ Fully Funded
+
+Credit Enhancement:
+- Initial: 15.0%
+- Current: 15.5%
+- Status: ✓ Above Minimum
+
+INVESTOR ALLOCATIONS
+--------------------
+Senior Tranche (Class A):
+- Original Balance: KES 187.5M
+- Current Balance: KES 176.2M
+- Interest Rate: 9.5% p.a.
+- This Month Interest: KES 6.2M
+- This Month Principal: KES 8.8M
+
+Mezzanine Tranche (Class B):
+- Original Balance: KES 25.0M
+- Current Balance: KES 23.5M
+- Interest Rate: 11.5% p.a.
+- This Month Interest: KES 1.8M
+- This Month Principal: KES 1.5M
+
+PORTFOLIO PERFORMANCE
+---------------------
+Weighted Average Coupon: 18.5%
+Gross NPA: 3.2%
+Collection Efficiency: 98.8%
+Prepayment Rate (CPR): 8.5% annualized
+
+UPCOMING OBLIGATIONS
+--------------------
+Next Payment Date: 01-Jan-2026
+Expected Collections: KES 20.5M
+Expected Interest Payment: KES 7.8M
+Expected Principal Payment: KES 10.0M
+
+COMPLIANCE & COVENANTS
+----------------------
+✓ All financial covenants met
+✓ All documentation current
+✓ Reserve accounts fully funded
+✓ No events of default
+
+NOTES
+-----
+- All payments made on scheduled payment date
+- No delays or deferrals
+- Portfolio performing within expected parameters
+- Credit enhancement levels maintained
+
+---
+Report Prepared by: KI Platform - Cash Management Services
+Next Report Date: 01-Jan-2026
+Contact: cashmanagement@kaleidofin.com
+`;
+
+                return { content: reportContent, transaction, reportMonth, monthName, year };
+            }
+
+            function downloadCashManagerReportPDF(txId) {
+                const {jsPDF} = window.jspdf;
+                const reportData = generateCashManagerReport(txId);
+                const doc = new jsPDF();
+                
+                doc.setFontSize(16);
+                doc.setFont(undefined, 'bold');
+                doc.text('CASH MANAGER INVESTOR REPORT', 105, 20, {align: 'center'});
+                
+                doc.setFontSize(9);
+                doc.setFont(undefined, 'normal');
+                const lines = doc.splitTextToSize(reportData.content, 180);
+                let y = 35;
+                
+                lines.forEach(line => {
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    doc.text(line, 15, y);
+                    y += 5;
+                });
+                
+                doc.save(`CashManager_Report_${reportData.transaction.name}_${reportData.monthName}_${reportData.year}.pdf`);
+            }
+
+            function previewCashReport(txId) {
+                const reportData = generateCashManagerReport(txId);
+                document.getElementById('previewModalTitle').textContent = 'Cash Manager Investor Report Preview';
+                document.getElementById('reportPreviewContent').innerHTML = `<pre class="whitespace-pre-wrap">${reportData.content}</pre>`;
+                document.getElementById('reportPreviewModal').classList.remove('hidden');
+                document.getElementById('downloadFromPreview').onclick = () => downloadCashManagerReportPDF(txId);
+            }
+
+            // Event listeners for reports
+            document.getElementById('downloadPMAReport')?.addEventListener('click', () => {
+                const txId = document.getElementById('reportsTransactionSelector')?.value || state.transactions.filter(t => t.covenantsSet)[0]?.id;
+                if (txId) downloadPMAReportPDF(txId);
+            });
+
+            document.getElementById('previewPMAReport')?.addEventListener('click', () => {
+                const txId = document.getElementById('reportsTransactionSelector')?.value || state.transactions.filter(t => t.covenantsSet)[0]?.id;
+                if (txId) previewPMAReport(txId);
+            });
+
+            document.getElementById('downloadCashReport')?.addEventListener('click', () => {
+                const txId = document.getElementById('reportsTransactionSelector')?.value || state.transactions.filter(t => t.covenantsSet)[0]?.id;
+                if (txId) downloadCashManagerReportPDF(txId);
+            });
+
+            document.getElementById('previewCashReport')?.addEventListener('click', () => {
+                const txId = document.getElementById('reportsTransactionSelector')?.value || state.transactions.filter(t => t.covenantsSet)[0]?.id;
+                if (txId) previewCashReport(txId);
+            });
+
+            document.getElementById('reportsTransactionSelector')?.addEventListener('change', (e) => {
+                renderReportsPage(e.target.value);
+            });
+
+            document.getElementById('reportMonthSelector')?.addEventListener('change', (e) => {
+                const [year, month] = e.target.value.split('-');
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const monthName = monthNames[parseInt(month) - 1];
+                document.getElementById('reportPeriodDisplay').textContent = `${monthName} ${year}`;
+                const startDate = `01-${monthName.substring(0,3)}-${year}`;
+                const endDate = new Date(year, month, 0).getDate() + `-${monthName.substring(0,3)}-${year}`;
+                document.getElementById('collectionPeriodDisplay').textContent = `${startDate} to ${endDate}`;
+                const nextMonth = parseInt(month) === 12 ? 1 : parseInt(month) + 1;
+                const nextYear = parseInt(month) === 12 ? parseInt(year) + 1 : year;
+                document.getElementById('paymentDateDisplay').textContent = `01-${monthNames[nextMonth - 1].substring(0,3)}-${nextYear}`;
+            });
 
             transactionSelector.addEventListener('change', (e) => {
                 renderCovenantMonitoringPage(e.target.value);
