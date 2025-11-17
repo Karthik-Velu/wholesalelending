@@ -2606,24 +2606,24 @@
                     }
                 });
 
-                // Credit Enhancement Triggers Chart
+                // Credit Enhancement Structure Chart
                 // Overcollateralization: 20% of Pool (KES 95.17M)
                 // Junior Liquidity Facility: 12% of Pool (KES 57.10M) = Total CE 32%
+                // Note: No specific trigger levels defined in term sheet - structural protection
                 createOrUpdateChart('reportCETriggerChart', {
                     type: 'bar',
                     data: {
-                        labels: ['Current CE\n(OC + JLF)', 'Overcollat.\nOnly', 'Liquidity\nFacility', 'Minimum\nRequired', 'Early\nAmort Trigger'],
+                        labels: ['Total CE\n(OC + JLF)\n32%', 'Overcollat.\n20%', 'Junior Liquidity\nFacility\n12%', 'Assumed Min\nRequired\n15%'],
                         datasets: [{
                             label: 'Credit Enhancement %',
-                            data: [32.0, 20.0, 12.0, 15.0, 10.0],
+                            data: [32.0, 20.0, 12.0, 15.0],
                             backgroundColor: [
                                 'rgba(20, 184, 166, 0.8)',
                                 'rgba(34, 197, 94, 0.7)',
                                 'rgba(59, 130, 246, 0.7)',
-                                'rgba(239, 68, 68, 0.6)',
-                                'rgba(251, 191, 36, 0.6)'
+                                'rgba(239, 68, 68, 0.6)'
                             ],
-                            borderColor: ['#14b8a6', '#22c55e', '#3b82f6', '#ef4444', '#fbbf24'],
+                            borderColor: ['#14b8a6', '#22c55e', '#3b82f6', '#ef4444'],
                             borderWidth: 2
                         }]
                     },
@@ -2632,7 +2632,11 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { display: false },
-                            title: { display: true, text: 'Total CE: 32% (20% OC + 12% JLF) ✓ +17% above minimum' }
+                            title: { 
+                                display: true, 
+                                text: 'Structural CE: 32% | No covenant triggers in term sheet',
+                                font: { size: 11 }
+                            }
                         },
                         scales: {
                             y: {
@@ -2852,16 +2856,22 @@ We, Kaleidofin Private Limited, in our capacity as the Portfolio Monitoring Agen
 ------------------------------------------------
 We confirm that, in our reasonable opinion based on the information provided, there are no breaches of the Tested Eligibility Criteria with respect to the Receivables in the portfolio as of the Month-End Reporting Cut-Off Date.
 
+NEW LOANS ADDED THIS MONTH:
+   • Number of New Loans: 485 loans
+   • Total Value of New Loans: KES 18.5M
+   • Percentage of Pool: 3.9%
+   • All new loans tested and compliant with eligibility criteria
+
 Specific Eligibility Criteria Tested:
    ✓ Minimum Loan Amount: All receivables ≥ KES 12,500
    ✓ Maximum Loan Amount: All receivables ≤ KES 1,250,000
    ✓ Minimum Remaining Tenor: All receivables have ≥ 6 months remaining
    ✓ Maximum DPD at Origination: All receivables had 0 DPD when originated
-   ✓ Loan Purpose: All receivables fall within approved categories
+   ✓ Loan Purpose: All receivables fall within approved categories (Agricultural inputs)
    ✓ Documentation: All receivables have complete documentation
-   ✓ Borrower Eligibility: All borrowers meet approved criteria
+   ✓ Borrower Eligibility: All borrowers meet approved criteria (ki score thresholds met)
 
-Status: ✓ NO BREACHES IDENTIFIED - ALL CRITERIA SATISFIED
+Status: ✓ NO BREACHES IDENTIFIED - ALL CRITERIA SATISFIED (incl. 485 new loans)
 
 2. CONSISTENCY AND CALCULATIONS
 --------------------------------
@@ -3007,6 +3017,27 @@ Next Report Due: 2 Business Days after next Month-End Servicer Report
                         <!-- 1. Tested Eligibility Criteria -->
                         <div class="bg-white p-4 rounded-lg border">
                             <h4 class="font-semibold text-gray-800 mb-3">1. Tested Eligibility Criteria Status</h4>
+                            
+                            <!-- New Loans Added This Month -->
+                            <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                                <p class="text-sm font-semibold text-blue-900 mb-2">New Loans Added This Month:</p>
+                                <div class="grid grid-cols-3 gap-2 text-xs">
+                                    <div class="text-center">
+                                        <p class="text-gray-600">Number of Loans</p>
+                                        <p class="text-lg font-bold text-blue-700">485</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-gray-600">Total Value</p>
+                                        <p class="text-lg font-bold text-blue-700">KES 18.5M</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-gray-600">% of Pool</p>
+                                        <p class="text-lg font-bold text-blue-700">3.9%</p>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-green-700 font-semibold mt-2">✓ All new loans tested and compliant with eligibility criteria</p>
+                            </div>
+
                             <div class="grid grid-cols-2 gap-3 text-sm">
                                 <div class="flex justify-between p-2 bg-green-50 rounded">
                                     <span class="font-medium">Minimum Loan Amount (KES 12,500)</span>
@@ -3025,11 +3056,11 @@ Next Report Due: 2 Business Days after next Month-End Servicer Report
                                     <span class="text-green-700 font-bold">✓ PASS</span>
                                 </div>
                                 <div class="flex justify-between p-2 bg-green-50 rounded">
-                                    <span class="font-medium">Loan Purpose (Approved Categories)</span>
+                                    <span class="font-medium">Loan Purpose (Agricultural Inputs)</span>
                                     <span class="text-green-700 font-bold">✓ PASS</span>
                                 </div>
                                 <div class="flex justify-between p-2 bg-green-50 rounded">
-                                    <span class="font-medium">Documentation Complete</span>
+                                    <span class="font-medium">Documentation & ki score threshold</span>
                                     <span class="text-green-700 font-bold">✓ PASS</span>
                                 </div>
                             </div>
@@ -3323,11 +3354,22 @@ Credit Enhancement Tracking:
 - Buffer Above Minimum: 17.0%
 - Status: ✓ WELL ABOVE MINIMUM
 
-Credit Enhancement Triggers Status:
-- Early Amortization Trigger (10%): ✓ NOT BREACHED (+22.0% buffer)
-- Servicer Performance Guarantee: ✓ IN PLACE
+Credit Enhancement Status & Protection Mechanisms:
+- Current Total CE: 32.0%
+- Early Amortization Trigger (Typical 10% CE): ✓ NOT BREACHED (+22.0% buffer)
+- Status: ✓ WELL PROTECTED
+
+Servicer Performance Guarantee: ✓ IN PLACE
    Guarantor: Apollo Agriculture, Inc. (Parent Company)
-   Coverage: Full performance guarantee for servicing obligations
+   Coverage: Irrevocable and unconditional performance guarantee
+   Scope: (i) Infuse resources to ensure proper servicing
+          (ii) Step in and assume servicing obligations if needed
+          (iii) Liable for losses arising from servicer failure
+          (iv) Ensure continuity including appointing replacement servicer
+   Duration: Until legal final maturity or full discharge of obligations
+
+Note: The term sheet does not define specific CE trigger levels (e.g., "Trigger 1, 2, 3").
+      Protection is structural via 20% OC + 12% JLF, not covenant-based triggers.
 
 Month-on-Month Credit Enhancement Trend:
 - 3 Months Ago: 32.0%
@@ -3579,21 +3621,26 @@ Contact: cashmanagement@kaleidofin.com
                             </div>
 
                             <div class="mb-4">
-                                <p class="text-xs font-semibold text-gray-700 mb-2">Credit Enhancement Triggers:</p>
+                                <p class="text-xs font-semibold text-gray-700 mb-2">Credit Enhancement Status:</p>
                                 <div class="space-y-2 text-sm">
                                     <div class="flex justify-between p-2 bg-green-50 rounded">
-                                        <span>Trigger Level 1 (10%)</span>
-                                        <span class="font-bold text-green-700">✓ NOT BREACHED (5.5% buffer)</span>
+                                        <span>Overcollateralization (20%)</span>
+                                        <span class="font-bold text-green-700">KES 95.17M ✓ IN PLACE</span>
                                     </div>
                                     <div class="flex justify-between p-2 bg-green-50 rounded">
-                                        <span>Trigger Level 2 (8%)</span>
-                                        <span class="font-bold text-green-700">✓ NOT BREACHED (7.5% buffer)</span>
+                                        <span>Junior Liquidity Facility (12%)</span>
+                                        <span class="font-bold text-green-700">KES 57.10M ✓ FUNDED</span>
                                     </div>
                                     <div class="flex justify-between p-2 bg-green-50 rounded">
-                                        <span>Trigger Level 3 (5%)</span>
-                                        <span class="font-bold text-green-700">✓ NOT BREACHED (10.5% buffer)</span>
+                                        <span>Total CE (32%)</span>
+                                        <span class="font-bold text-green-700">✓ STRUCTURAL PROTECTION</span>
+                                    </div>
+                                    <div class="flex justify-between p-2 bg-blue-50 rounded border border-blue-200">
+                                        <span>Servicer Performance Guarantee</span>
+                                        <span class="font-bold text-blue-700">✓ Apollo Inc (Parent)</span>
                                     </div>
                                 </div>
+                                <p class="text-xs text-gray-600 mt-2 italic">Note: Term sheet does not define specific trigger levels. Protection is structural.</p>
                             </div>
 
                             <div>
