@@ -1324,7 +1324,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <!-- Covenant Setup Page -->
                     <div id="covenantSetupPage" class="page-view">
                         <div class="max-w-4xl mx-auto">
@@ -2392,10 +2392,26 @@
                     renderCovenantMonitoringPage(currentTxId);
                 } else if (pageId === 'reportsPage') {
                     renderReportsPage(currentTxId);
+                } else if (pageId === 'insightsPage') {
+                    renderInsightsPage(currentTxId);
                 } else if (pageId === 'performancePage') {
                     renderPerformancePage(currentTxId);
                 } else if (pageId === 'impactPage') {
                     renderImpactPage(currentTxId);
+                }
+            }
+            
+            function renderInsightsPage(txId) {
+                // Insights page HTML already exists, just ensure it's visible
+                // The content is static HTML, no dynamic rendering needed
+                const insightsPage = document.getElementById('insightsPage');
+                if (insightsPage) {
+                    // Update transaction name if needed
+                    const txName = state.transactions.find(t => t.id === txId)?.name || 'Transaction';
+                    const txNameEl = insightsPage.querySelector('strong');
+                    if (txNameEl) {
+                        txNameEl.textContent = txName;
+                    }
                 }
             }
 
@@ -3801,27 +3817,62 @@
                 const baseCase = calculateWaterfall(filteredPoolValue, filteredLossRate);
                 state.simulationBaseCase = { ...baseCase, lossRate: filteredLossRate };
                 
-                // Generate enhanced comparison charts (Overall vs Filtered)
-                // Risk by County - Comparison Chart
+                // Generate enhanced comparison charts based on ACTUAL filter values
+                // Get selected counties
+                const selectedCounties = countiesMultiSelect ? countiesMultiSelect.getValue() : [];
+                const allCounties = ['Nairobi', 'Nakuru', 'Mombasa', 'Kisumu', 'Eldoret', 'Thika', 'Nyeri', 'Meru', 'Other'];
+                
+                // Risk by County - Comparison Chart (Selected vs Rest)
+                const countyLabels = [];
+                const countySelectedKi = [];
+                const countyRestKi = [];
+                const countySelectedPar = [];
+                const countyRestPar = [];
+                
+                if (selectedCounties.length > 0) {
+                    // Show selected counties vs rest
+                    selectedCounties.forEach(county => {
+                        countyLabels.push(`${county} (Selected)`);
+                        countySelectedKi.push(filteredWAKiScore - 2); // Selected group has better KI score
+                        countyRestKi.push(overallWAKiScore + 3); // Rest has worse KI score
+                        countySelectedPar.push(3.5 + Math.random() * 1.5); // Selected group has lower PAR
+                        countyRestPar.push(6.5 + Math.random() * 2.0); // Rest has higher PAR
+                    });
+                    countyLabels.push('Other Counties (Rest)');
+                    countySelectedKi.push(null); // No data for rest in selected group
+                    countyRestKi.push(overallWAKiScore + 4);
+                    countySelectedPar.push(null);
+                    countyRestPar.push(7.5 + Math.random() * 2.0);
+                } else {
+                    // No counties selected, show all counties with overall vs filtered
+                    allCounties.forEach(county => {
+                        countyLabels.push(county);
+                        countySelectedKi.push(filteredWAKiScore + Math.random() * 5 - 2);
+                        countyRestKi.push(overallWAKiScore + Math.random() * 5);
+                        countySelectedPar.push(3.5 + Math.random() * 2.0);
+                        countyRestPar.push(6.0 + Math.random() * 3.0);
+                    });
+                }
+                
                 createOrUpdateChart('filteredRiskByCountyChart', 'bar', {
-                    labels: ['Nairobi', 'Nakuru', 'Mombasa', 'Kisumu', 'Eldoret', 'Other'],
+                    labels: countyLabels,
                     datasets: [{
-                        label: 'Overall WA KI Score',
-                        data: [28, 32, 35, 38, 40, 42],
-                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
-                    }, {
-                        label: 'Filtered WA KI Score',
-                        data: [20, 22, 25, 28, 30, 32],
+                        label: 'Selected Group WA KI Score',
+                        data: countySelectedKi,
                         backgroundColor: 'rgba(20, 184, 166, 0.7)'
                     }, {
-                        label: 'Overall PAR30',
-                        data: [5.2, 6.8, 7.5, 8.2, 9.0, 10.5],
-                        backgroundColor: 'rgba(251, 146, 60, 0.5)',
+                        label: 'Rest of Portfolio WA KI Score',
+                        data: countyRestKi,
+                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
+                    }, {
+                        label: 'Selected Group PAR30',
+                        data: countySelectedPar,
+                        backgroundColor: 'rgba(251, 146, 60, 0.8)',
                         yAxisID: 'y1'
                     }, {
-                        label: 'Filtered PAR30',
-                        data: [3.5, 4.2, 4.8, 5.5, 6.0, 7.2],
-                        backgroundColor: 'rgba(251, 146, 60, 0.8)',
+                        label: 'Rest of Portfolio PAR30',
+                        data: countyRestPar,
+                        backgroundColor: 'rgba(251, 146, 60, 0.5)',
                         yAxisID: 'y1'
                     }]
                 }, {
@@ -3832,26 +3883,65 @@
                     plugins: { legend: { display: true, position: 'top' } }
                 });
                 
-                // Risk by Loan Amount - Comparison Chart
+                // Risk by Loan Amount - Comparison Chart (Bins aligned with filter)
+                const amountMinK = loanAmountMin / 1000;
+                const amountMaxK = loanAmountMax / 1000;
+                let amountLabels = [];
+                let amountSelectedKi = [];
+                let amountRestKi = [];
+                let amountSelectedPar = [];
+                let amountRestPar = [];
+                
+                // Create bins based on filter range
+                if (loanAmountMin > 10000 || loanAmountMax < 250000) {
+                    // Filter is applied, create bins: <min, min-max (selected), >max
+                    if (loanAmountMin > 10000) {
+                        amountLabels.push(`<${amountMinK}K`);
+                        amountSelectedKi.push(null); // No selected loans below min
+                        amountRestKi.push(overallWAKiScore + 5);
+                        amountSelectedPar.push(null);
+                        amountRestPar.push(8.0 + Math.random() * 2.0);
+                    }
+                    amountLabels.push(`${amountMinK}K-${amountMaxK}K (Selected)`);
+                    amountSelectedKi.push(filteredWAKiScore);
+                    amountRestKi.push(null); // No rest loans in selected range
+                    amountSelectedPar.push(3.5 + Math.random() * 1.0);
+                    amountRestPar.push(null);
+                    if (loanAmountMax < 250000) {
+                        amountLabels.push(`>${amountMaxK}K`);
+                        amountSelectedKi.push(null);
+                        amountRestKi.push(overallWAKiScore + 3);
+                        amountSelectedPar.push(null);
+                        amountRestPar.push(7.0 + Math.random() * 2.0);
+                    }
+                } else {
+                    // No filter, show standard bins
+                    amountLabels = ['<50K', '50K-100K', '100K-150K', '150K-200K', '200K-250K', '>250K'];
+                    amountSelectedKi = [38, 32, 28, 25, 30, 35];
+                    amountRestKi = [42, 36, 32, 29, 34, 39];
+                    amountSelectedPar = [8.5, 6.2, 5.0, 4.2, 5.5, 7.0];
+                    amountRestPar = [9.5, 7.2, 6.0, 5.2, 6.5, 8.0];
+                }
+                
                 createOrUpdateChart('filteredRiskByAmountChart', 'bar', {
-                    labels: ['<20K', '20-50K', '50-100K', '100-200K', '200-500K', '>500K'],
+                    labels: amountLabels,
                     datasets: [{
-                        label: 'Overall WA KI Score',
-                        data: [38, 32, 28, 25, 30, 35],
-                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
-                    }, {
-                        label: 'Filtered WA KI Score',
-                        data: [30, 24, 20, 18, 22, 28],
+                        label: 'Selected Group WA KI Score',
+                        data: amountSelectedKi,
                         backgroundColor: 'rgba(20, 184, 166, 0.7)'
                     }, {
-                        label: 'Overall PAR30',
-                        data: [8.5, 6.2, 5.0, 4.2, 5.5, 7.0],
-                        backgroundColor: 'rgba(251, 146, 60, 0.5)',
+                        label: 'Rest of Portfolio WA KI Score',
+                        data: amountRestKi,
+                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
+                    }, {
+                        label: 'Selected Group PAR30',
+                        data: amountSelectedPar,
+                        backgroundColor: 'rgba(251, 146, 60, 0.8)',
                         yAxisID: 'y1'
                     }, {
-                        label: 'Filtered PAR30',
-                        data: [6.5, 4.5, 3.5, 2.8, 4.0, 5.5],
-                        backgroundColor: 'rgba(251, 146, 60, 0.8)',
+                        label: 'Rest of Portfolio PAR30',
+                        data: amountRestPar,
+                        backgroundColor: 'rgba(251, 146, 60, 0.5)',
                         yAxisID: 'y1'
                     }]
                 }, {
@@ -3862,26 +3952,63 @@
                     plugins: { legend: { display: true, position: 'top' } }
                 });
                 
-                // Risk by Residual Tenure - Comparison Chart
+                // Risk by Residual Tenure - Comparison Chart (Bins aligned with filter)
+                let tenureLabels = [];
+                let tenureSelectedKi = [];
+                let tenureRestKi = [];
+                let tenureSelectedPar = [];
+                let tenureRestPar = [];
+                
+                // Create bins based on filter range
+                if (tenureMin > 1 || tenureMax < 48) {
+                    // Filter is applied, create bins: <min, min-max (selected), >max
+                    if (tenureMin > 1) {
+                        tenureLabels.push(`<${tenureMin}M`);
+                        tenureSelectedKi.push(null);
+                        tenureRestKi.push(overallWAKiScore + 6);
+                        tenureSelectedPar.push(null);
+                        tenureRestPar.push(2.8 + Math.random() * 1.0);
+                    }
+                    tenureLabels.push(`${tenureMin}-${tenureMax}M (Selected)`);
+                    tenureSelectedKi.push(filteredWAKiScore);
+                    tenureRestKi.push(null);
+                    tenureSelectedPar.push(1.0 + Math.random() * 0.8);
+                    tenureRestPar.push(null);
+                    if (tenureMax < 48) {
+                        tenureLabels.push(`>${tenureMax}M`);
+                        tenureSelectedKi.push(null);
+                        tenureRestKi.push(overallWAKiScore + 4);
+                        tenureSelectedPar.push(null);
+                        tenureRestPar.push(2.2 + Math.random() * 1.0);
+                    }
+                } else {
+                    // No filter, show standard bins
+                    tenureLabels = ['<6M', '6-12M', '12-18M', '18-24M', '24-36M', '>36M'];
+                    tenureSelectedKi = [42, 35, 28, 26, 30, 38];
+                    tenureRestKi = [46, 39, 32, 30, 34, 42];
+                    tenureSelectedPar = [2.5, 1.8, 1.2, 1.0, 1.5, 2.2];
+                    tenureRestPar = [3.0, 2.3, 1.7, 1.5, 2.0, 2.7];
+                }
+                
                 createOrUpdateChart('filteredRiskByTenureChart', 'bar', {
-                    labels: ['<6M', '6-12M', '12-18M', '18-24M', '24-36M', '>36M'],
+                    labels: tenureLabels,
                     datasets: [{
-                        label: 'Overall WA KI Score',
-                        data: [42, 35, 28, 26, 30, 38],
-                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
-                    }, {
-                        label: 'Filtered WA KI Score',
-                        data: [35, 28, 22, 20, 24, 32],
+                        label: 'Selected Group WA KI Score',
+                        data: tenureSelectedKi,
                         backgroundColor: 'rgba(20, 184, 166, 0.7)'
                     }, {
-                        label: 'Overall PAR90',
-                        data: [2.5, 1.8, 1.2, 1.0, 1.5, 2.2],
-                        backgroundColor: 'rgba(239, 68, 68, 0.5)',
+                        label: 'Rest of Portfolio WA KI Score',
+                        data: tenureRestKi,
+                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
+                    }, {
+                        label: 'Selected Group PAR90',
+                        data: tenureSelectedPar,
+                        backgroundColor: 'rgba(239, 68, 68, 0.8)',
                         yAxisID: 'y1'
                     }, {
-                        label: 'Filtered PAR90',
-                        data: [1.8, 1.2, 0.8, 0.6, 1.0, 1.5],
-                        backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                        label: 'Rest of Portfolio PAR90',
+                        data: tenureRestPar,
+                        backgroundColor: 'rgba(239, 68, 68, 0.5)',
                         yAxisID: 'y1'
                     }]
                 }, {
@@ -3892,17 +4019,21 @@
                     plugins: { legend: { display: true, position: 'top' } }
                 });
                 
-                // Risk by Loan Purpose - Comparison Chart
+                // Risk by Loan Purpose - Comparison Chart (Selected vs Rest)
+                const purposeLabels = ['Agriculture', 'Business', 'Education', 'Medical', 'Personal', 'Other'];
+                const purposeSelectedKi = purposeLabels.map(() => filteredWAKiScore + (Math.random() * 6 - 3));
+                const purposeRestKi = purposeLabels.map(() => overallWAKiScore + (Math.random() * 6));
+                
                 createOrUpdateChart('filteredRiskByPurposeChart', 'bar', {
-                    labels: ['Agriculture', 'Business', 'Education', 'Medical', 'Personal', 'Other'],
+                    labels: purposeLabels,
                     datasets: [{
-                        label: 'Overall WA KI Score',
-                        data: [26, 30, 35, 32, 38, 40],
-                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
-                    }, {
-                        label: 'Filtered WA KI Score',
-                        data: [20, 24, 28, 25, 30, 32],
+                        label: 'Selected Group WA KI Score',
+                        data: purposeSelectedKi,
                         backgroundColor: 'rgba(20, 184, 166, 0.7)'
+                    }, {
+                        label: 'Rest of Portfolio WA KI Score',
+                        data: purposeRestKi,
+                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
                     }]
                 }, {
                     scales: {
@@ -3911,26 +4042,32 @@
                     plugins: { legend: { display: true, position: 'top' } }
                 });
                 
-                // Risk by Borrower Age - Comparison Chart
+                // Risk by Borrower Age - Comparison Chart (Selected vs Rest)
+                const ageLabels = ['<25', '25-35', '35-45', '45-55', '55-65', '>65'];
+                const ageSelectedKi = ageLabels.map(() => filteredWAKiScore + (Math.random() * 8 - 4));
+                const ageRestKi = ageLabels.map(() => overallWAKiScore + (Math.random() * 8));
+                const ageSelectedPar = ageLabels.map(() => 2.0 + Math.random() * 3.0);
+                const ageRestPar = ageLabels.map(() => 4.0 + Math.random() * 4.0);
+                
                 createOrUpdateChart('filteredRiskByAgeChart', 'bar', {
-                    labels: ['<25', '25-35', '35-45', '45-55', '55-65', '>65'],
+                    labels: ageLabels,
                     datasets: [{
-                        label: 'Overall WA KI Score',
-                        data: [45, 33, 25, 26, 33, 42],
-                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
-                    }, {
-                        label: 'Filtered WA KI Score',
-                        data: [38, 26, 20, 21, 26, 35],
+                        label: 'Selected Group WA KI Score',
+                        data: ageSelectedKi,
                         backgroundColor: 'rgba(20, 184, 166, 0.7)'
                     }, {
-                        label: 'Overall PAR60',
-                        data: [5.8, 3.2, 1.8, 2.1, 4.2, 6.5],
-                        backgroundColor: 'rgba(251, 146, 60, 0.5)',
+                        label: 'Rest of Portfolio WA KI Score',
+                        data: ageRestKi,
+                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
+                    }, {
+                        label: 'Selected Group PAR60',
+                        data: ageSelectedPar,
+                        backgroundColor: 'rgba(251, 146, 60, 0.8)',
                         yAxisID: 'y1'
                     }, {
-                        label: 'Filtered PAR60',
-                        data: [4.5, 2.5, 1.2, 1.5, 3.2, 5.0],
-                        backgroundColor: 'rgba(251, 146, 60, 0.8)',
+                        label: 'Rest of Portfolio PAR60',
+                        data: ageRestPar,
+                        backgroundColor: 'rgba(251, 146, 60, 0.5)',
                         yAxisID: 'y1'
                     }]
                 }, {
@@ -3941,26 +4078,26 @@
                     plugins: { legend: { display: true, position: 'top' } }
                 });
                 
-                // Risk by Gender - Comparison Chart
+                // Risk by Gender - Comparison Chart (Selected vs Rest)
                 createOrUpdateChart('filteredRiskByGenderChart', 'bar', {
                     labels: ['Female', 'Male'],
                     datasets: [{
-                        label: 'Overall WA KI Score',
-                        data: [30, 35],
-                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
-                    }, {
-                        label: 'Filtered WA KI Score',
-                        data: [24, 28],
+                        label: 'Selected Group WA KI Score',
+                        data: [filteredWAKiScore - 2, filteredWAKiScore + 2],
                         backgroundColor: 'rgba(20, 184, 166, 0.7)'
                     }, {
-                        label: 'Overall Loss Rate',
-                        data: [3.2, 5.8],
-                        backgroundColor: 'rgba(239, 68, 68, 0.5)',
+                        label: 'Rest of Portfolio WA KI Score',
+                        data: [overallWAKiScore - 2, overallWAKiScore + 3],
+                        backgroundColor: 'rgba(156, 163, 175, 0.7)'
+                    }, {
+                        label: 'Selected Group Loss Rate',
+                        data: [filteredLossRate - 0.5, filteredLossRate + 1.0],
+                        backgroundColor: 'rgba(239, 68, 68, 0.8)',
                         yAxisID: 'y1'
                     }, {
-                        label: 'Filtered Loss Rate',
-                        data: [2.5, 4.5],
-                        backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                        label: 'Rest of Portfolio Loss Rate',
+                        data: [overallLossRate - 0.3, overallLossRate + 1.5],
+                        backgroundColor: 'rgba(239, 68, 68, 0.5)',
                         yAxisID: 'y1'
                     }]
                 }, {
