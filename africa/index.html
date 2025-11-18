@@ -660,13 +660,13 @@
                                     </div>
                                     <!-- Enhanced Comparison Charts -->
                                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                                        <!-- Risk by County (Overall vs Filtered) -->
+                                        <!-- Risk by Interest Rate (Overall vs Filtered) -->
                                         <div class="bg-white p-4 rounded-lg shadow border">
                                             <h4 class="font-semibold text-gray-800 mb-2 flex items-center justify-between">
-                                                <span>Risk by County</span>
+                                                <span>Risk by Interest Rate</span>
                                                 <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">WA KI Score & PAR30</span>
                                             </h4>
-                                            <div class="h-64"><canvas id="filteredRiskByCountyChart"></canvas></div>
+                                            <div class="h-64"><canvas id="filteredRiskByInterestRateChart"></canvas></div>
                                         </div>
 
                                         <!-- Risk by Loan Amount (Overall vs Filtered) -->
@@ -705,13 +705,13 @@
                                             <div class="h-64"><canvas id="filteredRiskByAgeChart"></canvas></div>
                                         </div>
 
-                                        <!-- Risk by Gender (Overall vs Filtered) -->
+                                        <!-- Risk by DTI Ratio (Overall vs Filtered) -->
                                         <div class="bg-white p-4 rounded-lg shadow border">
                                             <h4 class="font-semibold text-gray-800 mb-2 flex items-center justify-between">
-                                                <span>Risk by Gender</span>
+                                                <span>Risk by DTI Ratio</span>
                                                 <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">WA KI Score & Loss Rate</span>
                                             </h4>
-                                            <div class="h-64"><canvas id="filteredRiskByGenderChart"></canvas></div>
+                                            <div class="h-64"><canvas id="filteredRiskByDTIChart"></canvas></div>
                                         </div>
                                     </div>
                                         
@@ -1324,7 +1324,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
                     <!-- Covenant Setup Page -->
                     <div id="covenantSetupPage" class="page-view">
                         <div class="max-w-4xl mx-auto">
@@ -2387,7 +2387,19 @@
             
             function updateDealTrackPage(pageId, txId = null) {
                 dealTrackPages.forEach(page => page.classList.toggle('active', page.id === pageId));
-                const currentTxId = txId || transactionSelector.value;
+                
+                // Get transaction ID based on which page we're on
+                let currentTxId = txId;
+                if (!currentTxId) {
+                    if (pageId === 'performancePage' && perfTransactionSelector) {
+                        currentTxId = perfTransactionSelector.value;
+                    } else if (pageId === 'impactPage' && impactTransactionSelector) {
+                        currentTxId = impactTransactionSelector.value;
+                    } else if (transactionSelector) {
+                        currentTxId = transactionSelector.value;
+                    }
+                }
+                
                 if (pageId === 'covenantMonitoringPage') {
                     renderCovenantMonitoringPage(currentTxId);
                 } else if (pageId === 'reportsPage') {
@@ -3818,60 +3830,66 @@
                 state.simulationBaseCase = { ...baseCase, lossRate: filteredLossRate };
                 
                 // Generate enhanced comparison charts based on ACTUAL filter values
-                // Get selected counties
-                const selectedCounties = countiesMultiSelect ? countiesMultiSelect.getValue() : [];
-                const allCounties = ['Nairobi', 'Nakuru', 'Mombasa', 'Kisumu', 'Eldoret', 'Thika', 'Nyeri', 'Meru', 'Other'];
+                // Get interest rate filter values
+                const interestMin = parseInt(interestRateMinSlider.value);
+                const interestMax = parseInt(interestRateMaxSlider.value);
                 
-                // Risk by County - Comparison Chart (Selected vs Rest)
-                const countyLabels = [];
-                const countySelectedKi = [];
-                const countyRestKi = [];
-                const countySelectedPar = [];
-                const countyRestPar = [];
+                // Risk by Interest Rate - Comparison Chart (Bins aligned with filter)
+                let interestLabels = [];
+                let interestSelectedKi = [];
+                let interestRestKi = [];
+                let interestSelectedPar = [];
+                let interestRestPar = [];
                 
-                if (selectedCounties.length > 0) {
-                    // Show selected counties vs rest
-                    selectedCounties.forEach(county => {
-                        countyLabels.push(`${county} (Selected)`);
-                        countySelectedKi.push(filteredWAKiScore - 2); // Selected group has better KI score
-                        countyRestKi.push(overallWAKiScore + 3); // Rest has worse KI score
-                        countySelectedPar.push(3.5 + Math.random() * 1.5); // Selected group has lower PAR
-                        countyRestPar.push(6.5 + Math.random() * 2.0); // Rest has higher PAR
-                    });
-                    countyLabels.push('Other Counties (Rest)');
-                    countySelectedKi.push(null); // No data for rest in selected group
-                    countyRestKi.push(overallWAKiScore + 4);
-                    countySelectedPar.push(null);
-                    countyRestPar.push(7.5 + Math.random() * 2.0);
+                // Create bins based on filter range
+                if (interestMin > 12 || interestMax < 36) {
+                    // Filter is applied, create bins: <min%, min%-max% (selected), >max%
+                    if (interestMin > 12) {
+                        interestLabels.push(`<${interestMin}%`);
+                        interestSelectedKi.push(null); // No selected loans below min
+                        interestRestKi.push(overallWAKiScore + 4);
+                        interestSelectedPar.push(null);
+                        interestRestPar.push(7.5 + Math.random() * 2.0);
+                    }
+                    interestLabels.push(`${interestMin}%-${interestMax}% (Selected)`);
+                    interestSelectedKi.push(filteredWAKiScore);
+                    interestRestKi.push(null); // No rest loans in selected range
+                    interestSelectedPar.push(3.5 + Math.random() * 1.0);
+                    interestRestPar.push(null);
+                    if (interestMax < 36) {
+                        interestLabels.push(`>${interestMax}%`);
+                        interestSelectedKi.push(null);
+                        interestRestKi.push(overallWAKiScore + 5);
+                        interestSelectedPar.push(null);
+                        interestRestPar.push(8.0 + Math.random() * 2.0);
+                    }
                 } else {
-                    // No counties selected, show all counties with overall vs filtered
-                    allCounties.forEach(county => {
-                        countyLabels.push(county);
-                        countySelectedKi.push(filteredWAKiScore + Math.random() * 5 - 2);
-                        countyRestKi.push(overallWAKiScore + Math.random() * 5);
-                        countySelectedPar.push(3.5 + Math.random() * 2.0);
-                        countyRestPar.push(6.0 + Math.random() * 3.0);
-                    });
+                    // No filter, show standard bins
+                    interestLabels = ['<15%', '15-20%', '20-25%', '25-30%', '30-35%', '>35%'];
+                    interestSelectedKi = [35, 28, 25, 30, 38, 42];
+                    interestRestKi = [38, 32, 29, 34, 42, 45];
+                    interestSelectedPar = [5.5, 4.2, 3.8, 4.5, 6.0, 7.5];
+                    interestRestPar = [6.5, 5.2, 4.8, 5.5, 7.0, 8.5];
                 }
                 
-                createOrUpdateChart('filteredRiskByCountyChart', 'bar', {
-                    labels: countyLabels,
+                createOrUpdateChart('filteredRiskByInterestRateChart', 'bar', {
+                    labels: interestLabels,
                     datasets: [{
                         label: 'Selected Group WA KI Score',
-                        data: countySelectedKi,
+                        data: interestSelectedKi,
                         backgroundColor: 'rgba(20, 184, 166, 0.7)'
                     }, {
                         label: 'Rest of Portfolio WA KI Score',
-                        data: countyRestKi,
+                        data: interestRestKi,
                         backgroundColor: 'rgba(156, 163, 175, 0.7)'
                     }, {
                         label: 'Selected Group PAR30',
-                        data: countySelectedPar,
+                        data: interestSelectedPar,
                         backgroundColor: 'rgba(251, 146, 60, 0.8)',
                         yAxisID: 'y1'
                     }, {
                         label: 'Rest of Portfolio PAR30',
-                        data: countyRestPar,
+                        data: interestRestPar,
                         backgroundColor: 'rgba(251, 146, 60, 0.5)',
                         yAxisID: 'y1'
                     }]
@@ -4078,25 +4096,49 @@
                     plugins: { legend: { display: true, position: 'top' } }
                 });
                 
-                // Risk by Gender - Comparison Chart (Selected vs Rest)
-                createOrUpdateChart('filteredRiskByGenderChart', 'bar', {
-                    labels: ['Female', 'Male'],
+                // Risk by DTI Ratio - Comparison Chart (Selected vs Rest)
+                const dtiLabels = ['<0.3', '0.3-0.5', '0.5-0.7', '0.7-0.9', '>0.9'];
+                const dtiSelectedKi = dtiLabels.map((_, idx) => {
+                    // Lower DTI = better KI score, higher DTI = worse KI score
+                    const baseScore = filteredWAKiScore;
+                    const offset = (idx - 1) * 3; // Center around 0.3-0.5 range
+                    return baseScore + offset;
+                });
+                const dtiRestKi = dtiLabels.map((_, idx) => {
+                    const baseScore = overallWAKiScore;
+                    const offset = (idx - 1) * 4;
+                    return baseScore + offset;
+                });
+                const dtiSelectedLoss = dtiLabels.map((_, idx) => {
+                    // Lower DTI = lower loss rate, higher DTI = higher loss rate
+                    const baseRate = filteredLossRate;
+                    const offset = (idx - 1) * 0.8;
+                    return Math.max(0, baseRate + offset);
+                });
+                const dtiRestLoss = dtiLabels.map((_, idx) => {
+                    const baseRate = overallLossRate;
+                    const offset = (idx - 1) * 1.2;
+                    return Math.max(0, baseRate + offset);
+                });
+                
+                createOrUpdateChart('filteredRiskByDTIChart', 'bar', {
+                    labels: dtiLabels,
                     datasets: [{
                         label: 'Selected Group WA KI Score',
-                        data: [filteredWAKiScore - 2, filteredWAKiScore + 2],
+                        data: dtiSelectedKi,
                         backgroundColor: 'rgba(20, 184, 166, 0.7)'
                     }, {
                         label: 'Rest of Portfolio WA KI Score',
-                        data: [overallWAKiScore - 2, overallWAKiScore + 3],
+                        data: dtiRestKi,
                         backgroundColor: 'rgba(156, 163, 175, 0.7)'
                     }, {
                         label: 'Selected Group Loss Rate',
-                        data: [filteredLossRate - 0.5, filteredLossRate + 1.0],
+                        data: dtiSelectedLoss,
                         backgroundColor: 'rgba(239, 68, 68, 0.8)',
                         yAxisID: 'y1'
                     }, {
                         label: 'Rest of Portfolio Loss Rate',
-                        data: [overallLossRate - 0.3, overallLossRate + 1.5],
+                        data: dtiRestLoss,
                         backgroundColor: 'rgba(239, 68, 68, 0.5)',
                         yAxisID: 'y1'
                     }]
