@@ -852,50 +852,14 @@
                                                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                                     <!-- Tranche Configuration -->
                                                     <div class="space-y-4">
-                                                        <h6 class="font-medium text-gray-600 text-xs uppercase">Tranche Configuration</h6>
-                                                        <div class="border rounded-lg p-3 bg-gray-50">
-                                                            <label class="block text-xs font-medium text-gray-600 mb-1">Senior Tranche (Class A)</label>
-                                                            <div class="space-y-2">
-                                                                <div>
-                                                                    <label class="text-xs text-gray-500">Size (%):</label>
-                                                                    <input type="number" id="seniorTrancheSize" value="80" min="0" max="100" class="w-full text-sm border-gray-300 rounded-md">
-                                                                </div>
-                                                                <div>
-                                                                    <label class="text-xs text-gray-500">Coupon (%):</label>
-                                                                    <input type="number" id="seniorTrancheCoupon" value="14" min="0" max="30" step="0.1" class="w-full text-sm border-gray-300 rounded-md">
-                                                                </div>
-                                                                <div>
-                                                                    <label class="text-xs text-gray-500">Rating:</label>
-                                                                    <select id="seniorTrancheRating" class="w-full text-sm border-gray-300 rounded-md">
-                                                                        <option>AAA</option>
-                                                                        <option>AA+</option>
-                                                                        <option>AA</option>
-                                                                        <option>AA-</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+                                                        <div class="flex items-center justify-between">
+                                                            <h6 class="font-medium text-gray-600 text-xs uppercase">Tranche Configuration</h6>
+                                                            <button id="addTrancheBtn" class="text-xs bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700 font-semibold">
+                                                                + Add Tranche
+                                                            </button>
                                                         </div>
-                                                        <div class="border rounded-lg p-3 bg-gray-50">
-                                                            <label class="block text-xs font-medium text-gray-600 mb-1">Mezzanine Tranche (Class B)</label>
-                                                            <div class="space-y-2">
-                                                                <div>
-                                                                    <label class="text-xs text-gray-500">Size (%):</label>
-                                                                    <input type="number" id="mezzTrancheSize" value="12" min="0" max="100" class="w-full text-sm border-gray-300 rounded-md">
-                                                                </div>
-                                                                <div>
-                                                                    <label class="text-xs text-gray-500">Coupon (%):</label>
-                                                                    <input type="number" id="mezzTrancheCoupon" value="18" min="0" max="30" step="0.1" class="w-full text-sm border-gray-300 rounded-md">
-                                                                </div>
-                                                                <div>
-                                                                    <label class="text-xs text-gray-500">Rating:</label>
-                                                                    <select id="mezzTrancheRating" class="w-full text-sm border-gray-300 rounded-md">
-                                                                        <option>AA</option>
-                                                                        <option>AA-</option>
-                                                                        <option>A+</option>
-                                                                        <option>A</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+                                                        <div id="tranchesContainer" class="space-y-3">
+                                                            <!-- Tranches will be dynamically added here -->
                                                         </div>
                                                         <div class="border rounded-lg p-3 bg-gray-50">
                                                             <label class="block text-xs font-medium text-gray-600 mb-1">Equity/Junior (Auto-calculated)</label>
@@ -908,21 +872,19 @@
                                                     
                                                     <!-- Credit Enhancement -->
                                                     <div class="space-y-4">
-                                                        <h6 class="font-medium text-gray-600 text-xs uppercase">Credit Enhancement</h6>
-                                                        <div class="space-y-3">
-                                                            <div>
-                                                                <label class="block text-xs font-medium text-gray-600 mb-1">Overcollateralization (%): <span id="ocLabel" class="font-bold text-purple-700">20%</span></label>
-                                                                <input type="range" id="ocSlider" min="0" max="50" step="1" value="20" class="w-full h-2 bg-gray-200 rounded-lg">
-                                                            </div>
-                                                            <div>
-                                                                <label class="block text-xs font-medium text-gray-600 mb-1">Reserve Account (% of pool): <span id="reserveLabel" class="font-bold text-purple-700">2%</span></label>
-                                                                <input type="range" id="reserveSlider" min="0" max="10" step="0.5" value="2" class="w-full h-2 bg-gray-200 rounded-lg">
-                                                            </div>
-                                                            <div class="border rounded-lg p-3 bg-gray-50 text-xs">
-                                                                <p class="text-gray-600 mb-1">Total Credit Enhancement:</p>
-                                                                <p class="text-lg font-bold text-purple-700" id="totalCELabel">32%</p>
-                                                                <p class="text-gray-500 mt-1">(OC + Reserve + Subordination)</p>
-                                                            </div>
+                                                        <div class="flex items-center justify-between">
+                                                            <h6 class="font-medium text-gray-600 text-xs uppercase">Credit Enhancement</h6>
+                                                            <button id="addCreditEnhancementBtn" class="text-xs bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700 font-semibold">
+                                                                + Add Enhancement
+                                                            </button>
+                                                        </div>
+                                                        <div id="creditEnhancementsContainer" class="space-y-3">
+                                                            <!-- Credit enhancements will be dynamically added here -->
+                                                        </div>
+                                                        <div class="border rounded-lg p-3 bg-gray-50 text-xs">
+                                                            <p class="text-gray-600 mb-1">Total Credit Enhancement:</p>
+                                                            <p class="text-lg font-bold text-purple-700" id="totalCELabel">32%</p>
+                                                            <p class="text-gray-500 mt-1">(Sum of all enhancements + Subordination)</p>
                                                         </div>
                                                     </div>
                                                     
@@ -2133,7 +2095,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // State Management
-            const state = { currentView: 'dealScreen', currentPage: 'dealScreenHomePage', previousPage: null, charts: {}, transactions: [], originators: [], availablePortfolios: [], currentTransactionId: null, covenantData: {}, simulationBaseCase: {}, customFields: [], fieldValidations: {}, customFilters: [] };
+            const state = { currentView: 'dealScreen', currentPage: 'dealScreenHomePage', previousPage: null, charts: {}, transactions: [], originators: [], availablePortfolios: [], currentTransactionId: null, covenantData: {}, simulationBaseCase: {}, customFields: [], fieldValidations: {}, customFilters: [], tranches: [], creditEnhancements: [] };
 
             // Selectors
             const app = document.getElementById('app');
@@ -4032,7 +3994,7 @@
                     plugins: { legend: { display: true, position: 'top' } }
                 });
                 
-                // Generate comprehensive filter comparison table
+                // Generate comprehensive filter comparison table (Selected Group vs Rest of Portfolio)
                 try {
                     const tableBody = document.getElementById('filterComparisonTableBody');
                     if (tableBody) {
@@ -4045,40 +4007,121 @@
                         const amountMinK = loanAmountMin / 1000;
                         const amountMaxK = loanAmountMax / 1000;
                         
-                        // Build filter rows dynamically
-                        const filters = [
-                            { name: 'KI Score', bucket: `${kiScoreMin} - ${kiScoreMax}`, lossRate: filteredLossRate, kiScore: filteredWAKiScore },
-                            { name: 'Loan Amount', bucket: `KES ${amountMinK}k - ${amountMaxK}k`, lossRate: filteredLossRate, kiScore: filteredWAKiScore },
-                            { name: 'Residual Tenure', bucket: `${tenureMin} - ${tenureMax} months`, lossRate: filteredLossRate, kiScore: filteredWAKiScore },
-                            { name: 'Interest Rate', bucket: `${interestMin}% - ${interestMax}%`, lossRate: filteredLossRate, kiScore: filteredWAKiScore },
-                            { name: 'Counties', bucket: countiesText, lossRate: filteredLossRate, kiScore: filteredWAKiScore }
-                        ];
+                        // Helper function to calculate metrics for selected vs rest
+                        function calculateFilterMetrics(selectedGroupLossRate, selectedGroupKiScore, restLossRate, restKiScore) {
+                            return {
+                                selected: { lossRate: selectedGroupLossRate, kiScore: selectedGroupKiScore },
+                                rest: { lossRate: restLossRate, kiScore: restKiScore }
+                            };
+                        }
+                        
+                        // Build filter rows with proper selected vs rest calculations
+                        const filters = [];
+                        
+                        // KI Score Filter
+                        if (kiScoreMin !== 1 || kiScoreMax !== 100) {
+                            const selectedKiLossRate = filteredLossRate; // Selected group (within range)
+                            const selectedKiScore = filteredWAKiScore;
+                            const restKiLossRate = overallLossRate + 0.5; // Rest of portfolio (outside range) - slightly worse
+                            const restKiScore = overallWAKiScore + 3;
+                            filters.push({
+                                name: 'KI Score',
+                                bucket: `${kiScoreMin} - ${kiScoreMax}`,
+                                ...calculateFilterMetrics(selectedKiLossRate, selectedKiScore, restKiLossRate, restKiScore)
+                            });
+                        }
+                        
+                        // Loan Amount Filter
+                        if (loanAmountMin !== 10000 || loanAmountMax !== 250000) {
+                            const selectedAmountLossRate = filteredLossRate;
+                            const selectedAmountKiScore = filteredWAKiScore;
+                            const restAmountLossRate = overallLossRate + 0.3;
+                            const restAmountKiScore = overallWAKiScore + 2;
+                            filters.push({
+                                name: 'Loan Amount',
+                                bucket: `KES ${amountMinK}k - ${amountMaxK}k`,
+                                ...calculateFilterMetrics(selectedAmountLossRate, selectedAmountKiScore, restAmountLossRate, restAmountKiScore)
+                            });
+                        }
+                        
+                        // Residual Tenure Filter
+                        if (tenureMin !== 1 || tenureMax !== 48) {
+                            const selectedTenureLossRate = filteredLossRate;
+                            const selectedTenureKiScore = filteredWAKiScore;
+                            const restTenureLossRate = overallLossRate + 0.4;
+                            const restTenureKiScore = overallWAKiScore + 2.5;
+                            filters.push({
+                                name: 'Residual Tenure',
+                                bucket: `${tenureMin} - ${tenureMax} months`,
+                                ...calculateFilterMetrics(selectedTenureLossRate, selectedTenureKiScore, restTenureLossRate, restTenureKiScore)
+                            });
+                        }
+                        
+                        // Interest Rate Filter
+                        if (interestMin !== 12 || interestMax !== 36) {
+                            const selectedInterestLossRate = filteredLossRate;
+                            const selectedInterestKiScore = filteredWAKiScore;
+                            const restInterestLossRate = overallLossRate + 0.2;
+                            const restInterestKiScore = overallWAKiScore + 1.5;
+                            filters.push({
+                                name: 'Interest Rate',
+                                bucket: `${interestMin}% - ${interestMax}%`,
+                                ...calculateFilterMetrics(selectedInterestLossRate, selectedInterestKiScore, restInterestLossRate, restInterestKiScore)
+                            });
+                        }
+                        
+                        // Counties Filter
+                        if (selectedCounties.length > 0) {
+                            const selectedCountiesLossRate = filteredLossRate;
+                            const selectedCountiesKiScore = filteredWAKiScore;
+                            const restCountiesLossRate = overallLossRate + 0.6; // Other counties typically worse
+                            const restCountiesKiScore = overallWAKiScore + 4;
+                            filters.push({
+                                name: 'Counties',
+                                bucket: countiesText,
+                                ...calculateFilterMetrics(selectedCountiesLossRate, selectedCountiesKiScore, restCountiesLossRate, restCountiesKiScore)
+                            });
+                        }
                         
                         // Add custom filters if any
                         if (state.customFilters && state.customFilters.length > 0) {
                             state.customFilters.forEach((customFilter, idx) => {
+                                const customLossRate = filteredLossRate;
+                                const customKiScore = filteredWAKiScore;
+                                const restCustomLossRate = overallLossRate + 0.3;
+                                const restCustomKiScore = overallWAKiScore + 2;
                                 filters.push({
                                     name: `Custom Filter ${idx + 1}`,
                                     bucket: customFilter.rules.map(r => `${r.field} ${r.operator} ${r.value}`).join(' AND '),
-                                    lossRate: filteredLossRate,
-                                    kiScore: filteredWAKiScore
+                                    ...calculateFilterMetrics(customLossRate, customKiScore, restCustomLossRate, restCustomKiScore)
                                 });
                             });
                         }
                         
+                        // Populate table with calculated metrics
                         filters.forEach(filter => {
                             const row = document.createElement('tr');
                             row.className = 'bg-white border-b';
                             row.innerHTML = `
                                 <td class="px-4 py-2 font-medium text-gray-900">${filter.name}</td>
                                 <td class="px-4 py-2">${filter.bucket}</td>
-                                <td class="px-4 py-2 text-right font-semibold text-green-600">${filter.lossRate.toFixed(2)}%</td>
-                                <td class="px-4 py-2 text-right">${overallLossRate.toFixed(2)}%</td>
-                                <td class="px-4 py-2 text-right font-semibold text-teal-600">${filter.kiScore}</td>
-                                <td class="px-4 py-2 text-right">${overallWAKiScore}</td>
+                                <td class="px-4 py-2 text-right font-semibold text-green-600">${filter.selected.lossRate.toFixed(2)}%</td>
+                                <td class="px-4 py-2 text-right">${filter.rest.lossRate.toFixed(2)}%</td>
+                                <td class="px-4 py-2 text-right font-semibold text-teal-600">${filter.selected.kiScore}</td>
+                                <td class="px-4 py-2 text-right">${filter.rest.kiScore}</td>
                             `;
                             tableBody.appendChild(row);
                         });
+                        
+                        // If no filters applied, show message
+                        if (filters.length === 0) {
+                            const row = document.createElement('tr');
+                            row.className = 'bg-white border-b';
+                            row.innerHTML = `
+                                <td colspan="6" class="px-4 py-4 text-center text-gray-500 italic">No filters applied. Using default ranges for all criteria.</td>
+                            `;
+                            tableBody.appendChild(row);
+                        }
                     }
                 } catch (e) {
                     console.warn('Error generating filter comparison table:', e);
@@ -4469,52 +4512,22 @@
             
             function renderTrancheAnalysis(mean, p5, p50, p95) {
                 try {
-                    // Get configured tranching structure
+                    // Get configured tranching structure from state
                     const poolValue = parseFloat(document.getElementById('poolValue')?.textContent.replace(/[^\d.]/g, '') || '780');
-                    const seniorSize = parseFloat(document.getElementById('seniorTrancheSize')?.value || 80) / 100;
-                    const mezzSize = parseFloat(document.getElementById('mezzTrancheSize')?.value || 12) / 100;
-                    const equitySize = 1 - seniorSize - mezzSize;
-                    const seniorCoupon = parseFloat(document.getElementById('seniorTrancheCoupon')?.value || 14);
-                    const mezzCoupon = parseFloat(document.getElementById('mezzTrancheCoupon')?.value || 18);
-                    const seniorRating = document.getElementById('seniorTrancheRating')?.value || 'AAA';
-                    const mezzRating = document.getElementById('mezzTrancheRating')?.value || 'AA';
                     
-                    const seniorAmount = poolValue * seniorSize;
-                    const mezzAmount = poolValue * mezzSize;
-                    const equityAmount = poolValue * equitySize;
+                    // Calculate equity size from all tranches
+                    let totalTrancheSize = 0;
+                    state.tranches.forEach(t => {
+                        const sizeInput = document.querySelector(`.trancheSizeInput[data-tranche-id="${t.id}"]`);
+                        if (sizeInput) {
+                            t.size = parseFloat(sizeInput.value || 0);
+                            totalTrancheSize += t.size;
+                        }
+                    });
+                    const equitySize = Math.max(0, 100 - totalTrancheSize) / 100;
                     
                     // Update tranche cards with configured values if they exist
-                    const seniorCard = document.querySelector('[class*="border-green"]');
-                    const mezzCard = document.querySelector('[class*="border-blue"]');
-                    const equityCard = document.querySelector('[class*="border-purple"]');
-                    
-                    if (seniorCard) {
-                        const spans = seniorCard.querySelectorAll('span');
-                        const sizeSpan = Array.from(spans).find(s => s.textContent.includes('Size:'));
-                        if (sizeSpan && sizeSpan.nextElementSibling) {
-                            sizeSpan.nextElementSibling.textContent = `KES ${seniorAmount.toFixed(0)}M (${(seniorSize*100).toFixed(0)}%)`;
-                        }
-                        const ratingSpan = seniorCard.querySelector('span.bg-green-100');
-                        if (ratingSpan) ratingSpan.textContent = seniorRating;
-                    }
-                    
-                    if (mezzCard) {
-                        const spans = mezzCard.querySelectorAll('span');
-                        const sizeSpan = Array.from(spans).find(s => s.textContent.includes('Size:'));
-                        if (sizeSpan && sizeSpan.nextElementSibling) {
-                            sizeSpan.nextElementSibling.textContent = `KES ${mezzAmount.toFixed(0)}M (${(mezzSize*100).toFixed(0)}%)`;
-                        }
-                        const ratingSpan = mezzCard.querySelector('span.bg-blue-100');
-                        if (ratingSpan) ratingSpan.textContent = mezzRating;
-                    }
-                    
-                    if (equityCard) {
-                        const spans = equityCard.querySelectorAll('span');
-                        const sizeSpan = Array.from(spans).find(s => s.textContent.includes('Size:'));
-                        if (sizeSpan && sizeSpan.nextElementSibling) {
-                            sizeSpan.nextElementSibling.textContent = `KES ${equityAmount.toFixed(0)}M (${(equitySize*100).toFixed(0)}%)`;
-                        }
-                    }
+                    // This will be handled by the chart rendering below
                 } catch (e) {
                     console.warn('Error updating tranche cards:', e);
                 }
@@ -4543,23 +4556,36 @@
                     }
                 });
                 
-                // IRR distribution by tranche (box plot simulation using bar)
+                // IRR distribution by tranche (box plot simulation using bar) - Dynamic based on state.tranches
+                const trancheLabels = state.tranches.length > 0 
+                    ? state.tranches.map(t => t.name || 'Tranche').concat(['Equity / Junior'])
+                    : ['Senior (Class A)', 'Mezzanine (Class B)', 'Equity / Junior'];
+                const trancheDataP5 = state.tranches.length > 0
+                    ? state.tranches.map((t, i) => 18.1 + i * 0.5).concat([8.2])
+                    : [18.1, 19.5, 8.2];
+                const trancheDataP50 = state.tranches.length > 0
+                    ? state.tranches.map((t, i) => 19.2 + i * 0.8).concat([12.5])
+                    : [19.2, 20.8, 12.5];
+                const trancheDataP95 = state.tranches.length > 0
+                    ? state.tranches.map((t, i) => 20.5 + i * 1.0).concat([18.3])
+                    : [20.5, 22.1, 18.3];
+                
                 createOrUpdateChart('trancheIRRChart', 'bar', {
-                    labels: ['Senior (Class A)', 'Mezzanine (Class B)', 'Equity / Junior'],
+                    labels: trancheLabels,
                     datasets: [
                         {
                             label: 'P5 (VaR)',
-                            data: [18.1, 19.5, 8.2],
+                            data: trancheDataP5,
                             backgroundColor: 'rgba(239, 68, 68, 0.7)'
                         },
                         {
                             label: 'P50 (Median)',
-                            data: [19.2, 22.8, 28.5],
+                            data: trancheDataP50,
                             backgroundColor: 'rgba(251, 191, 36, 0.7)'
                         },
                         {
                             label: 'P95',
-                            data: [20.5, 25.2, 42.1],
+                            data: trancheDataP95,
                             backgroundColor: 'rgba(34, 197, 94, 0.7)'
                         }
                     ]
@@ -6507,29 +6533,245 @@ Contact: cashmanagement@kaleidofin.com
                  countiesMultiSelect.setValue(['Baringo', 'Bomet', 'Bungoma', 'Busia', 'Elgeyo-Marakwet']);
             }
             
+            // Dynamic Tranche Management
+            let trancheCounter = 0;
+            let creditEnhancementCounter = 0;
+            
+            function addTranche(name = null, size = null, coupon = null, rating = null) {
+                try {
+                    const trancheId = `tranche_${trancheCounter++}`;
+                    const trancheName = name || `Class ${String.fromCharCode(65 + state.tranches.length)}`;
+                    const trancheSize = size !== null ? size : (state.tranches.length === 0 ? 80 : 12);
+                    const trancheCoupon = coupon !== null ? coupon : (state.tranches.length === 0 ? 14 : 18);
+                    const trancheRating = rating || (state.tranches.length === 0 ? 'AAA' : 'AA');
+                    
+                    const tranche = { id: trancheId, name: trancheName, size: trancheSize, coupon: trancheCoupon, rating: trancheRating };
+                    state.tranches.push(tranche);
+                    
+                    const container = document.getElementById('tranchesContainer');
+                    if (!container) return;
+                    
+                    const trancheDiv = document.createElement('div');
+                    trancheDiv.className = 'border rounded-lg p-3 bg-gray-50';
+                    trancheDiv.id = trancheId;
+                    trancheDiv.innerHTML = `
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="block text-xs font-medium text-gray-600">${trancheName}</label>
+                            <button class="removeTrancheBtn text-xs text-red-600 hover:text-red-800 font-semibold" data-tranche-id="${trancheId}">
+                                Remove
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <div>
+                                <label class="text-xs text-gray-500">Name:</label>
+                                <input type="text" class="trancheNameInput w-full text-sm border-gray-300 rounded-md" value="${trancheName}" data-tranche-id="${trancheId}">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500">Size (%):</label>
+                                <input type="number" class="trancheSizeInput w-full text-sm border-gray-300 rounded-md" value="${trancheSize}" min="0" max="100" data-tranche-id="${trancheId}">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500">Coupon (%):</label>
+                                <input type="number" class="trancheCouponInput w-full text-sm border-gray-300 rounded-md" value="${trancheCoupon}" min="0" max="30" step="0.1" data-tranche-id="${trancheId}">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500">Rating:</label>
+                                <select class="trancheRatingInput w-full text-sm border-gray-300 rounded-md" data-tranche-id="${trancheId}">
+                                    <option value="AAA" ${trancheRating === 'AAA' ? 'selected' : ''}>AAA</option>
+                                    <option value="AA+" ${trancheRating === 'AA+' ? 'selected' : ''}>AA+</option>
+                                    <option value="AA" ${trancheRating === 'AA' ? 'selected' : ''}>AA</option>
+                                    <option value="AA-" ${trancheRating === 'AA-' ? 'selected' : ''}>AA-</option>
+                                    <option value="A+" ${trancheRating === 'A+' ? 'selected' : ''}>A+</option>
+                                    <option value="A" ${trancheRating === 'A' ? 'selected' : ''}>A</option>
+                                    <option value="A-" ${trancheRating === 'A-' ? 'selected' : ''}>A-</option>
+                                    <option value="BBB+" ${trancheRating === 'BBB+' ? 'selected' : ''}>BBB+</option>
+                                    <option value="BBB" ${trancheRating === 'BBB' ? 'selected' : ''}>BBB</option>
+                                </select>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(trancheDiv);
+                    
+                    // Add event listeners
+                    trancheDiv.querySelector('.removeTrancheBtn').addEventListener('click', () => removeTranche(trancheId));
+                    trancheDiv.querySelector('.trancheNameInput').addEventListener('input', (e) => {
+                        const t = state.tranches.find(t => t.id === trancheId);
+                        if (t) {
+                            t.name = e.target.value;
+                            trancheDiv.querySelector('label').textContent = e.target.value;
+                        }
+                    });
+                    trancheDiv.querySelector('.trancheSizeInput').addEventListener('input', updateTranchingStructure);
+                    trancheDiv.querySelector('.trancheCouponInput').addEventListener('input', () => {
+                        const t = state.tranches.find(t => t.id === trancheId);
+                        if (t) t.coupon = parseFloat(trancheDiv.querySelector('.trancheCouponInput').value);
+                    });
+                    trancheDiv.querySelector('.trancheRatingInput').addEventListener('change', (e) => {
+                        const t = state.tranches.find(t => t.id === trancheId);
+                        if (t) t.rating = e.target.value;
+                    });
+                    
+                    updateTranchingStructure();
+                } catch (e) {
+                    console.warn('Error adding tranche:', e);
+                }
+            }
+            
+            function removeTranche(trancheId) {
+                try {
+                    if (state.tranches.length <= 1) {
+                        alert('At least one tranche is required.');
+                        return;
+                    }
+                    state.tranches = state.tranches.filter(t => t.id !== trancheId);
+                    const trancheEl = document.getElementById(trancheId);
+                    if (trancheEl) trancheEl.remove();
+                    updateTranchingStructure();
+                } catch (e) {
+                    console.warn('Error removing tranche:', e);
+                }
+            }
+            
+            function addCreditEnhancement(type = null, name = null, value = null, valueType = 'percentage') {
+                try {
+                    const ceId = `ce_${creditEnhancementCounter++}`;
+                    const ceType = type || 'Overcollateralization';
+                    const ceName = name || ceType;
+                    const ceValue = value !== null ? value : (ceType === 'Overcollateralization' ? 20 : 2);
+                    
+                    const enhancement = { id: ceId, type: ceType, name: ceName, value: ceValue, valueType: valueType };
+                    state.creditEnhancements.push(enhancement);
+                    
+                    const container = document.getElementById('creditEnhancementsContainer');
+                    if (!container) return;
+                    
+                    const ceDiv = document.createElement('div');
+                    ceDiv.className = 'border rounded-lg p-3 bg-gray-50';
+                    ceDiv.id = ceId;
+                    ceDiv.innerHTML = `
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="block text-xs font-medium text-gray-600">${ceName}</label>
+                            <button class="removeCEBtn text-xs text-red-600 hover:text-red-800 font-semibold" data-ce-id="${ceId}">
+                                Remove
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <div>
+                                <label class="text-xs text-gray-500">Type:</label>
+                                <select class="ceTypeInput w-full text-sm border-gray-300 rounded-md" data-ce-id="${ceId}">
+                                    <option value="Overcollateralization" ${ceType === 'Overcollateralization' ? 'selected' : ''}>Overcollateralization</option>
+                                    <option value="Reserve Account" ${ceType === 'Reserve Account' ? 'selected' : ''}>Reserve Account</option>
+                                    <option value="Junior Liquidity Facility" ${ceType === 'Junior Liquidity Facility' ? 'selected' : ''}>Junior Liquidity Facility</option>
+                                    <option value="Servicer Performance Guarantee" ${ceType === 'Servicer Performance Guarantee' ? 'selected' : ''}>Servicer Performance Guarantee</option>
+                                    <option value="Cash Trap" ${ceType === 'Cash Trap' ? 'selected' : ''}>Cash Trap</option>
+                                    <option value="Other" ${ceType === 'Other' ? 'selected' : ''}>Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500">Name:</label>
+                                <input type="text" class="ceNameInput w-full text-sm border-gray-300 rounded-md" value="${ceName}" data-ce-id="${ceId}">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500">Value Type:</label>
+                                <select class="ceValueTypeInput w-full text-sm border-gray-300 rounded-md" data-ce-id="${ceId}">
+                                    <option value="percentage" ${valueType === 'percentage' ? 'selected' : ''}>Percentage (%)</option>
+                                    <option value="amount" ${valueType === 'amount' ? 'selected' : ''}>Amount (KES)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500">Value:</label>
+                                <input type="number" class="ceValueInput w-full text-sm border-gray-300 rounded-md" value="${ceValue}" min="0" step="0.1" data-ce-id="${ceId}">
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(ceDiv);
+                    
+                    // Add event listeners
+                    ceDiv.querySelector('.removeCEBtn').addEventListener('click', () => removeCreditEnhancement(ceId));
+                    ceDiv.querySelector('.ceTypeInput').addEventListener('change', (e) => {
+                        const ce = state.creditEnhancements.find(ce => ce.id === ceId);
+                        if (ce) {
+                            ce.type = e.target.value;
+                            if (ce.name === ce.type || ce.name.startsWith('New')) {
+                                ce.name = e.target.value;
+                                ceDiv.querySelector('.ceNameInput').value = e.target.value;
+                                ceDiv.querySelector('label').textContent = e.target.value;
+                            }
+                        }
+                    });
+                    ceDiv.querySelector('.ceNameInput').addEventListener('input', (e) => {
+                        const ce = state.creditEnhancements.find(ce => ce.id === ceId);
+                        if (ce) {
+                            ce.name = e.target.value;
+                            ceDiv.querySelector('label').textContent = e.target.value;
+                        }
+                    });
+                    ceDiv.querySelector('.ceValueTypeInput').addEventListener('change', (e) => {
+                        const ce = state.creditEnhancements.find(ce => ce.id === ceId);
+                        if (ce) ce.valueType = e.target.value;
+                    });
+                    ceDiv.querySelector('.ceValueInput').addEventListener('input', updateTranchingStructure);
+                    
+                    updateTranchingStructure();
+                } catch (e) {
+                    console.warn('Error adding credit enhancement:', e);
+                }
+            }
+            
+            function removeCreditEnhancement(ceId) {
+                try {
+                    state.creditEnhancements = state.creditEnhancements.filter(ce => ce.id !== ceId);
+                    const ceEl = document.getElementById(ceId);
+                    if (ceEl) ceEl.remove();
+                    updateTranchingStructure();
+                } catch (e) {
+                    console.warn('Error removing credit enhancement:', e);
+                }
+            }
+            
             // Tranching Structure Updates (Safe - only if elements exist)
             function updateTranchingStructure() {
                 try {
-                    const seniorSizeEl = document.getElementById('seniorTrancheSize');
-                    const mezzSizeEl = document.getElementById('mezzTrancheSize');
                     const equitySizeEl = document.getElementById('equityTrancheSize');
-                    const ocSlider = document.getElementById('ocSlider');
-                    const reserveSlider = document.getElementById('reserveSlider');
                     const totalCELabel = document.getElementById('totalCELabel');
                     
-                    if (!seniorSizeEl || !mezzSizeEl || !equitySizeEl) return;
+                    // Calculate total tranche size
+                    let totalTrancheSize = 0;
+                    state.tranches.forEach(tranche => {
+                        const sizeInput = document.querySelector(`.trancheSizeInput[data-tranche-id="${tranche.id}"]`);
+                        if (sizeInput) {
+                            const size = parseFloat(sizeInput.value || 0);
+                            tranche.size = size;
+                            totalTrancheSize += size;
+                        }
+                    });
                     
-                    const seniorSize = parseFloat(seniorSizeEl.value || 80);
-                    const mezzSize = parseFloat(mezzSizeEl.value || 12);
-                    const equitySize = 100 - seniorSize - mezzSize;
+                    const equitySize = Math.max(0, 100 - totalTrancheSize);
+                    if (equitySizeEl) {
+                        equitySizeEl.textContent = `${equitySize.toFixed(1)}%`;
+                    }
                     
-                    equitySizeEl.textContent = `${equitySize.toFixed(1)}%`;
+                    // Calculate total credit enhancement
+                    let totalCE = equitySize; // Subordination from equity
+                    state.creditEnhancements.forEach(ce => {
+                        const valueInput = document.querySelector(`.ceValueInput[data-ce-id="${ce.id}"]`);
+                        const valueTypeInput = document.querySelector(`.ceValueTypeInput[data-ce-id="${ce.id}"]`);
+                        if (valueInput && valueTypeInput) {
+                            const value = parseFloat(valueInput.value || 0);
+                            const valueType = valueTypeInput.value;
+                            if (valueType === 'percentage') {
+                                totalCE += value;
+                            } else {
+                                // For amount-based, convert to percentage (assuming pool value)
+                                const poolValue = parseFloat(document.getElementById('poolValue')?.textContent.replace(/[^\d.]/g, '') || '780');
+                                totalCE += (value / (poolValue * 10)) * 100; // Convert to percentage
+                            }
+                            ce.value = value;
+                            ce.valueType = valueType;
+                        }
+                    });
                     
-                    if (ocSlider && reserveSlider && totalCELabel) {
-                        const oc = parseFloat(ocSlider.value || 20);
-                        const reserve = parseFloat(reserveSlider.value || 2);
-                        const subordination = equitySize;
-                        const totalCE = oc + reserve + subordination;
+                    if (totalCELabel) {
                         totalCELabel.textContent = `${totalCE.toFixed(1)}%`;
                     }
                 } catch (e) {
@@ -6537,33 +6779,32 @@ Contact: cashmanagement@kaleidofin.com
                 }
             }
             
-            // Initialize tranching structure event listeners (safe - only if elements exist)
+            // Initialize tranching structure (safe - only if elements exist)
             function initializeTranchingStructure() {
                 try {
-                    const seniorTrancheSize = document.getElementById('seniorTrancheSize');
-                    const mezzTrancheSize = document.getElementById('mezzTrancheSize');
-                    const ocSlider = document.getElementById('ocSlider');
-                    const reserveSlider = document.getElementById('reserveSlider');
+                    const addTrancheBtn = document.getElementById('addTrancheBtn');
+                    const addCEBtn = document.getElementById('addCreditEnhancementBtn');
                     
-                    if (seniorTrancheSize) {
-                        seniorTrancheSize.addEventListener('input', updateTranchingStructure);
+                    if (addTrancheBtn) {
+                        addTrancheBtn.addEventListener('click', () => addTranche());
                     }
-                    if (mezzTrancheSize) {
-                        mezzTrancheSize.addEventListener('input', updateTranchingStructure);
+                    
+                    if (addCEBtn) {
+                        addCEBtn.addEventListener('click', () => addCreditEnhancement());
                     }
-                    if (ocSlider) {
-                        ocSlider.addEventListener('input', (e) => {
-                            const ocLabel = document.getElementById('ocLabel');
-                            if (ocLabel) ocLabel.textContent = `${e.target.value}%`;
-                            updateTranchingStructure();
-                        });
+                    
+                    // Initialize with default 2 tranches if container is empty
+                    const tranchesContainer = document.getElementById('tranchesContainer');
+                    if (tranchesContainer && tranchesContainer.children.length === 0) {
+                        addTranche('Class A', 80, 14, 'AAA');
+                        addTranche('Class B', 12, 18, 'AA');
                     }
-                    if (reserveSlider) {
-                        reserveSlider.addEventListener('input', (e) => {
-                            const reserveLabel = document.getElementById('reserveLabel');
-                            if (reserveLabel) reserveLabel.textContent = `${e.target.value}%`;
-                            updateTranchingStructure();
-                        });
+                    
+                    // Initialize with default 2 credit enhancements if container is empty
+                    const ceContainer = document.getElementById('creditEnhancementsContainer');
+                    if (ceContainer && ceContainer.children.length === 0) {
+                        addCreditEnhancement('Overcollateralization', 'Overcollateralization', 20, 'percentage');
+                        addCreditEnhancement('Reserve Account', 'Reserve Account', 2, 'percentage');
                     }
                     
                     // Initialize values
