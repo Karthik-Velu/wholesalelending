@@ -44,7 +44,7 @@
         .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #14b8a6; animation: spin 1s ease infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .modal { display: none; }
-        .modal.active { display: flex; }
+        .modal.active { display: block; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -2952,15 +2952,15 @@
             
             // Create New Field Modal
             document.getElementById('createNewFieldBtn')?.addEventListener('click', () => {
-                document.getElementById('createFieldModal').classList.remove('hidden');
+                document.getElementById('createFieldModal').classList.add('active');
             });
             
             document.getElementById('closeCreateFieldModal')?.addEventListener('click', () => {
-                document.getElementById('createFieldModal').classList.add('hidden');
+                document.getElementById('createFieldModal').classList.remove('active');
             });
             
             document.getElementById('cancelCreateField')?.addEventListener('click', () => {
-                document.getElementById('createFieldModal').classList.add('hidden');
+                document.getElementById('createFieldModal').classList.remove('active');
             });
             
             document.getElementById('saveNewField')?.addEventListener('click', () => {
@@ -2989,7 +2989,7 @@
                 document.getElementById('newFieldName').value = '';
                 document.getElementById('newFieldLabel').value = '';
                 document.getElementById('newFieldDescription').value = '';
-                document.getElementById('createFieldModal').classList.add('hidden');
+                document.getElementById('createFieldModal').classList.remove('active');
                 
                 alert(`Custom field "${fieldLabel}" created successfully!`);
             });
@@ -2998,7 +2998,7 @@
             function openValidationModal(field) {
                 document.getElementById('validationFieldName').textContent = field.label;
                 document.getElementById('validationFieldType').textContent = field.type;
-                document.getElementById('validationModal').classList.remove('hidden');
+                document.getElementById('validationModal').classList.add('active');
                 
                 // Clear previous rules
                 const container = document.getElementById('validationRulesContainer');
@@ -3009,11 +3009,11 @@
             }
             
             document.getElementById('closeValidationModal')?.addEventListener('click', () => {
-                document.getElementById('validationModal').classList.add('hidden');
+                document.getElementById('validationModal').classList.remove('active');
             });
             
             document.getElementById('cancelValidation')?.addEventListener('click', () => {
-                document.getElementById('validationModal').classList.add('hidden');
+                document.getElementById('validationModal').classList.remove('active');
             });
             
             document.getElementById('addValidationRule')?.addEventListener('click', () => {
@@ -3155,24 +3155,24 @@
                 });
                 
                 state.fieldValidations[fieldName] = rules;
-                document.getElementById('validationModal').classList.add('hidden');
+                document.getElementById('validationModal').classList.remove('active');
                 alert(`${rules.length} validation rule(s) added for ${fieldName}`);
             });
             
             // Custom Filter Modal
             document.getElementById('openCustomFilterBtn')?.addEventListener('click', () => {
-                document.getElementById('customFilterModal').classList.remove('hidden');
+                document.getElementById('customFilterModal').classList.add('active');
                 const container = document.getElementById('customFilterRulesContainer');
                 container.innerHTML = '';
                 addFilterRule();
             });
             
             document.getElementById('closeCustomFilterModal')?.addEventListener('click', () => {
-                document.getElementById('customFilterModal').classList.add('hidden');
+                document.getElementById('customFilterModal').classList.remove('active');
             });
             
             document.getElementById('cancelCustomFilter')?.addEventListener('click', () => {
-                document.getElementById('customFilterModal').classList.add('hidden');
+                document.getElementById('customFilterModal').classList.remove('active');
             });
             
             document.getElementById('addFilterRule')?.addEventListener('click', () => {
@@ -3427,7 +3427,7 @@
                 updateUnifiedFiltersDisplay();
                 
                 // Close modal
-                document.getElementById('customFilterModal').classList.add('hidden');
+                document.getElementById('customFilterModal').classList.remove('active');
                 alert(`Custom filter with ${rules.length} rule(s) added successfully!`);
             });
             
@@ -3788,8 +3788,6 @@
                     document.getElementById('baseEquity').textContent = baseEquityTotal.toFixed(1);
                     document.getElementById('stressedEquity').textContent = stressedEquityTotal.toFixed(1);
                     document.getElementById('impactEquity').textContent = equityImpact.toFixed(1);
-
-                    sensitivityModal.classList.add('active');
                 }
             }
 
@@ -5414,12 +5412,12 @@ Next Report Due: 2 Business Days after next Month-End Servicer Report
                 `;
                 
                 document.getElementById('reportPreviewContent').innerHTML = previewHTML;
-                document.getElementById('reportPreviewModal').classList.remove('hidden');
+                document.getElementById('reportPreviewModal').classList.add('active');
                 document.getElementById('downloadFromPreview').onclick = () => downloadPMAReportPDF(txId);
             }
 
             function closeReportPreview() {
-                document.getElementById('reportPreviewModal').classList.add('hidden');
+                document.getElementById('reportPreviewModal').classList.remove('active');
             }
 
             function generateCashManagerReport(txId) {
@@ -5989,7 +5987,7 @@ Contact: cashmanagement@kaleidofin.com
                 `;
                 
                 document.getElementById('reportPreviewContent').innerHTML = previewHTML;
-                document.getElementById('reportPreviewModal').classList.remove('hidden');
+                document.getElementById('reportPreviewModal').classList.add('active');
                 document.getElementById('downloadFromPreview').onclick = () => downloadCashManagerReportPDF(txId);
             }
 
