@@ -2033,7 +2033,441 @@
             });
 
             // Pool Creation Workflow
-            uploadPoolBtn.addEventListener('click', () => updatePoolSubStep('poolMappingSubStep'));
+            // Database Fields Definition
+            const databaseFields = [
+                { name: 'loan_id', label: 'Loan ID', type: 'text', required: true },
+                { name: 'customer_id', label: 'Customer ID', type: 'text', required: true },
+                { name: 'customer_name', label: 'Customer Name', type: 'text', required: false },
+                { name: 'loan_amount', label: 'Loan Amount', type: 'currency', required: true },
+                { name: 'outstanding_balance', label: 'Outstanding Balance', type: 'currency', required: true },
+                { name: 'interest_rate', label: 'Interest Rate', type: 'decimal', required: true },
+                { name: 'disbursement_date', label: 'Disbursement Date', type: 'date', required: true },
+                { name: 'maturity_date', label: 'Maturity Date', type: 'date', required: true },
+                { name: 'remaining_tenor', label: 'Remaining Tenor (Months)', type: 'numeric', required: true },
+                { name: 'dpd', label: 'Days Past Due', type: 'numeric', required: true },
+                { name: 'ki_score', label: 'KI Score', type: 'numeric', required: false },
+                { name: 'county', label: 'County / Region', type: 'text', required: false },
+                { name: 'loan_purpose', label: 'Loan Purpose', type: 'text', required: false },
+                { name: 'collateral_type', label: 'Collateral Type', type: 'text', required: false },
+                { name: 'emi_amount', label: 'EMI Amount', type: 'currency', required: false },
+                { name: 'product_type', label: 'Product Type', type: 'text', required: false },
+                { name: 'is_active', label: 'Is Active', type: 'boolean', required: false }
+            ];
+
+            // Sample file columns (simulating uploaded CSV)
+            const uploadedFileColumns = [
+                'LoanID', 'CustomerID', 'Name', 'PrincipalAmount', 'Balance', 
+                'Rate', 'DisbursedOn', 'MaturityDate', 'Tenure', 'DPD', 
+                'Score', 'Location', 'Purpose', 'Collateral', 'EMI'
+            ];
+
+            uploadPoolBtn.addEventListener('click', () => {
+                populateMappingFields();
+                updatePoolSubStep('poolMappingSubStep');
+            });
+            
+            function populateMappingFields() {
+                const container = document.getElementById('mappingFieldsContainer');
+                const headerRow = container.querySelector('.grid');
+                container.innerHTML = '';
+                container.appendChild(headerRow);
+                
+                // Create initial mappings
+                const initialMappings = [
+                    { fileCol: 'LoanID', dbField: 'loan_id', type: 'text', status: 'validated' },
+                    { fileCol: 'CustomerID', dbField: 'customer_id', type: 'text', status: 'validated' },
+                    { fileCol: 'Name', dbField: 'customer_name', type: 'text', status: 'validated' },
+                    { fileCol: 'PrincipalAmount', dbField: 'loan_amount', type: 'currency', status: 'validated' },
+                    { fileCol: 'Balance', dbField: 'outstanding_balance', type: 'currency', status: 'validated' },
+                    { fileCol: 'Rate', dbField: 'interest_rate', type: 'decimal', status: 'validated' },
+                    { fileCol: 'DisbursedOn', dbField: 'disbursement_date', type: 'date', status: 'validated' },
+                    { fileCol: 'MaturityDate', dbField: 'maturity_date', type: 'date', status: 'validated' },
+                    { fileCol: 'Tenure', dbField: 'remaining_tenor', type: 'numeric', status: 'validated' },
+                    { fileCol: 'DPD', dbField: 'dpd', type: 'numeric', status: 'validated' },
+                    { fileCol: 'Score', dbField: 'ki_score', type: 'numeric', status: 'validated' },
+                    { fileCol: 'Location', dbField: 'county', type: 'text', status: 'validated' },
+                    { fileCol: 'Purpose', dbField: 'loan_purpose', type: 'text', status: 'validated' },
+                    { fileCol: 'Collateral', dbField: 'collateral_type', type: 'text', status: 'validated' },
+                    { fileCol: 'EMI', dbField: 'emi_amount', type: 'currency', status: 'validated' }
+                ];
+                
+                initialMappings.forEach((mapping, index) => {
+                    const row = createMappingRow(mapping, index);
+                    container.appendChild(row);
+                });
+            }
+            
+            function createMappingRow(mapping, index) {
+                const row = document.createElement('div');
+                row.className = 'grid grid-cols-12 gap-2 text-sm p-3 bg-white border rounded hover:bg-gray-50';
+                row.dataset.index = index;
+                
+                const statusColor = mapping.status === 'validated' ? 'text-green-600' : 'text-orange-600';
+                const statusIcon = mapping.status === 'validated' ? '✓' : '⚠';
+                
+                row.innerHTML = `
+                    <span class="col-span-3 font-medium text-gray-700">${mapping.fileCol}</span>
+                    <select class="col-span-3 border border-gray-300 rounded px-2 py-1 text-sm db-field-select" data-index="${index}">
+                        ${databaseFields.map(f => `<option value="${f.name}" ${f.name === mapping.dbField ? 'selected' : ''}>${f.label}</option>`).join('')}
+                    </select>
+                    <select class="col-span-2 border border-gray-300 rounded px-2 py-1 text-sm type-select" data-index="${index}">
+                        <option value="text" ${mapping.type === 'text' ? 'selected' : ''}>Text</option>
+                        <option value="numeric" ${mapping.type === 'numeric' ? 'selected' : ''}>Numeric</option>
+                        <option value="decimal" ${mapping.type === 'decimal' ? 'selected' : ''}>Decimal</option>
+                        <option value="date" ${mapping.type === 'date' ? 'selected' : ''}>Date</option>
+                        <option value="boolean" ${mapping.type === 'boolean' ? 'selected' : ''}>Boolean</option>
+                        <option value="currency" ${mapping.type === 'currency' ? 'selected' : ''}>Currency</option>
+                    </select>
+                    <span class="col-span-2 ${statusColor} font-semibold flex items-center">
+                        ${statusIcon} ${mapping.status === 'validated' ? 'Valid' : 'Check'}
+                    </span>
+                    <div class="col-span-2 flex justify-center space-x-1">
+                        <button class="add-validation-btn text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200" data-index="${index}" title="Add Validation">
+                            <svg class="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="delete-mapping-btn text-xs bg-red-100 text-red-700 px-2 py-1 rounded hover:bg-red-200" data-index="${index}" title="Delete">
+                            <svg class="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                
+                return row;
+            }
+            
+            // Event delegation for mapping actions
+            document.getElementById('mappingFieldsContainer').addEventListener('click', (e) => {
+                if (e.target.closest('.add-validation-btn')) {
+                    const index = e.target.closest('.add-validation-btn').dataset.index;
+                    const row = document.querySelector(`[data-index="${index}"]`);
+                    const dbField = row.querySelector('.db-field-select').value;
+                    const fieldType = row.querySelector('.type-select').value;
+                    const field = databaseFields.find(f => f.name === dbField);
+                    openValidationModal(field || { name: dbField, label: dbField, type: fieldType });
+                }
+                
+                if (e.target.closest('.delete-mapping-btn')) {
+                    if (confirm('Delete this field mapping?')) {
+                        e.target.closest('[data-index]').remove();
+                    }
+                }
+            });
+            
+            // Create New Field Modal
+            document.getElementById('createNewFieldBtn')?.addEventListener('click', () => {
+                document.getElementById('createFieldModal').classList.remove('hidden');
+            });
+            
+            document.getElementById('closeCreateFieldModal')?.addEventListener('click', () => {
+                document.getElementById('createFieldModal').classList.add('hidden');
+            });
+            
+            document.getElementById('cancelCreateField')?.addEventListener('click', () => {
+                document.getElementById('createFieldModal').classList.add('hidden');
+            });
+            
+            document.getElementById('saveNewField')?.addEventListener('click', () => {
+                const fieldName = document.getElementById('newFieldName').value.trim();
+                const fieldLabel = document.getElementById('newFieldLabel').value.trim();
+                const fieldType = document.getElementById('newFieldType').value;
+                const fieldDesc = document.getElementById('newFieldDescription').value.trim();
+                
+                if (!fieldName || !fieldLabel) {
+                    alert('Please provide both field name and display label');
+                    return;
+                }
+                
+                // Add to database fields
+                const newField = { name: fieldName, label: fieldLabel, type: fieldType, required: false, custom: true };
+                databaseFields.push(newField);
+                state.customFields.push(newField);
+                
+                // Add to mapping
+                const container = document.getElementById('mappingFieldsContainer');
+                const newMapping = { fileCol: fieldLabel, dbField: fieldName, type: fieldType, status: 'validated' };
+                const row = createMappingRow(newMapping, databaseFields.length - 1);
+                container.appendChild(row);
+                
+                // Clear and close modal
+                document.getElementById('newFieldName').value = '';
+                document.getElementById('newFieldLabel').value = '';
+                document.getElementById('newFieldDescription').value = '';
+                document.getElementById('createFieldModal').classList.add('hidden');
+                
+                alert(`Custom field "${fieldLabel}" created successfully!`);
+            });
+            
+            // Validation Modal
+            function openValidationModal(field) {
+                document.getElementById('validationFieldName').textContent = field.label;
+                document.getElementById('validationFieldType').textContent = field.type;
+                document.getElementById('validationModal').classList.remove('hidden');
+                
+                // Clear previous rules
+                const container = document.getElementById('validationRulesContainer');
+                container.innerHTML = '';
+                
+                // Add initial rule
+                addValidationRule(field.type);
+            }
+            
+            document.getElementById('closeValidationModal')?.addEventListener('click', () => {
+                document.getElementById('validationModal').classList.add('hidden');
+            });
+            
+            document.getElementById('cancelValidation')?.addEventListener('click', () => {
+                document.getElementById('validationModal').classList.add('hidden');
+            });
+            
+            document.getElementById('addValidationRule')?.addEventListener('click', () => {
+                const fieldType = document.getElementById('validationFieldType').textContent;
+                addValidationRule(fieldType);
+            });
+            
+            function addValidationRule(fieldType) {
+                const container = document.getElementById('validationRulesContainer');
+                const ruleDiv = document.createElement('div');
+                ruleDiv.className = 'border rounded p-3 bg-gray-50';
+                
+                let operatorOptions = '';
+                if (fieldType === 'numeric' || fieldType === 'decimal' || fieldType === 'currency') {
+                    operatorOptions = `
+                        <option value="min">Minimum value</option>
+                        <option value="max">Maximum value</option>
+                        <option value="range">Range (min-max)</option>
+                        <option value="gt_field">Greater than field</option>
+                        <option value="lt_field">Less than field</option>
+                    `;
+                } else if (fieldType === 'date') {
+                    operatorOptions = `
+                        <option value="after">After date</option>
+                        <option value="before">Before date</option>
+                        <option value="range">Date range</option>
+                        <option value="after_field">After field</option>
+                        <option value="before_field">Before field</option>
+                    `;
+                } else if (fieldType === 'text') {
+                    operatorOptions = `
+                        <option value="required">Required (not empty)</option>
+                        <option value="min_length">Minimum length</option>
+                        <option value="max_length">Maximum length</option>
+                        <option value="regex">Regex pattern</option>
+                        <option value="in_list">Must be in list</option>
+                    `;
+                } else if (fieldType === 'boolean') {
+                    operatorOptions = `
+                        <option value="must_be_true">Must be true</option>
+                        <option value="must_be_false">Must be false</option>
+                    `;
+                }
+                
+                ruleDiv.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <select class="flex-1 border border-gray-300 rounded px-2 py-1 text-sm validation-operator">
+                            ${operatorOptions}
+                        </select>
+                        <input type="text" class="flex-1 border border-gray-300 rounded px-2 py-1 text-sm validation-value" placeholder="Value">
+                        <button class="remove-validation-rule text-red-600 hover:text-red-800">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                
+                ruleDiv.querySelector('.remove-validation-rule').addEventListener('click', () => {
+                    ruleDiv.remove();
+                });
+                
+                container.appendChild(ruleDiv);
+            }
+            
+            document.getElementById('saveValidation')?.addEventListener('click', () => {
+                const fieldName = document.getElementById('validationFieldName').textContent;
+                const rules = [];
+                document.querySelectorAll('#validationRulesContainer > div').forEach(ruleDiv => {
+                    const operator = ruleDiv.querySelector('.validation-operator').value;
+                    const value = ruleDiv.querySelector('.validation-value').value;
+                    rules.push({ operator, value });
+                });
+                
+                state.fieldValidations[fieldName] = rules;
+                document.getElementById('validationModal').classList.add('hidden');
+                alert(`${rules.length} validation rule(s) added for ${fieldName}`);
+            });
+            
+            // Custom Filter Modal
+            document.getElementById('openCustomFilterBtn')?.addEventListener('click', () => {
+                document.getElementById('customFilterModal').classList.remove('hidden');
+                const container = document.getElementById('customFilterRulesContainer');
+                container.innerHTML = '';
+                addFilterRule();
+            });
+            
+            document.getElementById('closeCustomFilterModal')?.addEventListener('click', () => {
+                document.getElementById('customFilterModal').classList.add('hidden');
+            });
+            
+            document.getElementById('cancelCustomFilter')?.addEventListener('click', () => {
+                document.getElementById('customFilterModal').classList.add('hidden');
+            });
+            
+            document.getElementById('addFilterRule')?.addEventListener('click', () => {
+                addFilterRule();
+            });
+            
+            function addFilterRule() {
+                const container = document.getElementById('customFilterRulesContainer');
+                const ruleDiv = document.createElement('div');
+                ruleDiv.className = 'border rounded p-3 bg-gray-50';
+                
+                ruleDiv.innerHTML = `
+                    <div class="grid grid-cols-12 gap-2 items-center">
+                        <select class="col-span-4 border border-gray-300 rounded px-2 py-1 text-sm filter-field">
+                            ${databaseFields.map(f => `<option value="${f.name}" data-type="${f.type}">${f.label}</option>`).join('')}
+                        </select>
+                        <select class="col-span-3 border border-gray-300 rounded px-2 py-1 text-sm filter-operator">
+                            <option value="=">=</option>
+                            <option value="!=">!=</option>
+                            <option value=">">></option>
+                            <option value="<"><</option>
+                            <option value=">=">>=</option>
+                            <option value="<="><=</option>
+                            <option value="LIKE">LIKE</option>
+                            <option value="IN">IN</option>
+                            <option value="NOT IN">NOT IN</option>
+                        </select>
+                        <input type="text" class="col-span-4 border border-gray-300 rounded px-2 py-1 text-sm filter-value" placeholder="Value">
+                        <button class="col-span-1 remove-filter-rule text-red-600 hover:text-red-800">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                
+                // Update operators based on field type
+                const fieldSelect = ruleDiv.querySelector('.filter-field');
+                const operatorSelect = ruleDiv.querySelector('.filter-operator');
+                
+                fieldSelect.addEventListener('change', () => {
+                    const selectedOption = fieldSelect.options[fieldSelect.selectedIndex];
+                    const fieldType = selectedOption.dataset.type;
+                    updateOperatorsForType(operatorSelect, fieldType);
+                });
+                
+                ruleDiv.querySelector('.remove-filter-rule').addEventListener('click', () => {
+                    ruleDiv.remove();
+                    updateFilterPreview();
+                });
+                
+                container.appendChild(ruleDiv);
+                updateFilterPreview();
+            }
+            
+            function updateOperatorsForType(operatorSelect, fieldType) {
+                if (fieldType === 'numeric' || fieldType === 'decimal' || fieldType === 'currency') {
+                    operatorSelect.innerHTML = `
+                        <option value="=">=</option>
+                        <option value="!=">!=</option>
+                        <option value=">">></option>
+                        <option value="<"><</option>
+                        <option value=">=">>=</option>
+                        <option value="<="><=</option>
+                        <option value="BETWEEN">BETWEEN</option>
+                    `;
+                } else if (fieldType === 'date') {
+                    operatorSelect.innerHTML = `
+                        <option value="=">=</option>
+                        <option value="!=">!=</option>
+                        <option value=">">After</option>
+                        <option value="<">Before</option>
+                        <option value=">=">On or After</option>
+                        <option value="<=">On or Before</option>
+                        <option value="BETWEEN">Between</option>
+                    `;
+                } else if (fieldType === 'text') {
+                    operatorSelect.innerHTML = `
+                        <option value="=">=</option>
+                        <option value="!=">!=</option>
+                        <option value="LIKE">LIKE</option>
+                        <option value="NOT LIKE">NOT LIKE</option>
+                        <option value="IN">IN</option>
+                        <option value="NOT IN">NOT IN</option>
+                    `;
+                } else if (fieldType === 'boolean') {
+                    operatorSelect.innerHTML = `
+                        <option value="=">IS</option>
+                        <option value="!=">IS NOT</option>
+                    `;
+                }
+            }
+            
+            function updateFilterPreview() {
+                const logic = document.querySelector('input[name="filterLogic"]:checked')?.value || 'AND';
+                const rules = [];
+                
+                document.querySelectorAll('#customFilterRulesContainer > div').forEach(ruleDiv => {
+                    const field = ruleDiv.querySelector('.filter-field').selectedOptions[0].text;
+                    const operator = ruleDiv.querySelector('.filter-operator').value;
+                    const value = ruleDiv.querySelector('.filter-value').value || '?';
+                    rules.push(`${field} ${operator} ${value}`);
+                });
+                
+                const preview = rules.join(` ${logic} `);
+                document.getElementById('filterPreview').textContent = preview || 'No rules added';
+            }
+            
+            // Update preview on logic change
+            document.querySelectorAll('input[name="filterLogic"]').forEach(radio => {
+                radio.addEventListener('change', updateFilterPreview);
+            });
+            
+            document.getElementById('applyCustomFilter')?.addEventListener('click', () => {
+                const logic = document.querySelector('input[name="filterLogic"]:checked')?.value || 'AND';
+                const rules = [];
+                
+                document.querySelectorAll('#customFilterRulesContainer > div').forEach(ruleDiv => {
+                    const field = ruleDiv.querySelector('.filter-field').value;
+                    const operator = ruleDiv.querySelector('.filter-operator').value;
+                    const value = ruleDiv.querySelector('.filter-value').value;
+                    if (value) {
+                        rules.push({ field, operator, value });
+                    }
+                });
+                
+                if (rules.length === 0) {
+                    alert('Please add at least one filter rule with a value');
+                    return;
+                }
+                
+                state.customFilters.push({ logic, rules });
+                
+                // Show filter chip
+                const display = document.getElementById('customFiltersDisplay');
+                display.classList.remove('hidden');
+                const chip = document.createElement('div');
+                chip.className = 'text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full inline-flex items-center space-x-2';
+                chip.innerHTML = `
+                    <span>${rules.length} rule(s) with ${logic}</span>
+                    <button class="text-blue-600 hover:text-blue-800 font-bold">×</button>
+                `;
+                chip.querySelector('button').addEventListener('click', () => {
+                    chip.remove();
+                    state.customFilters.pop();
+                    if (display.querySelectorAll('.inline-flex').length === 0) {
+                        display.classList.add('hidden');
+                    }
+                });
+                display.appendChild(chip);
+                
+                document.getElementById('customFilterModal').classList.add('hidden');
+                alert(`Custom filter applied: ${rules.length} rule(s) with ${logic} logic`);
+            });
+
             validateMappedPoolBtn.addEventListener('click', () => updatePoolSubStep('poolValidationErrorSubStep'));
             reuploadPoolBtn.addEventListener('click', () => {
                 updatePoolSubStep('poolStructuringSubStep');
