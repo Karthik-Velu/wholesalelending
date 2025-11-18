@@ -780,6 +780,364 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <!-- MONTE CARLO SIMULATION SECTION -->
+                                    <div id="monteCarloSection" class="hidden border-t mt-6 pt-6">
+                                        <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-lg border border-purple-200">
+                                            <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                                                <svg class="w-5 h-5 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                                </svg>
+                                                Monte Carlo Simulation & Structuring
+                                            </h4>
+                                            <p class="text-sm text-gray-600 mb-6">Configure simulation parameters and run 10,000-path Monte Carlo to generate full risk distribution</p>
+                                            
+                                            <!-- Simulation Parameters -->
+                                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                                                <!-- Macro Factors -->
+                                                <div class="bg-white p-4 rounded-lg border">
+                                                    <h5 class="font-semibold text-gray-700 mb-3 text-sm">📈 Macro Scenario Factors</h5>
+                                                    <div class="space-y-3">
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-gray-600 mb-1">GDP Growth Rate: <span id="gdpGrowthLabel" class="text-purple-700 font-bold">5.5%</span></label>
+                                                            <input id="gdpGrowthSlider" type="range" min="-2" max="10" step="0.5" value="5.5" class="w-full h-2 bg-gray-200 rounded-lg">
+                                                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                                                <span>-2%</span>
+                                                                <span>10%</span>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-gray-600 mb-1">Unemployment Rate: <span id="unemploymentLabel" class="text-purple-700 font-bold">7.5%</span></label>
+                                                            <input id="unemploymentSlider" type="range" min="3" max="15" step="0.5" value="7.5" class="w-full h-2 bg-gray-200 rounded-lg">
+                                                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                                                <span>3%</span>
+                                                                <span>15%</span>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-gray-600 mb-1">CBK Policy Rate: <span id="cbkRateLabel" class="text-purple-700 font-bold">13.0%</span></label>
+                                                            <input id="cbkRateSlider" type="range" min="7" max="18" step="0.5" value="13.0" class="w-full h-2 bg-gray-200 rounded-lg">
+                                                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                                                <span>7%</span>
+                                                                <span>18%</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Portfolio Assumptions -->
+                                                <div class="bg-white p-4 rounded-lg border">
+                                                    <h5 class="font-semibold text-gray-700 mb-3 text-sm">💼 Portfolio Behavior Assumptions</h5>
+                                                    <div class="space-y-3">
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-gray-600 mb-1">Prepayment Rate (CPR): <span id="prepaymentRateLabel" class="text-purple-700 font-bold">8.0%</span></label>
+                                                            <input id="prepaymentRateSlider" type="range" min="0" max="25" step="0.5" value="8.0" class="w-full h-2 bg-gray-200 rounded-lg">
+                                                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                                                <span>0%</span>
+                                                                <span>25%</span>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-gray-600 mb-1">Expected Loss Rate: <span id="lossRateLabel" class="text-purple-700 font-bold">4.1%</span></label>
+                                                            <input id="lossRateSlider" type="range" min="1" max="15" step="0.1" value="4.1" class="w-full h-2 bg-gray-200 rounded-lg">
+                                                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                                                <span>1%</span>
+                                                                <span>15%</span>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-gray-600 mb-1">Recovery Rate (LGD): <span id="recoveryRateLabel" class="text-purple-700 font-bold">40%</span></label>
+                                                            <input id="recoveryRateSlider" type="range" min="0" max="80" step="5" value="40" class="w-full h-2 bg-gray-200 rounded-lg">
+                                                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                                                <span>0%</span>
+                                                                <span>80%</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Monte Carlo Settings -->
+                                                <div class="bg-white p-4 rounded-lg border">
+                                                    <h5 class="font-semibold text-gray-700 mb-3 text-sm">🎲 Monte Carlo Settings</h5>
+                                                    <div class="space-y-3">
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-gray-600 mb-1">Number of Paths</label>
+                                                            <select id="numPathsSelect" class="w-full text-sm border-gray-300 rounded-md">
+                                                                <option value="1000">1,000 (Fast)</option>
+                                                                <option value="5000">5,000 (Balanced)</option>
+                                                                <option value="10000" selected>10,000 (Accurate)</option>
+                                                                <option value="50000">50,000 (Very Accurate)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-gray-600 mb-1">Correlation Model</label>
+                                                            <select id="correlationModelSelect" class="w-full text-sm border-gray-300 rounded-md">
+                                                                <option value="single_factor" selected>Single Factor (Vasicek)</option>
+                                                                <option value="copula">Gaussian Copula</option>
+                                                                <option value="independent">Independent (No Correlation)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <label class="block text-xs font-medium text-gray-600 mb-1">Time Horizon (Months)</label>
+                                                            <input type="number" id="timeHorizonInput" value="36" min="12" max="60" class="w-full text-sm border-gray-300 rounded-md">
+                                                        </div>
+                                                        <div class="pt-2">
+                                                            <button id="runMonteCarloBtn" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 text-sm">
+                                                                ▶ Run Simulation
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Simulation Results -->
+                                            <div id="simulationResults" class="hidden">
+                                                <div class="bg-white p-6 rounded-lg border border-purple-200 mb-6">
+                                                    <div class="flex items-center justify-between mb-4">
+                                                        <h5 class="font-semibold text-gray-800">✅ Simulation Complete</h5>
+                                                        <div class="text-xs text-gray-600">
+                                                            <span id="simulationTime">Processing time: 2.3s</span> | 
+                                                            <span id="simulationPaths">10,000 paths</span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Key Metrics Summary -->
+                                                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+                                                        <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-3 rounded-lg border border-blue-200">
+                                                            <p class="text-xs text-blue-700 font-medium">Expected Pool Cashflow</p>
+                                                            <p class="text-xl font-bold text-blue-900" id="expectedCashflow">KES 1,021M</p>
+                                                            <p class="text-xs text-blue-600 mt-1">Mean across paths</p>
+                                                        </div>
+                                                        <div class="bg-gradient-to-br from-green-50 to-green-100 p-3 rounded-lg border border-green-200">
+                                                            <p class="text-xs text-green-700 font-medium">Best Case (P95)</p>
+                                                            <p class="text-xl font-bold text-green-900" id="bestCase">KES 1,089M</p>
+                                                            <p class="text-xs text-green-600 mt-1">95th percentile</p>
+                                                        </div>
+                                                        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-3 rounded-lg border border-yellow-200">
+                                                            <p class="text-xs text-yellow-700 font-medium">Base Case (P50)</p>
+                                                            <p class="text-xl font-bold text-yellow-900" id="baseCase">KES 1,018M</p>
+                                                            <p class="text-xs text-yellow-600 mt-1">Median</p>
+                                                        </div>
+                                                        <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-3 rounded-lg border border-orange-200">
+                                                            <p class="text-xs text-orange-700 font-medium">Stressed Case (P5)</p>
+                                                            <p class="text-xl font-bold text-orange-900" id="stressedCase">KES 934M</p>
+                                                            <p class="text-xs text-orange-600 mt-1">5th percentile (VaR)</p>
+                                                        </div>
+                                                        <div class="bg-gradient-to-br from-red-50 to-red-100 p-3 rounded-lg border border-red-200">
+                                                            <p class="text-xs text-red-700 font-medium">Expected Shortfall</p>
+                                                            <p class="text-xl font-bold text-red-900" id="expectedShortfall">KES 912M</p>
+                                                            <p class="text-xs text-red-600 mt-1">CVaR (tail avg)</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Distribution Charts -->
+                                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                                                        <div>
+                                                            <h6 class="font-semibold text-gray-700 mb-2 text-sm">Pool Cashflow Distribution</h6>
+                                                            <div class="h-64"><canvas id="cashflowDistributionChart"></canvas></div>
+                                                            <p class="text-xs text-gray-600 mt-2">Histogram of 10,000 simulated total pool cashflow outcomes</p>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="font-semibold text-gray-700 mb-2 text-sm">Loss Rate Distribution</h6>
+                                                            <div class="h-64"><canvas id="lossDistributionChart"></canvas></div>
+                                                            <p class="text-xs text-gray-600 mt-2">Distribution of realized loss rates across scenarios</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- TRANCHE ANALYSIS (Waterfall Results) -->
+                                                <div id="trancheAnalysisSection">
+                                                    <h5 class="font-semibold text-gray-800 mb-4 text-lg">💰 Tranche-Level Analysis & Pricing</h5>
+                                                    
+                                                    <!-- Tranche Cards Grid -->
+                                                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                                                        <!-- Senior Tranche -->
+                                                        <div class="bg-white p-5 rounded-lg border-2 border-green-300 shadow-md">
+                                                            <div class="flex items-center justify-between mb-3">
+                                                                <h6 class="font-bold text-green-800">Senior Notes (Class A)</h6>
+                                                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-bold">AAA</span>
+                                                            </div>
+                                                            <div class="space-y-2 text-sm">
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Size:</span>
+                                                                    <span class="font-bold">KES 784M (80%)</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Expected IRR:</span>
+                                                                    <span class="font-bold text-green-700" id="seniorIRR">19.2%</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">IRR Range (P5-P95):</span>
+                                                                    <span class="font-semibold text-xs">18.1% - 20.5%</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">WAL (Years):</span>
+                                                                    <span class="font-semibold">1.8 yrs</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Probability of Loss:</span>
+                                                                    <span class="font-bold text-green-700">0.1%</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Expected Loss:</span>
+                                                                    <span class="font-semibold">KES 0.8M (0.1%)</span>
+                                                                </div>
+                                                                <div class="flex justify-between border-t pt-2 mt-2">
+                                                                    <span class="text-gray-700 font-medium">Suggested Pricing:</span>
+                                                                    <span class="font-bold text-lg text-green-800">19.5%</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Mezzanine Tranche -->
+                                                        <div class="bg-white p-5 rounded-lg border-2 border-blue-300 shadow-md">
+                                                            <div class="flex items-center justify-between mb-3">
+                                                                <h6 class="font-bold text-blue-800">Mezzanine Notes (Class B)</h6>
+                                                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">AA</span>
+                                                            </div>
+                                                            <div class="space-y-2 text-sm">
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Size:</span>
+                                                                    <span class="font-bold">KES 118M (12%)</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Expected IRR:</span>
+                                                                    <span class="font-bold text-blue-700" id="mezzIRR">22.8%</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">IRR Range (P5-P95):</span>
+                                                                    <span class="font-semibold text-xs">19.5% - 25.2%</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">WAL (Years):</span>
+                                                                    <span class="font-semibold">1.9 yrs</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Probability of Loss:</span>
+                                                                    <span class="font-bold text-blue-700">2.8%</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Expected Loss:</span>
+                                                                    <span class="font-semibold">KES 3.3M (2.8%)</span>
+                                                                </div>
+                                                                <div class="flex justify-between border-t pt-2 mt-2">
+                                                                    <span class="text-gray-700 font-medium">Suggested Pricing:</span>
+                                                                    <span class="font-bold text-lg text-blue-800">23.0%</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Equity Tranche -->
+                                                        <div class="bg-white p-5 rounded-lg border-2 border-purple-300 shadow-md">
+                                                            <div class="flex items-center justify-between mb-3">
+                                                                <h6 class="font-bold text-purple-800">Equity / Junior (Originator)</h6>
+                                                                <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-bold">Unrated</span>
+                                                            </div>
+                                                            <div class="space-y-2 text-sm">
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Size:</span>
+                                                                    <span class="font-bold">KES 78M (8%)</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Expected IRR:</span>
+                                                                    <span class="font-bold text-purple-700" id="equityIRR">28.5%</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">IRR Range (P5-P95):</span>
+                                                                    <span class="font-semibold text-xs">8.2% - 42.1%</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">WAL (Years):</span>
+                                                                    <span class="font-semibold">2.1 yrs</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Probability of Loss:</span>
+                                                                    <span class="font-bold text-orange-700">18.5%</span>
+                                                                </div>
+                                                                <div class="flex justify-between">
+                                                                    <span class="text-gray-600">Expected Loss:</span>
+                                                                    <span class="font-semibold">KES 14.4M (18.5%)</span>
+                                                                </div>
+                                                                <div class="flex justify-between border-t pt-2 mt-2">
+                                                                    <span class="text-gray-700 font-medium">Expected Return:</span>
+                                                                    <span class="font-bold text-lg text-purple-800">28.5%</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Tranche-Level Distribution Charts -->
+                                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                                                        <div class="bg-white p-4 rounded-lg border">
+                                                            <h6 class="font-semibold text-gray-700 mb-2 text-sm">IRR Distribution by Tranche</h6>
+                                                            <div class="h-64"><canvas id="trancheIRRChart"></canvas></div>
+                                                            <p class="text-xs text-gray-600 mt-2">Box plot showing IRR distributions across 10,000 paths</p>
+                                                        </div>
+                                                        <div class="bg-white p-4 rounded-lg border">
+                                                            <h6 class="font-semibold text-gray-700 mb-2 text-sm">Waterfall Cashflow Allocation</h6>
+                                                            <div class="h-64"><canvas id="waterfallAllocationChart"></canvas></div>
+                                                            <p class="text-xs text-gray-600 mt-2">Mean cashflow allocation across waterfall priority</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Risk Metrics Table -->
+                                                    <div class="bg-white p-4 rounded-lg border">
+                                                        <h6 class="font-semibold text-gray-700 mb-3">Comprehensive Risk Metrics</h6>
+                                                        <div class="overflow-x-auto">
+                                                            <table class="w-full text-sm">
+                                                                <thead class="bg-gray-50 text-xs">
+                                                                    <tr>
+                                                                        <th class="px-4 py-2 text-left">Tranche</th>
+                                                                        <th class="px-4 py-2 text-right">Expected IRR</th>
+                                                                        <th class="px-4 py-2 text-right">VaR (P5)</th>
+                                                                        <th class="px-4 py-2 text-right">CVaR</th>
+                                                                        <th class="px-4 py-2 text-right">Std Dev</th>
+                                                                        <th class="px-4 py-2 text-right">Sharpe Ratio</th>
+                                                                        <th class="px-4 py-2 text-right">Prob of Loss</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="divide-y">
+                                                                    <tr class="hover:bg-gray-50">
+                                                                        <td class="px-4 py-2 font-medium text-green-800">Senior (Class A)</td>
+                                                                        <td class="px-4 py-2 text-right font-bold">19.2%</td>
+                                                                        <td class="px-4 py-2 text-right">18.1%</td>
+                                                                        <td class="px-4 py-2 text-right">17.9%</td>
+                                                                        <td class="px-4 py-2 text-right">0.8%</td>
+                                                                        <td class="px-4 py-2 text-right font-bold text-green-700">1.15</td>
+                                                                        <td class="px-4 py-2 text-right text-green-700">0.1%</td>
+                                                                    </tr>
+                                                                    <tr class="hover:bg-gray-50">
+                                                                        <td class="px-4 py-2 font-medium text-blue-800">Mezzanine (Class B)</td>
+                                                                        <td class="px-4 py-2 text-right font-bold">22.8%</td>
+                                                                        <td class="px-4 py-2 text-right">19.5%</td>
+                                                                        <td class="px-4 py-2 text-right">18.2%</td>
+                                                                        <td class="px-4 py-2 text-right">2.1%</td>
+                                                                        <td class="px-4 py-2 text-right font-bold text-blue-700">0.95</td>
+                                                                        <td class="px-4 py-2 text-right text-blue-700">2.8%</td>
+                                                                    </tr>
+                                                                    <tr class="hover:bg-gray-50">
+                                                                        <td class="px-4 py-2 font-medium text-purple-800">Equity / Junior</td>
+                                                                        <td class="px-4 py-2 text-right font-bold">28.5%</td>
+                                                                        <td class="px-4 py-2 text-right">8.2%</td>
+                                                                        <td class="px-4 py-2 text-right">3.1%</td>
+                                                                        <td class="px-4 py-2 text-right">8.5%</td>
+                                                                        <td class="px-4 py-2 text-right font-bold text-purple-700">0.72</td>
+                                                                        <td class="px-4 py-2 text-right text-orange-700">18.5%</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="mt-4 p-3 bg-gray-50 rounded text-xs">
+                                                            <p class="text-gray-700">
+                                                                <strong>Note:</strong> VaR (Value at Risk) = 5th percentile IRR. CVaR (Conditional Value at Risk / Expected Shortfall) = Average of outcomes below P5. 
+                                                                Sharpe Ratio = (Expected Return - Risk-Free Rate) / Std Dev. Risk-Free Rate assumed at 13% (CBK Rate).
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             </div>
@@ -3571,6 +3929,258 @@
                 }
                 
                 return csv;
+            }
+            
+            // ===== MONTE CARLO SIMULATION & CASHFLOW GENERATION =====
+            
+            // Generate Cashflow Button - Show Monte Carlo Section
+            document.getElementById('generateCashflowBtn')?.addEventListener('click', () => {
+                // Simulate AI model processing
+                document.getElementById('generateCashflowBtn').disabled = true;
+                document.getElementById('generateCashflowBtn').innerHTML = '⏳ Generating Cashflows...';
+                
+                setTimeout(() => {
+                    document.getElementById('generateCashflowBtn').innerHTML = '✓ Cashflows Generated';
+                    document.getElementById('monteCarloSection').classList.remove('hidden');
+                    
+                    // Scroll to Monte Carlo section
+                    document.getElementById('monteCarloSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 2000); // Simulate 2s processing time
+            });
+            
+            // Simulation Parameter Sliders - Update Labels
+            document.getElementById('gdpGrowthSlider')?.addEventListener('input', (e) => {
+                document.getElementById('gdpGrowthLabel').textContent = `${parseFloat(e.target.value).toFixed(1)}%`;
+            });
+            document.getElementById('unemploymentSlider')?.addEventListener('input', (e) => {
+                document.getElementById('unemploymentLabel').textContent = `${parseFloat(e.target.value).toFixed(1)}%`;
+            });
+            document.getElementById('cbkRateSlider')?.addEventListener('input', (e) => {
+                document.getElementById('cbkRateLabel').textContent = `${parseFloat(e.target.value).toFixed(1)}%`;
+            });
+            document.getElementById('prepaymentRateSlider')?.addEventListener('input', (e) => {
+                document.getElementById('prepaymentRateLabel').textContent = `${parseFloat(e.target.value).toFixed(1)}%`;
+            });
+            document.getElementById('lossRateSlider')?.addEventListener('input', (e) => {
+                document.getElementById('lossRateLabel').textContent = `${parseFloat(e.target.value).toFixed(1)}%`;
+            });
+            document.getElementById('recoveryRateSlider')?.addEventListener('input', (e) => {
+                document.getElementById('recoveryRateLabel').textContent = `${parseFloat(e.target.value).toFixed(0)}%`;
+            });
+            
+            // Run Monte Carlo Simulation
+            document.getElementById('runMonteCarloBtn')?.addEventListener('click', () => {
+                const numPaths = parseInt(document.getElementById('numPathsSelect').value);
+                const correlationModel = document.getElementById('correlationModelSelect').value;
+                const timeHorizon = parseInt(document.getElementById('timeHorizonInput').value);
+                const lossRate = parseFloat(document.getElementById('lossRateSlider').value);
+                const prepaymentRate = parseFloat(document.getElementById('prepaymentRateSlider').value);
+                const recoveryRate = parseFloat(document.getElementById('recoveryRateSlider').value);
+                
+                // Simulate processing
+                const btn = document.getElementById('runMonteCarloBtn');
+                btn.disabled = true;
+                btn.innerHTML = '⏳ Running Simulation...';
+                
+                setTimeout(() => {
+                    // Run simulation
+                    runMonteCarloSimulation(numPaths, lossRate, prepaymentRate, recoveryRate);
+                    
+                    // Show results
+                    document.getElementById('simulationResults').classList.remove('hidden');
+                    document.getElementById('simulationTime').textContent = `Processing time: ${(numPaths / 4000).toFixed(1)}s`;
+                    document.getElementById('simulationPaths').textContent = `${numPaths.toLocaleString()} paths`;
+                    
+                    btn.disabled = false;
+                    btn.innerHTML = '▶ Run Simulation';
+                    
+                    // Scroll to results
+                    document.getElementById('simulationResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, Math.min(numPaths / 4000 * 1000, 3000)); // Simulate realistic processing time
+            });
+            
+            function runMonteCarloSimulation(numPaths, lossRate, prepaymentRate, recoveryRate) {
+                // Mock Monte Carlo simulation with realistic distributions
+                const poolValue = 980; // Million KES
+                
+                // Generate distribution of outcomes
+                const outcomes = [];
+                for (let i = 0; i < numPaths; i++) {
+                    // Simulate random loss and prepayment with some correlation
+                    const randomLoss = (lossRate / 100) + (Math.random() - 0.5) * 0.06; // +/- 3%
+                    const randomPrepay = (prepaymentRate / 100) + (Math.random() - 0.5) * 0.04; // +/- 2%
+                    const randomRecovery = (recoveryRate / 100) + (Math.random() - 0.5) * 0.2; // +/- 10%
+                    
+                    // Calculate pool cashflow for this path
+                    const expectedCF = poolValue * 1.12; // 112% including interest
+                    const losses = poolValue * randomLoss * (1 - randomRecovery);
+                    const prepayImpact = poolValue * randomPrepay * 0.02; // Small prepay penalty
+                    const pathCashflow = expectedCF - losses - prepayImpact;
+                    
+                    outcomes.push({
+                        cashflow: pathCashflow,
+                        loss: randomLoss * 100
+                    });
+                }
+                
+                // Sort outcomes
+                outcomes.sort((a, b) => a.cashflow - b.cashflow);
+                
+                // Calculate statistics
+                const mean = outcomes.reduce((sum, o) => sum + o.cashflow, 0) / numPaths;
+                const p5 = outcomes[Math.floor(numPaths * 0.05)].cashflow; // VaR
+                const p50 = outcomes[Math.floor(numPaths * 0.50)].cashflow; // Median
+                const p95 = outcomes[Math.floor(numPaths * 0.95)].cashflow;
+                
+                // CVaR (Expected Shortfall) - average of outcomes below P5
+                const tailOutcomes = outcomes.slice(0, Math.floor(numPaths * 0.05));
+                const cvar = tailOutcomes.reduce((sum, o) => sum + o.cashflow, 0) / tailOutcomes.length;
+                
+                // Update UI
+                document.getElementById('expectedCashflow').textContent = `KES ${mean.toFixed(0)}M`;
+                document.getElementById('bestCase').textContent = `KES ${p95.toFixed(0)}M`;
+                document.getElementById('baseCase').textContent = `KES ${p50.toFixed(0)}M`;
+                document.getElementById('stressedCase').textContent = `KES ${p5.toFixed(0)}M`;
+                document.getElementById('expectedShortfall').textContent = `KES ${cvar.toFixed(0)}M`;
+                
+                // Render distribution charts
+                renderCashflowDistribution(outcomes);
+                renderLossDistribution(outcomes);
+                renderTrancheAnalysis(mean, p5, p50, p95);
+            }
+            
+            function renderCashflowDistribution(outcomes) {
+                // Create histogram data
+                const numBins = 40;
+                const min = Math.min(...outcomes.map(o => o.cashflow));
+                const max = Math.max(...outcomes.map(o => o.cashflow));
+                const binSize = (max - min) / numBins;
+                
+                const bins = new Array(numBins).fill(0);
+                const labels = [];
+                
+                for (let i = 0; i < numBins; i++) {
+                    labels.push((min + i * binSize).toFixed(0));
+                }
+                
+                outcomes.forEach(o => {
+                    const binIndex = Math.min(Math.floor((o.cashflow - min) / binSize), numBins - 1);
+                    bins[binIndex]++;
+                });
+                
+                createOrUpdateChart('cashflowDistributionChart', 'bar', {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Frequency',
+                        data: bins,
+                        backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                        borderColor: 'rgba(139, 92, 246, 1)',
+                        borderWidth: 1
+                    }]
+                }, {
+                    scales: {
+                        x: { title: { display: true, text: 'Pool Cashflow (KES M)' } },
+                        y: { title: { display: true, text: 'Frequency' } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                });
+            }
+            
+            function renderLossDistribution(outcomes) {
+                // Create histogram for loss rates
+                const numBins = 30;
+                const lossRates = outcomes.map(o => o.loss);
+                const min = Math.min(...lossRates);
+                const max = Math.max(...lossRates);
+                const binSize = (max - min) / numBins;
+                
+                const bins = new Array(numBins).fill(0);
+                const labels = [];
+                
+                for (let i = 0; i < numBins; i++) {
+                    labels.push((min + i * binSize).toFixed(1) + '%');
+                }
+                
+                lossRates.forEach(loss => {
+                    const binIndex = Math.min(Math.floor((loss - min) / binSize), numBins - 1);
+                    bins[binIndex]++;
+                });
+                
+                createOrUpdateChart('lossDistributionChart', 'bar', {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Frequency',
+                        data: bins,
+                        backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        borderWidth: 1
+                    }]
+                }, {
+                    scales: {
+                        x: { title: { display: true, text: 'Loss Rate (%)' } },
+                        y: { title: { display: true, text: 'Frequency' } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                });
+            }
+            
+            function renderTrancheAnalysis(mean, p5, p50, p95) {
+                // Waterfall allocation (stacked bar)
+                createOrUpdateChart('waterfallAllocationChart', 'bar', {
+                    labels: ['Senior Interest', 'Senior Principal', 'Mezz Interest', 'Mezz Principal', 'Equity Residual'],
+                    datasets: [{
+                        label: 'Cashflow Allocation (KES M)',
+                        data: [114, 670, 17, 101, 119],
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(34, 197, 94, 0.6)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(59, 130, 246, 0.6)',
+                            'rgba(168, 85, 247, 0.7)'
+                        ]
+                    }]
+                }, {
+                    indexAxis: 'y',
+                    scales: {
+                        x: { stacked: false, title: { display: true, text: 'Cashflow (KES M)' } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                });
+                
+                // IRR distribution by tranche (box plot simulation using bar)
+                createOrUpdateChart('trancheIRRChart', 'bar', {
+                    labels: ['Senior (Class A)', 'Mezzanine (Class B)', 'Equity / Junior'],
+                    datasets: [
+                        {
+                            label: 'P5 (VaR)',
+                            data: [18.1, 19.5, 8.2],
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)'
+                        },
+                        {
+                            label: 'P50 (Median)',
+                            data: [19.2, 22.8, 28.5],
+                            backgroundColor: 'rgba(251, 191, 36, 0.7)'
+                        },
+                        {
+                            label: 'P95',
+                            data: [20.5, 25.2, 42.1],
+                            backgroundColor: 'rgba(34, 197, 94, 0.7)'
+                        }
+                    ]
+                }, {
+                    scales: {
+                        y: { title: { display: true, text: 'IRR (%)' } }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                });
             }
 
             function setupRangeSlider(minSlider, maxSlider, minLabel, maxLabel, formatter) {
