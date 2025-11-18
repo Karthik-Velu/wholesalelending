@@ -717,44 +717,21 @@
                                         
                                         <!-- Filter Comparison Table -->
                                         <div class="md:col-span-2 border-t pt-4 mt-4">
-                                            <h4 class="font-semibold text-center text-gray-700 mb-4">Filter Comparison: Filtered Pool vs Overall Portfolio</h4>
+                                            <h4 class="font-semibold text-center text-gray-700 mb-4">Filter Comparison: Selected Group vs Rest of Portfolio</h4>
                                             <div class="overflow-x-auto">
                                                 <table class="w-full text-sm text-left text-gray-500">
                                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                                         <tr>
                                                             <th scope="col" class="px-4 py-2">Filter</th>
                                                             <th scope="col" class="px-4 py-2">Selected Bucket</th>
-                                                            <th scope="col" class="px-4 py-2 text-right">Bucket Loss Rate</th>
-                                                            <th scope="col" class="px-4 py-2 text-right">Overall Portfolio Loss Rate</th>
-                                                            <th scope="col" class="px-4 py-2 text-right">Bucket WA KI Score</th>
-                                                            <th scope="col" class="px-4 py-2 text-right">Overall Portfolio WA KI Score</th>
+                                                            <th scope="col" class="px-4 py-2 text-right">Selected Group Loss Rate</th>
+                                                            <th scope="col" class="px-4 py-2 text-right">Rest of Portfolio Loss Rate</th>
+                                                            <th scope="col" class="px-4 py-2 text-right">Selected Group WA KI Score</th>
+                                                            <th scope="col" class="px-4 py-2 text-right">Rest of Portfolio WA KI Score</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
-                                                        <tr class="bg-white border-b">
-                                                            <td class="px-4 py-2 font-medium text-gray-900">Loan Tenure</td>
-                                                            <td id="lossCompTenureBucket" class="px-4 py-2"></td>
-                                                            <td id="lossCompTenureBucketRate" class="px-4 py-2 text-right font-semibold text-green-600"></td>
-                                                            <td id="lossCompTenureOverallRate" class="px-4 py-2 text-right"></td>
-                                                            <td id="kiCompTenureBucket" class="px-4 py-2 text-right font-semibold text-teal-600"></td>
-                                                            <td id="kiCompTenureOverall" class="px-4 py-2 text-right"></td>
-                                                        </tr>
-                                                        <tr class="bg-white border-b">
-                                                            <td class="px-4 py-2 font-medium text-gray-900">Loan Amount</td>
-                                                            <td id="lossCompAmountBucket" class="px-4 py-2"></td>
-                                                            <td id="lossCompAmountBucketRate" class="px-4 py-2 text-right font-semibold text-green-600"></td>
-                                                            <td id="lossCompAmountOverallRate" class="px-4 py-2 text-right"></td>
-                                                            <td id="kiCompAmountBucket" class="px-4 py-2 text-right font-semibold text-teal-600"></td>
-                                                            <td id="kiCompAmountOverall" class="px-4 py-2 text-right"></td>
-                                                        </tr>
-                                                        <tr class="bg-white border-b">
-                                                            <td class="px-4 py-2 font-medium text-gray-900">Interest Rate</td>
-                                                            <td id="lossCompInterestBucket" class="px-4 py-2"></td>
-                                                            <td id="lossCompInterestBucketRate" class="px-4 py-2 text-right font-semibold text-green-600"></td>
-                                                            <td id="lossCompInterestOverallRate" class="px-4 py-2 text-right"></td>
-                                                            <td id="kiCompInterestBucket" class="px-4 py-2 text-right font-semibold text-teal-600"></td>
-                                                            <td id="kiCompInterestOverall" class="px-4 py-2 text-right"></td>
-                                                        </tr>
+                                                    <tbody id="filterComparisonTableBody">
+                                                        <!-- Rows will be dynamically generated -->
                                                     </tbody>
                                                 </table>
                                             </div>
