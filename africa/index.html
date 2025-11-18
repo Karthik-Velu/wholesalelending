@@ -566,7 +566,7 @@
 
                             <!-- FILTER & STRUCTURING SECTION (Shows after clicking "Proceed") -->
                             <div id="filterStructuringSection" class="hidden">
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div class="lg:col-span-1 bg-white p-6 rounded-lg border space-y-6">
                                     <div>
                                         <div class="flex justify-between items-center mb-3">
@@ -617,57 +617,9 @@
                                         
                                         <div class="pt-4"><button id="applyFiltersBtn" class="w-full bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-700 text-sm">Apply All Filters</button></div>
                                     </div>
-                                    <div class="border-t pt-6">
-                                        <h4 class="font-semibold mb-3">Deal Structure</h4>
-                                        <div class="space-y-4">
-                                             <div class="border rounded-lg p-3 bg-gray-50 text-sm">
-                                                <div class="grid grid-cols-2 gap-2">
-                                                    <span>Kenya 2-Year Yield:</span><span class="font-bold" id="baseYield">17.5%</span>
-                                                    <span>Senior Risk Premium:</span><span class="font-bold" id="seniorRiskPremium">2.0%</span>
-                                                    <span>Mezzanine Risk Premium:</span><span class="font-bold" id="mezzRiskPremium">5.5%</span>
-                                                </div>
-                                            </div>
-                                            <div class="border rounded-lg p-3">
-                                                <p class="font-semibold text-teal-700">Senior Tranche</p>
-                                                <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
-                                                    <label>Size (%):</label><input type="number" value="80" class="border-gray-300 rounded-md shadow-sm w-full">
-                                                    <label>Coupon (%):</label><input type="number" value="14" class="border-gray-300 rounded-md shadow-sm w-full">
-                                                    <label>Suggested Yield:</label><span id="seniorYield" class="font-bold text-green-600">19.5%</span>
-                                                </div>
-                                            </div>
-                                            <div class="border rounded-lg p-3">
-                                                <p class="font-semibold text-teal-700">Mezzanine Tranche</p>
-                                                <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
-                                                    <label>Size (%):</label><input type="number" value="12" class="border-gray-300 rounded-md shadow-sm w-full">
-                                                    <label>Coupon (%):</label><input type="number" value="18" class="border-gray-300 rounded-md shadow-sm w-full">
-                                                    <label>Suggested Yield:</label><span id="mezzYield" class="font-bold text-green-600">23.0%</span>
-                                                </div>
-                                            </div>
-                                             <div class="border rounded-lg p-3">
-                                                <p class="font-semibold text-teal-700">Equity Tranche</p>
-                                                <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
-                                                    <label>Size (%):</label><input type="number" value="8" class="border-gray-300 rounded-md shadow-sm w-full" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="border-t pt-6">
-                                        <h4 class="font-semibold mb-3">Sensitivity Analysis</h4>
-                                        <div class="space-y-4">
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700">Expected Loss Rate (%): <span id="sensitivityLossLabel" class="font-bold text-red-600">4.1%</span></label>
-                                                <input id="sensitivityLossSlider" type="range" min="2" max="10" step="0.1" value="4.1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700">Prepayment Rate (%): <span id="sensitivityPrepaymentLabel" class="font-bold text-blue-600">8.0%</span></label>
-                                                <input id="sensitivityPrepaymentSlider" type="range" min="0" max="20" step="0.5" value="8.0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                                            </div>
-                                            <div class="pt-2"><button id="runSensitivitySimulationBtn" class="w-full bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 text-sm">Run Simulation</button></div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div id="simulationResultsPanel" class="lg:col-span-2 bg-white p-6 rounded-lg border space-y-6 hidden">
-                                    <h4 class="font-semibold text-center">Simulation Results</h4>
+                                    <h4 class="font-semibold text-center">Filter Results</h4>
                                     <p id="simulationOriginatorName" class="text-center text-sm text-gray-600 -mt-2"></p>
                                     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
                                         <div class="bg-gray-50 p-3 rounded-md"><p class="text-sm text-gray-500">Transaction Grade</p><p id="poolGrade" class="text-xl font-bold text-teal-600"><button class="ki-score-link" data-score-type="pool" data-name="Simulated Pool">AA-</button></p></div>
@@ -681,9 +633,9 @@
                                         <div class="chart-container h-56"><canvas id="geoConcentrationChart"></canvas></div>
                                         <div class="chart-container h-56"><canvas id="kiScoreDistChart"></canvas></div>
                                         
-                                        <!-- Estimated Loss Rate Comparison Table -->
+                                        <!-- Filter Comparison Table -->
                                         <div class="md:col-span-2 border-t pt-4 mt-4">
-                                            <h4 class="font-semibold text-center text-gray-700 mb-4">Estimated Loss Rate by Filter</h4>
+                                            <h4 class="font-semibold text-center text-gray-700 mb-4">Filter Comparison: Filtered Pool vs Overall Portfolio</h4>
                                             <div class="overflow-x-auto">
                                                 <table class="w-full text-sm text-left text-gray-500">
                                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -691,7 +643,9 @@
                                                             <th scope="col" class="px-4 py-2">Filter</th>
                                                             <th scope="col" class="px-4 py-2">Selected Bucket</th>
                                                             <th scope="col" class="px-4 py-2 text-right">Bucket Loss Rate</th>
-                                                            <th scope="col" class="px-4 py-2 text-right">Overall Portfolio Rate</th>
+                                                            <th scope="col" class="px-4 py-2 text-right">Overall Portfolio Loss Rate</th>
+                                                            <th scope="col" class="px-4 py-2 text-right">Bucket WA KI Score</th>
+                                                            <th scope="col" class="px-4 py-2 text-right">Overall Portfolio WA KI Score</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -700,18 +654,24 @@
                                                             <td id="lossCompTenureBucket" class="px-4 py-2"></td>
                                                             <td id="lossCompTenureBucketRate" class="px-4 py-2 text-right font-semibold text-green-600"></td>
                                                             <td id="lossCompTenureOverallRate" class="px-4 py-2 text-right"></td>
+                                                            <td id="kiCompTenureBucket" class="px-4 py-2 text-right font-semibold text-teal-600"></td>
+                                                            <td id="kiCompTenureOverall" class="px-4 py-2 text-right"></td>
                                                         </tr>
                                                         <tr class="bg-white border-b">
                                                             <td class="px-4 py-2 font-medium text-gray-900">Loan Amount</td>
                                                             <td id="lossCompAmountBucket" class="px-4 py-2"></td>
                                                             <td id="lossCompAmountBucketRate" class="px-4 py-2 text-right font-semibold text-green-600"></td>
                                                             <td id="lossCompAmountOverallRate" class="px-4 py-2 text-right"></td>
+                                                            <td id="kiCompAmountBucket" class="px-4 py-2 text-right font-semibold text-teal-600"></td>
+                                                            <td id="kiCompAmountOverall" class="px-4 py-2 text-right"></td>
                                                         </tr>
                                                         <tr class="bg-white border-b">
                                                             <td class="px-4 py-2 font-medium text-gray-900">Interest Rate</td>
                                                             <td id="lossCompInterestBucket" class="px-4 py-2"></td>
                                                             <td id="lossCompInterestBucketRate" class="px-4 py-2 text-right font-semibold text-green-600"></td>
                                                             <td id="lossCompInterestOverallRate" class="px-4 py-2 text-right"></td>
+                                                            <td id="kiCompInterestBucket" class="px-4 py-2 text-right font-semibold text-teal-600"></td>
+                                                            <td id="kiCompInterestOverall" class="px-4 py-2 text-right"></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -777,6 +737,12 @@
                                                     🤖 Generate Expected Cashflows (AI Model)
                                                 </button>
                                                 <p class="text-xs text-gray-600 mt-2">Module 1 (PD Model) + Module 2 (Loan-Level Cashflow Model) will run</p>
+                                                <button id="downloadLoanCashflowBtn" class="mt-4 border border-green-600 text-green-700 px-6 py-2 rounded-lg font-semibold hover:bg-green-50 hidden">
+                                                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                                    </svg>
+                                                    Download Loan-Level Cashflow File (CSV)
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -1989,7 +1955,6 @@
             const reuploadPoolBtn = document.getElementById('reuploadPoolBtn');
             const finalizePoolBtn = document.getElementById('finalizePoolBtn');
             const applyFiltersBtn = document.getElementById('applyFiltersBtn');
-            const runSensitivitySimulationBtn = document.getElementById('runSensitivitySimulationBtn');
             const simulationResultsPanel = document.getElementById('simulationResultsPanel');
             const simulationOriginatorName = document.getElementById('simulationOriginatorName');
             
@@ -2023,12 +1988,6 @@
             const interestRateMaxSlider = document.getElementById('interestRateMaxSlider');
             const interestRateMinLabel = document.getElementById('interestRateMinLabel');
             const interestRateMaxLabel = document.getElementById('interestRateMaxLabel');
-
-            const sensitivityLossSlider = document.getElementById('sensitivityLossSlider');
-            const sensitivityLossLabel = document.getElementById('sensitivityLossLabel');
-            const sensitivityPrepaymentSlider = document.getElementById('sensitivityPrepaymentSlider');
-            const sensitivityPrepaymentLabel = document.getElementById('sensitivityPrepaymentLabel');
-
             
             // DealTrack Selectors
             const dealTrackNav = document.getElementById('dealTrackNav');
@@ -3652,67 +3611,85 @@
 
             function applyFilters() {
                 simulationResultsPanel.classList.remove('hidden');
-                simulationOriginatorName.textContent = 'For Originator: Rafiki MFB';
-                document.getElementById('selectedLoans').textContent = '9,540';
-                document.getElementById('poolValue').textContent = `980M`;
-                document.getElementById('poolTenure').textContent = `18 mo`;
+                simulationOriginatorName.textContent = 'Filtered Pool Results';
                 
-                const baseLossRate = 4.1;
-                sensitivityLossSlider.value = baseLossRate;
-                sensitivityLossLabel.textContent = `${baseLossRate}%`;
+                // Get filter values
+                const kiScoreMin = parseInt(kiScoreMinSlider.value);
+                const kiScoreMax = parseInt(kiScoreMaxSlider.value);
+                const loanAmountMin = parseInt(loanAmountMinSlider.value);
+                const loanAmountMax = parseInt(loanAmountMaxSlider.value);
+                const tenureMin = parseInt(tenureMinSlider.value);
+                const tenureMax = parseInt(tenureMaxSlider.value);
+                const interestMin = parseInt(interestRateMinSlider.value);
+                const interestMax = parseInt(interestRateMaxSlider.value);
                 
-                const baseCase = calculateWaterfall(980, baseLossRate);
-                state.simulationBaseCase = { ...baseCase, lossRate: baseLossRate };
-
-                runSensitivitySimulation(false); // Run initial simulation without showing modal
-
-                 createOrUpdateChart('geoConcentrationChart', {
+                // Calculate filtered pool metrics (mock data)
+                const filteredLoanCount = 7540;
+                const filteredPoolValue = 780;
+                const filteredWAKiScore = 22;
+                const filteredWATenure = 16;
+                const filteredLossRate = 3.8;
+                
+                // Overall portfolio metrics (mock data)
+                const overallLoanCount = 10000;
+                const overallPoolValue = 1050;
+                const overallWAKiScore = 28;
+                const overallWATenure = 20;
+                const overallLossRate = 4.5;
+                
+                // Update summary cards
+                document.getElementById('selectedLoans').textContent = filteredLoanCount.toLocaleString();
+                document.getElementById('poolValue').textContent = `${filteredPoolValue}M`;
+                document.getElementById('poolTenure').textContent = `${filteredWATenure} mo`;
+                document.getElementById('poolKiScore').textContent = filteredWAKiScore;
+                document.getElementById('estimatedLoss').textContent = `${filteredLossRate.toFixed(1)}%`;
+                
+                // Update comparison table
+                document.getElementById('lossCompTenureBucket').textContent = `${tenureMin} to ${tenureMax} months`;
+                document.getElementById('lossCompTenureBucketRate').textContent = `${filteredLossRate.toFixed(2)}%`;
+                document.getElementById('lossCompTenureOverallRate').textContent = `${overallLossRate.toFixed(2)}%`;
+                document.getElementById('kiCompTenureBucket').textContent = filteredWAKiScore;
+                document.getElementById('kiCompTenureOverall').textContent = overallWAKiScore;
+                
+                const amountMinK = loanAmountMin / 1000;
+                const amountMaxK = loanAmountMax / 1000;
+                document.getElementById('lossCompAmountBucket').textContent = `KES ${amountMinK}k to ${amountMaxK}k`;
+                document.getElementById('lossCompAmountBucketRate').textContent = `${filteredLossRate.toFixed(2)}%`;
+                document.getElementById('lossCompAmountOverallRate').textContent = `${overallLossRate.toFixed(2)}%`;
+                document.getElementById('kiCompAmountBucket').textContent = filteredWAKiScore;
+                document.getElementById('kiCompAmountOverall').textContent = overallWAKiScore;
+                
+                document.getElementById('lossCompInterestBucket').textContent = `${interestMin}% to ${interestMax}%`;
+                document.getElementById('lossCompInterestBucketRate').textContent = `${filteredLossRate.toFixed(2)}%`;
+                document.getElementById('lossCompInterestOverallRate').textContent = `${overallLossRate.toFixed(2)}%`;
+                document.getElementById('kiCompInterestBucket').textContent = filteredWAKiScore;
+                document.getElementById('kiCompInterestOverall').textContent = overallWAKiScore;
+                
+                document.getElementById('overallEstimatedLoss').textContent = `${filteredLossRate.toFixed(1)}%`;
+                
+                // Create charts
+                createOrUpdateChart('geoConcentrationChart', {
                     type: 'doughnut',
                     data: {
                         labels: ['Baringo', 'Bomet', 'Bungoma', 'Busia', 'Elgeyo-Marakwet'],
                         datasets: [{ data: [25, 22, 20, 18, 15], backgroundColor: ['#14b8a6', '#0f766e', '#5eead4', '#99f6e4', '#a7f3d0'] }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }, title: { display: true, text: 'Geographic Concentration' } } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }, title: { display: true, text: 'Geographic Concentration (Filtered)' } } }
                 });
 
                 createOrUpdateChart('kiScoreDistChart', {
                     type: 'bar',
                     data: {
                         labels: ['1-20', '21-40', '41-60', '61-80', '81-100'],
-                        datasets: [{ label: 'Loan Count', data: [4500, 3200, 1500, 340, 0], backgroundColor: '#14b8a6' }]
+                        datasets: [{ label: 'Loan Count', data: [4200, 2800, 500, 40, 0], backgroundColor: '#14b8a6' }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, title: { display: true, text: 'KI Score Distribution (Lower is Better)' } } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, title: { display: true, text: 'KI Score Distribution - Filtered Pool (Lower is Better)' } } }
                 });
-            }
-
-            function runSensitivitySimulation(showModal = true) {
-                const lossRate = parseFloat(sensitivityLossSlider.value);
-                document.getElementById('estimatedLoss').textContent = `${lossRate.toFixed(1)}%`;
                 
-                // Update new loss rate comparison table
-                const tenureMin = tenureMinSlider.value;
-                const tenureMax = tenureMaxSlider.value;
-                document.getElementById('lossCompTenureBucket').textContent = `${tenureMin} to ${tenureMax} months`;
-                document.getElementById('lossCompTenureBucketRate').textContent = `${(lossRate - 0.2).toFixed(2)}%`;
-                document.getElementById('lossCompTenureOverallRate').textContent = `${(lossRate + 1.0).toFixed(2)}%`;
-
-                const amountMin = loanAmountMinSlider.value / 1000;
-                const amountMax = loanAmountMaxSlider.value / 1000;
-                document.getElementById('lossCompAmountBucket').textContent = `KES ${amountMin}k to ${amountMax}k`;
-                document.getElementById('lossCompAmountBucketRate').textContent = `${(lossRate - 0.1).toFixed(2)}%`;
-                document.getElementById('lossCompAmountOverallRate').textContent = `${(lossRate + 1.5).toFixed(2)}%`;
-
-                const interestMin = interestRateMinSlider.value;
-                const interestMax = interestRateMaxSlider.value;
-                document.getElementById('lossCompInterestBucket').textContent = `${interestMin}% to ${interestMax}%`;
-                document.getElementById('lossCompInterestBucketRate').textContent = `${(lossRate + 0.2).toFixed(2)}%`;
-                document.getElementById('lossCompInterestOverallRate').textContent = `${(lossRate + 1.2).toFixed(2)}%`;
-
-                document.getElementById('overallEstimatedLoss').textContent = `${lossRate.toFixed(1)}%`;
-
-
-                const stressedCase = calculateWaterfall(980, lossRate);
-
+                // Update waterfall chart with base case
+                const baseCase = calculateWaterfall(filteredPoolValue, filteredLossRate);
+                state.simulationBaseCase = { ...baseCase, lossRate: filteredLossRate };
+                
                 createOrUpdateChart('waterfallChart', {
                     type: 'bar',
                     data: {
@@ -3720,76 +3697,36 @@
                         datasets: [{
                             label: 'Principal',
                             data: [
-                                stressedCase.senior.principal.toFixed(0),
-                                stressedCase.mezz.principal.toFixed(0),
-                                stressedCase.equity.principal.toFixed(0)
+                                baseCase.senior.principal.toFixed(0),
+                                baseCase.mezz.principal.toFixed(0),
+                                baseCase.equity.principal.toFixed(0)
                             ],
-                            backgroundColor: '#0d9488' // Teal
+                            backgroundColor: '#0d9488'
                         }, {
                             label: 'Interest',
                             data: [
-                                stressedCase.senior.interest.toFixed(0),
-                                stressedCase.mezz.interest.toFixed(0),
-                                stressedCase.equity.interest.toFixed(0)
+                                baseCase.senior.interest.toFixed(0),
+                                baseCase.mezz.interest.toFixed(0),
+                                baseCase.equity.interest.toFixed(0)
                             ],
-                            backgroundColor: '#5eead4' // Lighter Teal
+                            backgroundColor: '#5eead4'
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: {
-                                position: 'top'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Cashflow Payout Waterfall (KES Millions)'
-                            }
+                            legend: { position: 'top' },
+                            title: { display: true, text: 'Cashflow Payout Waterfall (KES Millions)' }
                         },
                         scales: {
-                            x: {
-                                stacked: true
-                            },
-                            y: {
-                                stacked: true,
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'KES Millions'
-                                }
-                            }
+                            x: { stacked: true },
+                            y: { stacked: true, beginAtZero: true, title: { display: true, text: 'KES Millions' } }
                         }
                     }
                 });
-
-                if (showModal && state.simulationBaseCase.lossRate) {
-                    document.getElementById('baseLossRate').textContent = `${state.simulationBaseCase.lossRate.toFixed(1)}%`;
-                    document.getElementById('stressedLossRate').textContent = `${lossRate.toFixed(1)}%`;
-                    
-                    const baseSeniorTotal = state.simulationBaseCase.senior.principal + state.simulationBaseCase.senior.interest;
-                    const stressedSeniorTotal = stressedCase.senior.principal + stressedCase.senior.interest;
-
-                    const baseMezzTotal = state.simulationBaseCase.mezz.principal + state.simulationBaseCase.mezz.interest;
-                    const stressedMezzTotal = stressedCase.mezz.principal + stressedCase.mezz.interest;
-
-                    const baseEquityTotal = state.simulationBaseCase.equity.principal + state.simulationBaseCase.equity.interest;
-                    const stressedEquityTotal = stressedCase.equity.principal + stressedCase.equity.interest;
-
-                    document.getElementById('baseSenior').textContent = baseSeniorTotal.toFixed(1);
-                    document.getElementById('stressedSenior').textContent = stressedSeniorTotal.toFixed(1);
-                    document.getElementById('impactSenior').textContent = (stressedSeniorTotal - baseSeniorTotal).toFixed(1);
-
-                    document.getElementById('baseMezz').textContent = baseMezzTotal.toFixed(1);
-                    document.getElementById('stressedMezz').textContent = stressedMezzTotal.toFixed(1);
-                    document.getElementById('impactMezz').textContent = (stressedMezzTotal - baseMezzTotal).toFixed(1);
-
-                    const equityImpact = stressedEquityTotal - baseEquityTotal;
-                    document.getElementById('baseEquity').textContent = baseEquityTotal.toFixed(1);
-                    document.getElementById('stressedEquity').textContent = stressedEquityTotal.toFixed(1);
-                    document.getElementById('impactEquity').textContent = equityImpact.toFixed(1);
-                }
             }
+
 
             applyFiltersBtn.addEventListener('click', applyFilters);
 
@@ -3896,11 +3833,62 @@
                 setTimeout(() => {
                     document.getElementById('generateCashflowBtn').innerHTML = '✓ Cashflows Generated';
                     document.getElementById('monteCarloSection').classList.remove('hidden');
+                    document.getElementById('downloadLoanCashflowBtn').classList.remove('hidden');
                     
                     // Scroll to Monte Carlo section
                     document.getElementById('monteCarloSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 2000); // Simulate 2s processing time
             });
+            
+            // Download Loan-Level Cashflow CSV
+            document.getElementById('downloadLoanCashflowBtn')?.addEventListener('click', () => {
+                const csvContent = generateLoanLevelCashflowCSV();
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `loan_level_cashflow_${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+            
+            function generateLoanLevelCashflowCSV() {
+                // Get finalized pool data
+                const loanCount = parseInt(document.getElementById('finalizedLoanCount')?.textContent.replace(/\D/g, '') || '7540');
+                const maxTenure = parseInt(document.getElementById('finalizedTenure')?.textContent.replace(/\D/g, '') || '18');
+                
+                // CSV Header
+                let csv = 'Loan ID,Period,Actual Demand,Estimated Cashflow\n';
+                
+                // Generate loan-level cashflow for each loan
+                for (let loanIdx = 1; loanIdx <= Math.min(loanCount, 1000); loanIdx++) { // Limit to 1000 for demo
+                    const loanId = `LOAN-${String(loanIdx).padStart(6, '0')}`;
+                    const loanTenure = Math.floor(Math.random() * (maxTenure - 6)) + 6; // 6 to maxTenure months
+                    const monthlyPayment = 5000 + Math.random() * 45000; // KES 5k to 50k
+                    
+                    // Generate cashflow for each period until maturity
+                    for (let period = 1; period <= loanTenure; period++) {
+                        // Actual demand (contractual payment)
+                        const actualDemand = monthlyPayment;
+                        
+                        // Estimated cashflow (with some variance for prepayment, default, etc.)
+                        let estimatedCashflow = monthlyPayment;
+                        if (Math.random() < 0.05) { // 5% chance of prepayment
+                            estimatedCashflow = monthlyPayment * (1 + Math.random() * 0.5); // 100-150% for prepayment
+                        } else if (Math.random() < 0.08) { // 8% chance of partial payment
+                            estimatedCashflow = monthlyPayment * (0.3 + Math.random() * 0.5); // 30-80% for partial
+                        } else if (Math.random() < 0.02) { // 2% chance of default
+                            estimatedCashflow = 0; // No payment on default
+                        }
+                        
+                        csv += `${loanId},Month ${period},${actualDemand.toFixed(2)},${estimatedCashflow.toFixed(2)}\n`;
+                    }
+                }
+                
+                return csv;
+            }
             
             // Simulation Parameter Sliders - Update Labels
             document.getElementById('gdpGrowthSlider')?.addEventListener('input', (e) => {
