@@ -4995,13 +4995,13 @@ Contact: cashmanagement@kaleidofin.com
                  countiesMultiSelect.setValue(['Baringo', 'Bomet', 'Bungoma', 'Busia', 'Elgeyo-Marakwet']);
             }
             
-            // Initial Load
-            updateMainView('dealScreen');
-            showPage('dealScreenHomePage');
-            updateHomeTab('originators');
+            // Initial Load - Initialize data FIRST, then render views
             initializeData();
             initializeMappingFields();
             initializeCountyMultiSelect();
+            updateMainView('dealScreen');
+            showPage('dealScreenHomePage');
+            updateHomeTab('originators');
         });
     </script>
 </body>
