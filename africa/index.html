@@ -1324,7 +1324,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6">
                     <!-- Covenant Setup Page -->
                     <div id="covenantSetupPage" class="page-view">
                         <div class="max-w-4xl mx-auto">
@@ -4327,9 +4327,13 @@
 
             finalizePoolBtn.addEventListener('click', () => {
                 finalizePoolModal.classList.add('active');
+                finalizePoolModal.style.display = 'flex';
             });
             
-            cancelFinalizeBtn.addEventListener('click', () => finalizePoolModal.classList.remove('active'));
+            cancelFinalizeBtn.addEventListener('click', () => {
+                finalizePoolModal.classList.remove('active');
+                finalizePoolModal.style.display = 'none';
+            });
             
             saveTransactionBtn.addEventListener('click', () => {
                 const name = finalizeTransactionNameInput.value.trim();
@@ -4366,6 +4370,7 @@
                     
                     // Close modal
                     finalizePoolModal.classList.remove('active');
+                    finalizePoolModal.style.display = 'none';
                     finalizeTransactionNameInput.value = '';
                     document.getElementById('finalizeComments').value = '';
                     
