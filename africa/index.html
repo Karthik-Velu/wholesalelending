@@ -413,10 +413,19 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- Custom Filters Display -->
-                                        <div id="customFiltersDisplay" class="mt-4 space-y-2 hidden">
-                                            <div class="text-xs font-semibold text-gray-700 mb-2">Active Custom Filters:</div>
-                                            <!-- Custom filter chips will appear here -->
+                                        <!-- Unified Filters Display -->
+                                        <div id="unifiedFiltersDisplay" class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                            <div class="text-sm font-semibold text-blue-900 mb-3 flex items-center justify-between">
+                                                <span>Active Filters</span>
+                                                <select id="filterLogicGlobal" class="text-xs border border-blue-300 rounded px-2 py-1 bg-white">
+                                                    <option value="AND">Match ALL (AND)</option>
+                                                    <option value="OR">Match ANY (OR)</option>
+                                                </select>
+                                            </div>
+                                            <div id="activeFiltersContainer" class="space-y-2 text-xs">
+                                                <!-- Filter chips will appear here -->
+                                                <div class="text-gray-600 italic">No filters applied. Using default ranges.</div>
+                                            </div>
                                         </div>
                                         
                                         <div class="pt-4"><button id="applyFiltersBtn" class="w-full bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-700 text-sm">Apply All Filters</button></div>
@@ -2034,25 +2043,182 @@
 
             // Pool Creation Workflow
             // Database Fields Definition
+            // Comprehensive Data Dictionary with 100+ fields across 6 categories
+            // allowed_types: restricts which data types are valid for this field
             const databaseFields = [
-                { name: 'loan_id', label: 'Loan ID', type: 'text', required: true },
-                { name: 'customer_id', label: 'Customer ID', type: 'text', required: true },
-                { name: 'customer_name', label: 'Customer Name', type: 'text', required: false },
-                { name: 'loan_amount', label: 'Loan Amount', type: 'currency', required: true },
-                { name: 'outstanding_balance', label: 'Outstanding Balance', type: 'currency', required: true },
-                { name: 'interest_rate', label: 'Interest Rate', type: 'decimal', required: true },
-                { name: 'disbursement_date', label: 'Disbursement Date', type: 'date', required: true },
-                { name: 'maturity_date', label: 'Maturity Date', type: 'date', required: true },
-                { name: 'remaining_tenor', label: 'Remaining Tenor (Months)', type: 'numeric', required: true },
-                { name: 'dpd', label: 'Days Past Due', type: 'numeric', required: true },
-                { name: 'ki_score', label: 'KI Score', type: 'numeric', required: false },
-                { name: 'county', label: 'County / Region', type: 'text', required: false },
-                { name: 'loan_purpose', label: 'Loan Purpose', type: 'text', required: false },
-                { name: 'collateral_type', label: 'Collateral Type', type: 'text', required: false },
-                { name: 'emi_amount', label: 'EMI Amount', type: 'currency', required: false },
-                { name: 'product_type', label: 'Product Type', type: 'text', required: false },
-                { name: 'is_active', label: 'Is Active', type: 'boolean', required: false }
+                // === CATEGORY 1: CUSTOMER LEVEL (Demographics & KYC) ===
+                { name: 'customer_id', label: 'Customer ID', type: 'text', category: 'customer', required: true, allowed_types: ['text'] },
+                { name: 'cust_first_name', label: 'First Name', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'cust_last_name', label: 'Last Name', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'dob', label: 'Date of Birth', type: 'date', category: 'customer', required: false, allowed_types: ['date'] },
+                { name: 'ssn_tax_id', label: 'SSN/Tax ID', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'gender', label: 'Gender', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'marital_status', label: 'Marital Status', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'num_dependents', label: 'Number of Dependents', type: 'numeric', category: 'customer', required: false, allowed_types: ['numeric'] },
+                { name: 'education_level', label: 'Education Level', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'residential_status', label: 'Residential Status', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'curr_address_line1', label: 'Address Line 1', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'curr_city', label: 'City', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'curr_state', label: 'State/Province', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'curr_zip', label: 'Postal Code', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'months_at_residence', label: 'Months at Residence', type: 'numeric', category: 'customer', required: false, allowed_types: ['numeric'] },
+                { name: 'phone_mobile', label: 'Mobile Phone', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'email_address', label: 'Email Address', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'employment_status', label: 'Employment Status', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'employer_name', label: 'Employer Name', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'years_at_employer', label: 'Years at Employer', type: 'decimal', category: 'customer', required: false, allowed_types: ['numeric', 'decimal'] },
+                { name: 'annual_income', label: 'Annual Income', type: 'currency', category: 'customer', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'income_source', label: 'Income Source', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'is_bank_customer', label: 'Is Bank Customer', type: 'boolean', category: 'customer', required: false, allowed_types: ['boolean'] },
+                { name: 'bank_relationship_age', label: 'Bank Relationship (Months)', type: 'numeric', category: 'customer', required: false, allowed_types: ['numeric'] },
+                { name: 'customer_segment', label: 'Customer Segment', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'citizenship_country', label: 'Citizenship Country', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'id_type', label: 'ID Type', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                { name: 'kyc_status', label: 'KYC Status', type: 'text', category: 'customer', required: false, allowed_types: ['text'] },
+                
+                // === CATEGORY 2: LOAN LEVEL (Origination & Structure) ===
+                { name: 'loan_id', label: 'Loan ID', type: 'text', category: 'loan', required: true, allowed_types: ['text', 'numeric'] },
+                { name: 'application_id', label: 'Application ID', type: 'text', category: 'loan', required: false, allowed_types: ['text', 'numeric'] },
+                { name: 'product_type', label: 'Product Type', type: 'text', category: 'loan', required: false, allowed_types: ['text'] },
+                { name: 'loan_purpose', label: 'Loan Purpose', type: 'text', category: 'loan', required: false, allowed_types: ['text'] },
+                { name: 'loan_amount_requested', label: 'Loan Amount Requested', type: 'currency', category: 'loan', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'loan_amount_approved', label: 'Loan Amount Approved', type: 'currency', category: 'loan', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'loan_amount', label: 'Loan Amount (Disbursed)', type: 'currency', category: 'loan', required: true, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'currency', label: 'Currency', type: 'text', category: 'loan', required: false, allowed_types: ['text'] },
+                { name: 'origination_date', label: 'Origination Date', type: 'date', category: 'loan', required: false, allowed_types: ['date'] },
+                { name: 'disbursement_date', label: 'Disbursement Date', type: 'date', category: 'loan', required: true, allowed_types: ['date'] },
+                { name: 'maturity_date', label: 'Maturity Date', type: 'date', category: 'loan', required: true, allowed_types: ['date'] },
+                { name: 'original_term', label: 'Original Term (Months)', type: 'numeric', category: 'loan', required: false, allowed_types: ['numeric'] },
+                { name: 'remaining_tenor', label: 'Remaining Tenor (Months)', type: 'numeric', category: 'loan', required: false, allowed_types: ['numeric'] },
+                { name: 'interest_rate', label: 'Interest Rate (%)', type: 'decimal', category: 'loan', required: true, allowed_types: ['numeric', 'decimal'] },
+                { name: 'apr', label: 'APR (%)', type: 'decimal', category: 'loan', required: false, allowed_types: ['numeric', 'decimal'] },
+                { name: 'interest_type', label: 'Interest Type', type: 'text', category: 'loan', required: false, allowed_types: ['text'] },
+                { name: 'index_rate', label: 'Index Rate', type: 'text', category: 'loan', required: false, allowed_types: ['text'] },
+                { name: 'spread', label: 'Spread (%)', type: 'decimal', category: 'loan', required: false, allowed_types: ['numeric', 'decimal'] },
+                { name: 'installment_amount', label: 'Installment Amount', type: 'currency', category: 'loan', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'emi_amount', label: 'EMI Amount', type: 'currency', category: 'loan', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'payment_frequency', label: 'Payment Frequency', type: 'text', category: 'loan', required: false, allowed_types: ['text'] },
+                { name: 'disbursement_channel', label: 'Disbursement Channel', type: 'text', category: 'loan', required: false, allowed_types: ['text'] },
+                { name: 'officer_id', label: 'Loan Officer ID', type: 'text', category: 'loan', required: false, allowed_types: ['text'] },
+                { name: 'app_score', label: 'Application Score', type: 'numeric', category: 'loan', required: false, allowed_types: ['numeric'] },
+                { name: 'dti_ratio', label: 'DTI Ratio', type: 'decimal', category: 'loan', required: false, allowed_types: ['numeric', 'decimal'] },
+                { name: 'pti_ratio', label: 'PTI Ratio', type: 'decimal', category: 'loan', required: false, allowed_types: ['numeric', 'decimal'] },
+                { name: 'ltv_ratio', label: 'LTV Ratio', type: 'decimal', category: 'loan', required: false, allowed_types: ['numeric', 'decimal'] },
+                { name: 'down_payment', label: 'Down Payment', type: 'currency', category: 'loan', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'origination_fee', label: 'Origination Fee', type: 'currency', category: 'loan', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'application_date', label: 'Application Date', type: 'date', category: 'loan', required: false, allowed_types: ['date'] },
+                { name: 'approval_date', label: 'Approval Date', type: 'date', category: 'loan', required: false, allowed_types: ['date'] },
+                { name: 'promo_code', label: 'Promo Code', type: 'text', category: 'loan', required: false, allowed_types: ['text'] },
+                { name: 'auto_pay_enroll', label: 'Auto Pay Enrolled', type: 'boolean', category: 'loan', required: false, allowed_types: ['boolean'] },
+                
+                // === CATEGORY 3: COLLATERAL LEVEL ===
+                { name: 'collateral_id', label: 'Collateral ID', type: 'text', category: 'collateral', required: false, allowed_types: ['text'] },
+                { name: 'collateral_type', label: 'Collateral Type', type: 'text', category: 'collateral', required: false, allowed_types: ['text'] },
+                { name: 'asset_value', label: 'Asset Value', type: 'currency', category: 'collateral', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'valuation_date', label: 'Valuation Date', type: 'date', category: 'collateral', required: false, allowed_types: ['date'] },
+                { name: 'valuation_method', label: 'Valuation Method', type: 'text', category: 'collateral', required: false, allowed_types: ['text'] },
+                { name: 'lien_position', label: 'Lien Position', type: 'numeric', category: 'collateral', required: false, allowed_types: ['numeric'] },
+                { name: 'property_type', label: 'Property Type', type: 'text', category: 'collateral', required: false, allowed_types: ['text'] },
+                { name: 'prop_address_state', label: 'Property State', type: 'text', category: 'collateral', required: false, allowed_types: ['text'] },
+                { name: 'year_built', label: 'Year Built', type: 'numeric', category: 'collateral', required: false, allowed_types: ['numeric'] },
+                { name: 'square_footage', label: 'Square Footage', type: 'numeric', category: 'collateral', required: false, allowed_types: ['numeric'] },
+                { name: 'occupancy_type', label: 'Occupancy Type', type: 'text', category: 'collateral', required: false, allowed_types: ['text'] },
+                { name: 'vehicle_vin', label: 'Vehicle VIN', type: 'text', category: 'collateral', required: false, allowed_types: ['text'] },
+                { name: 'vehicle_make', label: 'Vehicle Make', type: 'text', category: 'collateral', required: false, allowed_types: ['text'] },
+                { name: 'vehicle_model', label: 'Vehicle Model', type: 'text', category: 'collateral', required: false, allowed_types: ['text'] },
+                { name: 'vehicle_year', label: 'Vehicle Year', type: 'numeric', category: 'collateral', required: false, allowed_types: ['numeric'] },
+                { name: 'vehicle_mileage', label: 'Vehicle Mileage', type: 'numeric', category: 'collateral', required: false, allowed_types: ['numeric'] },
+                { name: 'vehicle_condition', label: 'Vehicle Condition', type: 'text', category: 'collateral', required: false, allowed_types: ['text'] },
+                
+                // === CATEGORY 4: PERFORMANCE & SERVICING ===
+                { name: 'account_status', label: 'Account Status', type: 'text', category: 'performance', required: false, allowed_types: ['text'] },
+                { name: 'current_balance', label: 'Current Balance', type: 'currency', category: 'performance', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'outstanding_balance', label: 'Outstanding Balance', type: 'currency', category: 'performance', required: true, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'principal_paid_todate', label: 'Principal Paid to Date', type: 'currency', category: 'performance', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'interest_paid_todate', label: 'Interest Paid to Date', type: 'currency', category: 'performance', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'late_fees_paid_todate', label: 'Late Fees Paid to Date', type: 'currency', category: 'performance', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'last_payment_date', label: 'Last Payment Date', type: 'date', category: 'performance', required: false, allowed_types: ['date'] },
+                { name: 'last_payment_amount', label: 'Last Payment Amount', type: 'currency', category: 'performance', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'next_payment_due_date', label: 'Next Payment Due Date', type: 'date', category: 'performance', required: false, allowed_types: ['date'] },
+                { name: 'days_past_due_curr', label: 'Days Past Due (Current)', type: 'numeric', category: 'performance', required: false, allowed_types: ['numeric'] },
+                { name: 'dpd', label: 'Days Past Due', type: 'numeric', category: 'performance', required: true, allowed_types: ['numeric'] },
+                { name: 'delinquency_bucket', label: 'Delinquency Bucket', type: 'text', category: 'performance', required: false, allowed_types: ['text'] },
+                { name: 'times_delinq_30_curr_loan', label: 'Times 30+ DPD (This Loan)', type: 'numeric', category: 'performance', required: false, allowed_types: ['numeric'] },
+                { name: 'times_delinq_60_curr_loan', label: 'Times 60+ DPD (This Loan)', type: 'numeric', category: 'performance', required: false, allowed_types: ['numeric'] },
+                { name: 'modification_flag', label: 'Modification Flag', type: 'boolean', category: 'performance', required: false, allowed_types: ['boolean'] },
+                { name: 'restructured_date', label: 'Restructured Date', type: 'date', category: 'performance', required: false, allowed_types: ['date'] },
+                { name: 'charge_off_date', label: 'Charge-off Date', type: 'date', category: 'performance', required: false, allowed_types: ['date'] },
+                { name: 'charge_off_amount', label: 'Charge-off Amount', type: 'currency', category: 'performance', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'recovery_amount', label: 'Recovery Amount', type: 'currency', category: 'performance', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'early_settlement_flag', label: 'Early Settlement Flag', type: 'boolean', category: 'performance', required: false, allowed_types: ['boolean'] },
+                { name: 'prepayment_penalty', label: 'Prepayment Penalty', type: 'currency', category: 'performance', required: false, allowed_types: ['numeric', 'decimal', 'currency'] },
+                { name: 'variable_rate_update_dt', label: 'Variable Rate Update Date', type: 'date', category: 'performance', required: false, allowed_types: ['date'] },
+                { name: 'is_active', label: 'Is Active', type: 'boolean', category: 'performance', required: false, allowed_types: ['boolean'] },
+                { name: 'ki_score', label: 'KI Score', type: 'numeric', category: 'performance', required: false, allowed_types: ['numeric'] },
+                { name: 'county', label: 'County / Region', type: 'text', category: 'performance', required: false, allowed_types: ['text'] }
             ];
+            
+            // Bureau & Credit History Fields (NOT in CSV upload, available for filtering only)
+            // These are generated by DS team code
+            const bureauFields = [
+                { name: 'bureau_report_xml', label: 'Bureau Report (XML/JSON)', type: 'text', category: 'bureau', required: false, allowed_types: ['text'], csv_upload: true },
+                { name: 'bureau_score_fico', label: 'FICO Score', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'bureau_score_vantage', label: 'VantageScore', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'total_tradelines', label: 'Total Tradelines', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'open_tradelines', label: 'Open Tradelines', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'closed_tradelines', label: 'Closed Tradelines', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'oldest_trade_date', label: 'Oldest Trade Date', type: 'date', category: 'bureau', required: false, allowed_types: ['date'], csv_upload: false },
+                { name: 'credit_history_length_months', label: 'Credit History Length (Months)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'total_inquiries_6m', label: 'Inquiries (6M)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'total_inquiries_12m', label: 'Inquiries (12M)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_mortgage_trades', label: 'Mortgage Accounts', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_auto_trades', label: 'Auto Loan Accounts', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_revolving_trades', label: 'Revolving Accounts', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_installment_trades', label: 'Installment Accounts', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'total_revolving_limit', label: 'Total Revolving Limit', type: 'currency', category: 'bureau', required: false, allowed_types: ['numeric', 'decimal', 'currency'], csv_upload: false },
+                { name: 'total_revolving_balance', label: 'Total Revolving Balance', type: 'currency', category: 'bureau', required: false, allowed_types: ['numeric', 'decimal', 'currency'], csv_upload: false },
+                { name: 'revol_utilization_rate', label: 'Revolving Utilization Rate (%)', type: 'decimal', category: 'bureau', required: false, allowed_types: ['numeric', 'decimal'], csv_upload: false },
+                { name: 'total_installment_balance', label: 'Total Installment Balance', type: 'currency', category: 'bureau', required: false, allowed_types: ['numeric', 'decimal', 'currency'], csv_upload: false },
+                { name: 'max_credit_limit', label: 'Max Credit Limit', type: 'currency', category: 'bureau', required: false, allowed_types: ['numeric', 'decimal', 'currency'], csv_upload: false },
+                { name: 'ever_dpd_30', label: 'Ever 30+ DPD', type: 'boolean', category: 'bureau', required: false, allowed_types: ['boolean'], csv_upload: false },
+                { name: 'ever_dpd_60', label: 'Ever 60+ DPD', type: 'boolean', category: 'bureau', required: false, allowed_types: ['boolean'], csv_upload: false },
+                { name: 'ever_dpd_90', label: 'Ever 90+ DPD', type: 'boolean', category: 'bureau', required: false, allowed_types: ['boolean'], csv_upload: false },
+                { name: 'num_dpd_30_6m', label: '30+ DPD Count (6M)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_dpd_30_12m', label: '30+ DPD Count (12M)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_dpd_30_24m', label: '30+ DPD Count (24M)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_dpd_60_6m', label: '60+ DPD Count (6M)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_dpd_60_12m', label: '60+ DPD Count (12M)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_dpd_60_24m', label: '60+ DPD Count (24M)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_dpd_90_6m', label: '90+ DPD Count (6M)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_dpd_90_12m', label: '90+ DPD Count (12M)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'num_dpd_90_ever', label: '90+ DPD Count (Ever)', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'months_since_last_dpd_30', label: 'Months Since Last 30+ DPD', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'months_since_last_dpd_90', label: 'Months Since Last 90+ DPD', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'worst_status_ever', label: 'Worst Status Ever', type: 'text', category: 'bureau', required: false, allowed_types: ['text'], csv_upload: false },
+                { name: 'worst_status_12m', label: 'Worst Status (12M)', type: 'text', category: 'bureau', required: false, allowed_types: ['text'], csv_upload: false },
+                { name: 'num_trades_past_due', label: 'Trades Currently Past Due', type: 'numeric', category: 'bureau', required: false, allowed_types: ['numeric'], csv_upload: false },
+                { name: 'amt_past_due', label: 'Amount Past Due', type: 'currency', category: 'bureau', required: false, allowed_types: ['numeric', 'decimal', 'currency'], csv_upload: false },
+                { name: 'bankruptcy_flag', label: 'Bankruptcy Flag', type: 'boolean', category: 'bureau', required: false, allowed_types: ['boolean'], csv_upload: false },
+                { name: 'bankruptcy_date', label: 'Bankruptcy Date', type: 'date', category: 'bureau', required: false, allowed_types: ['date'], csv_upload: false },
+                { name: 'foreclosure_flag', label: 'Foreclosure Flag', type: 'boolean', category: 'bureau', required: false, allowed_types: ['boolean'], csv_upload: false },
+                { name: 'tax_lien_flag', label: 'Tax Lien Flag', type: 'boolean', category: 'bureau', required: false, allowed_types: ['boolean'], csv_upload: false },
+                { name: 'collections_balance', label: 'Collections Balance', type: 'currency', category: 'bureau', required: false, allowed_types: ['numeric', 'decimal', 'currency'], csv_upload: false }
+            ];
+            
+            // Derived / Calculated Fields (Generated by DS team, available for filtering only)
+            const derivedFields = [
+                { name: 'utilization_change_6m', label: 'Utilization Change (6M)', type: 'decimal', category: 'derived', required: false, allowed_types: ['numeric', 'decimal'], csv_upload: false },
+                { name: 'inquiry_velocity', label: 'Inquiry Velocity', type: 'decimal', category: 'derived', required: false, allowed_types: ['numeric', 'decimal'], csv_upload: false },
+                { name: 'payment_to_min_pay_ratio', label: 'Payment to Min Pay Ratio', type: 'decimal', category: 'derived', required: false, allowed_types: ['numeric', 'decimal'], csv_upload: false },
+                { name: 'balance_to_limit_highest', label: 'Balance to Limit (Highest)', type: 'decimal', category: 'derived', required: false, allowed_types: ['numeric', 'decimal'], csv_upload: false },
+                { name: 'income_verification_flag', label: 'Income Verified', type: 'boolean', category: 'derived', required: false, allowed_types: ['boolean'], csv_upload: false },
+                { name: 'address_mismatch_flag', label: 'Address Mismatch', type: 'boolean', category: 'derived', required: false, allowed_types: ['boolean'], csv_upload: false },
+                { name: 'phone_mismatch_flag', label: 'Phone Mismatch', type: 'boolean', category: 'derived', required: false, allowed_types: ['boolean'], csv_upload: false },
+                { name: 'length_of_relationship_years', label: 'Length of Relationship (Years)', type: 'decimal', category: 'derived', required: false, allowed_types: ['numeric', 'decimal'], csv_upload: false }
+            ];
+            
+            // Combine all fields for filtering (but only databaseFields for CSV mapping)
+            const allFieldsForFiltering = [...databaseFields, ...bureauFields, ...derivedFields];
 
             // Sample file columns (simulating uploaded CSV)
             const uploadedFileColumns = [
@@ -2105,18 +2271,30 @@
                 const statusColor = mapping.status === 'validated' ? 'text-green-600' : 'text-orange-600';
                 const statusIcon = mapping.status === 'validated' ? '✓' : '⚠';
                 
+                // Get allowed types for the selected field
+                const selectedField = databaseFields.find(f => f.name === mapping.dbField);
+                const allowedTypes = selectedField?.allowed_types || ['text', 'numeric', 'decimal', 'date', 'boolean', 'currency'];
+                
+                // Generate data type options based on allowed types
+                const typeOptions = allowedTypes.map(type => {
+                    const typeLabels = {
+                        'text': 'Text',
+                        'numeric': 'Numeric',
+                        'decimal': 'Decimal',
+                        'date': 'Date',
+                        'boolean': 'Boolean',
+                        'currency': 'Currency'
+                    };
+                    return `<option value="${type}" ${mapping.type === type ? 'selected' : ''}>${typeLabels[type]}</option>`;
+                }).join('');
+                
                 row.innerHTML = `
                     <span class="col-span-3 font-medium text-gray-700">${mapping.fileCol}</span>
                     <select class="col-span-3 border border-gray-300 rounded px-2 py-1 text-sm db-field-select" data-index="${index}">
-                        ${databaseFields.map(f => `<option value="${f.name}" ${f.name === mapping.dbField ? 'selected' : ''}>${f.label}</option>`).join('')}
+                        ${databaseFields.map(f => `<option value="${f.name}" ${f.name === mapping.dbField ? 'selected' : ''}>${f.label} (${f.category})</option>`).join('')}
                     </select>
                     <select class="col-span-2 border border-gray-300 rounded px-2 py-1 text-sm type-select" data-index="${index}">
-                        <option value="text" ${mapping.type === 'text' ? 'selected' : ''}>Text</option>
-                        <option value="numeric" ${mapping.type === 'numeric' ? 'selected' : ''}>Numeric</option>
-                        <option value="decimal" ${mapping.type === 'decimal' ? 'selected' : ''}>Decimal</option>
-                        <option value="date" ${mapping.type === 'date' ? 'selected' : ''}>Date</option>
-                        <option value="boolean" ${mapping.type === 'boolean' ? 'selected' : ''}>Boolean</option>
-                        <option value="currency" ${mapping.type === 'currency' ? 'selected' : ''}>Currency</option>
+                        ${typeOptions}
                     </select>
                     <span class="col-span-2 ${statusColor} font-semibold flex items-center">
                         ${statusIcon} ${mapping.status === 'validated' ? 'Valid' : 'Check'}
@@ -2134,6 +2312,29 @@
                         </button>
                     </div>
                 `;
+                
+                // Add event listener to update data type options when database field changes
+                const dbFieldSelect = row.querySelector('.db-field-select');
+                const typeSelect = row.querySelector('.type-select');
+                dbFieldSelect.addEventListener('change', (e) => {
+                    const field = databaseFields.find(f => f.name === e.target.value);
+                    if (field) {
+                        const allowed = field.allowed_types || ['text', 'numeric', 'decimal', 'date', 'boolean', 'currency'];
+                        const typeLabels = {
+                            'text': 'Text',
+                            'numeric': 'Numeric',
+                            'decimal': 'Decimal',
+                            'date': 'Date',
+                            'boolean': 'Boolean',
+                            'currency': 'Currency'
+                        };
+                        typeSelect.innerHTML = allowed.map(type => 
+                            `<option value="${type}">${typeLabels[type]}</option>`
+                        ).join('');
+                        // Set to field's default type
+                        typeSelect.value = field.type;
+                    }
+                });
                 
                 return row;
             }
@@ -2240,6 +2441,12 @@
                         <option value="range">Range (min-max)</option>
                         <option value="gt_field">Greater than field</option>
                         <option value="lt_field">Less than field</option>
+                        <option value="gte_field">Greater than or equal to field</option>
+                        <option value="lte_field">Less than or equal to field</option>
+                        <option value="gt_formula">Greater than formula</option>
+                        <option value="lt_formula">Less than formula</option>
+                        <option value="gte_formula">Greater than or equal to formula</option>
+                        <option value="lte_formula">Less than or equal to formula</option>
                     `;
                 } else if (fieldType === 'date') {
                     operatorOptions = `
@@ -2264,19 +2471,69 @@
                     `;
                 }
                 
+                // Get all numeric/currency fields for field comparison dropdowns
+                const numericFields = databaseFields.filter(f => 
+                    f.type === 'numeric' || f.type === 'decimal' || f.type === 'currency'
+                );
+                const fieldOptions = numericFields.map(f => 
+                    `<option value="${f.name}">${f.label}</option>`
+                ).join('');
+                
                 ruleDiv.innerHTML = `
-                    <div class="flex items-center space-x-2">
-                        <select class="flex-1 border border-gray-300 rounded px-2 py-1 text-sm validation-operator">
-                            ${operatorOptions}
-                        </select>
-                        <input type="text" class="flex-1 border border-gray-300 rounded px-2 py-1 text-sm validation-value" placeholder="Value">
-                        <button class="remove-validation-rule text-red-600 hover:text-red-800">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-2">
+                            <select class="flex-1 border border-gray-300 rounded px-2 py-1 text-sm validation-operator">
+                                ${operatorOptions}
+                            </select>
+                            <button class="remove-validation-rule text-red-600 hover:text-red-800">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="validation-value-container">
+                            <input type="text" class="w-full border border-gray-300 rounded px-2 py-1 text-sm validation-value" placeholder="Value">
+                        </div>
                     </div>
                 `;
+                
+                const operatorSelect = ruleDiv.querySelector('.validation-operator');
+                const valueContainer = ruleDiv.querySelector('.validation-value-container');
+                
+                // Update value input based on operator selection
+                operatorSelect.addEventListener('change', (e) => {
+                    const operator = e.target.value;
+                    
+                    if (operator === 'gt_field' || operator === 'lt_field' || operator === 'gte_field' || operator === 'lte_field') {
+                        // Show field selector
+                        valueContainer.innerHTML = `
+                            <select class="w-full border border-gray-300 rounded px-2 py-1 text-sm validation-value">
+                                <option value="">Select field...</option>
+                                ${fieldOptions}
+                            </select>
+                        `;
+                    } else if (operator === 'gt_formula' || operator === 'lt_formula' || operator === 'gte_formula' || operator === 'lte_formula') {
+                        // Show formula input with helper text
+                        valueContainer.innerHTML = `
+                            <input type="text" class="w-full border border-gray-300 rounded px-2 py-1 text-sm validation-value" placeholder="e.g., 0.8 * field_name or field1 + field2">
+                            <p class="text-xs text-gray-600 mt-1">Formula examples: <code>0.8 * loan_amount</code>, <code>outstanding_balance + 1000</code>, <code>field1 * 0.5 + field2</code></p>
+                            <p class="text-xs text-blue-600 mt-1">Operators: +, -, *, /, ( ). Use field names from dropdown.</p>
+                        `;
+                    } else if (operator === 'range') {
+                        // Show two inputs for range
+                        valueContainer.innerHTML = `
+                            <div class="flex space-x-2">
+                                <input type="text" class="flex-1 border border-gray-300 rounded px-2 py-1 text-sm validation-value-min" placeholder="Min">
+                                <input type="text" class="flex-1 border border-gray-300 rounded px-2 py-1 text-sm validation-value-max" placeholder="Max">
+                            </div>
+                        `;
+                    } else {
+                        // Show regular input
+                        valueContainer.innerHTML = `
+                            <input type="text" class="w-full border border-gray-300 rounded px-2 py-1 text-sm validation-value" placeholder="Value">
+                        `;
+                    }
+                });
                 
                 ruleDiv.querySelector('.remove-validation-rule').addEventListener('click', () => {
                     ruleDiv.remove();
@@ -2290,7 +2547,17 @@
                 const rules = [];
                 document.querySelectorAll('#validationRulesContainer > div').forEach(ruleDiv => {
                     const operator = ruleDiv.querySelector('.validation-operator').value;
-                    const value = ruleDiv.querySelector('.validation-value').value;
+                    let value;
+                    
+                    // Handle different input types based on operator
+                    if (operator === 'range') {
+                        const min = ruleDiv.querySelector('.validation-value-min')?.value;
+                        const max = ruleDiv.querySelector('.validation-value-max')?.value;
+                        value = { min, max };
+                    } else {
+                        value = ruleDiv.querySelector('.validation-value')?.value || '';
+                    }
+                    
                     rules.push({ operator, value });
                 });
                 
@@ -2324,10 +2591,40 @@
                 const ruleDiv = document.createElement('div');
                 ruleDiv.className = 'border rounded p-3 bg-gray-50';
                 
+                // Group fields by category for better organization
+                const fieldsByCategory = {
+                    'customer': allFieldsForFiltering.filter(f => f.category === 'customer'),
+                    'loan': allFieldsForFiltering.filter(f => f.category === 'loan'),
+                    'collateral': allFieldsForFiltering.filter(f => f.category === 'collateral'),
+                    'performance': allFieldsForFiltering.filter(f => f.category === 'performance'),
+                    'bureau': allFieldsForFiltering.filter(f => f.category === 'bureau'),
+                    'derived': allFieldsForFiltering.filter(f => f.category === 'derived')
+                };
+                
+                const categoryLabels = {
+                    'customer': 'Customer Demographics & KYC',
+                    'loan': 'Loan Origination & Structure',
+                    'collateral': 'Collateral',
+                    'performance': 'Performance & Servicing',
+                    'bureau': 'Bureau & Credit History',
+                    'derived': 'Derived / Calculated Fields'
+                };
+                
+                let fieldOptionsHTML = '';
+                for (const [category, fields] of Object.entries(fieldsByCategory)) {
+                    if (fields.length > 0) {
+                        fieldOptionsHTML += `<optgroup label="${categoryLabels[category]}">`;
+                        fieldOptionsHTML += fields.map(f => 
+                            `<option value="${f.name}" data-type="${f.type}">${f.label}</option>`
+                        ).join('');
+                        fieldOptionsHTML += `</optgroup>`;
+                    }
+                }
+                
                 ruleDiv.innerHTML = `
                     <div class="grid grid-cols-12 gap-2 items-center">
                         <select class="col-span-4 border border-gray-300 rounded px-2 py-1 text-sm filter-field">
-                            ${databaseFields.map(f => `<option value="${f.name}" data-type="${f.type}">${f.label}</option>`).join('')}
+                            ${fieldOptionsHTML}
                         </select>
                         <select class="col-span-3 border border-gray-300 rounded px-2 py-1 text-sm filter-operator">
                             <option value="=">=</option>
@@ -2352,6 +2649,10 @@
                 // Update operators based on field type
                 const fieldSelect = ruleDiv.querySelector('.filter-field');
                 const operatorSelect = ruleDiv.querySelector('.filter-operator');
+                
+                // Initialize with correct operators for first field
+                const initialFieldType = fieldSelect.options[0].dataset.type;
+                updateOperatorsForType(operatorSelect, initialFieldType);
                 
                 fieldSelect.addEventListener('change', () => {
                     const selectedOption = fieldSelect.options[fieldSelect.selectedIndex];
@@ -2426,6 +2727,89 @@
                 radio.addEventListener('change', updateFilterPreview);
             });
             
+            // Function to update unified filters display
+            function updateUnifiedFiltersDisplay() {
+                const container = document.getElementById('activeFiltersContainer');
+                const logic = document.getElementById('filterLogicGlobal')?.value || 'AND';
+                
+                const allFilters = [];
+                
+                // Add quick filters (if not at default values)
+                const kiScoreMin = document.getElementById('kiScoreMinSlider')?.value || 1;
+                const kiScoreMax = document.getElementById('kiScoreMaxSlider')?.value || 40;
+                if (kiScoreMin != 1 || kiScoreMax != 40) {
+                    allFilters.push({ type: 'quick', label: `KI Score: ${kiScoreMin}-${kiScoreMax}`, category: 'Quick Filter' });
+                }
+                
+                const loanAmountMin = document.getElementById('loanAmountMinSlider')?.value || 50000;
+                const loanAmountMax = document.getElementById('loanAmountMaxSlider')?.value || 200000;
+                if (loanAmountMin != 50000 || loanAmountMax != 200000) {
+                    allFilters.push({ type: 'quick', label: `Loan Amount: ${loanAmountMin/1000}k-${loanAmountMax/1000}k`, category: 'Quick Filter' });
+                }
+                
+                const tenureMin = document.getElementById('tenureMinSlider')?.value || 6;
+                const tenureMax = document.getElementById('tenureMaxSlider')?.value || 24;
+                if (tenureMin != 6 || tenureMax != 24) {
+                    allFilters.push({ type: 'quick', label: `Tenure: ${tenureMin}-${tenureMax} months`, category: 'Quick Filter' });
+                }
+                
+                const interestMin = document.getElementById('interestRateMinSlider')?.value || 18;
+                const interestMax = document.getElementById('interestRateMaxSlider')?.value || 30;
+                if (interestMin != 18 || interestMax != 30) {
+                    allFilters.push({ type: 'quick', label: `Interest Rate: ${interestMin}%-${interestMax}%`, category: 'Quick Filter' });
+                }
+                
+                // Add custom filters
+                state.customFilters.forEach((customFilter, index) => {
+                    customFilter.rules.forEach(rule => {
+                        const field = allFieldsForFiltering.find(f => f.name === rule.field);
+                        const fieldLabel = field ? field.label : rule.field;
+                        const categoryLabel = field ? field.category.charAt(0).toUpperCase() + field.category.slice(1) : 'Custom';
+                        allFilters.push({ 
+                            type: 'custom', 
+                            label: `${fieldLabel} ${rule.operator} ${rule.value}`, 
+                            category: categoryLabel,
+                            filterIndex: index 
+                        });
+                    });
+                });
+                
+                // Render filters
+                if (allFilters.length === 0) {
+                    container.innerHTML = '<div class="text-gray-600 italic">No filters applied. Using default ranges.</div>';
+                } else {
+                    container.innerHTML = `
+                        <div class="text-xs text-gray-700 mb-2">
+                            <span class="font-semibold">${allFilters.length} filter(s) active</span> 
+                            <span class="text-gray-600">(combined with ${logic})</span>
+                        </div>
+                        ${allFilters.map((filter, idx) => `
+                            <div class="flex items-center justify-between bg-white border border-blue-200 rounded px-2 py-1">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs font-semibold text-blue-700">${filter.category}:</span>
+                                    <span class="text-xs text-gray-800">${filter.label}</span>
+                                </div>
+                                ${filter.type === 'custom' ? `
+                                    <button class="remove-custom-filter text-red-600 hover:text-red-800 text-xs font-bold" data-index="${filter.filterIndex}">×</button>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    `;
+                    
+                    // Add event listeners for remove buttons
+                    container.querySelectorAll('.remove-custom-filter').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const index = parseInt(e.target.dataset.index);
+                            state.customFilters.splice(index, 1);
+                            updateUnifiedFiltersDisplay();
+                        });
+                    });
+                }
+            }
+            
+            // Update display when filter logic changes
+            document.getElementById('filterLogicGlobal')?.addEventListener('change', updateUnifiedFiltersDisplay);
+            
             document.getElementById('applyCustomFilter')?.addEventListener('click', () => {
                 const logic = document.querySelector('input[name="filterLogic"]:checked')?.value || 'AND';
                 const rules = [];
@@ -2446,26 +2830,18 @@
                 
                 state.customFilters.push({ logic, rules });
                 
-                // Show filter chip
-                const display = document.getElementById('customFiltersDisplay');
-                display.classList.remove('hidden');
-                const chip = document.createElement('div');
-                chip.className = 'text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full inline-flex items-center space-x-2';
-                chip.innerHTML = `
-                    <span>${rules.length} rule(s) with ${logic}</span>
-                    <button class="text-blue-600 hover:text-blue-800 font-bold">×</button>
-                `;
-                chip.querySelector('button').addEventListener('click', () => {
-                    chip.remove();
-                    state.customFilters.pop();
-                    if (display.querySelectorAll('.inline-flex').length === 0) {
-                        display.classList.add('hidden');
-                    }
-                });
-                display.appendChild(chip);
+                // Update unified display
+                updateUnifiedFiltersDisplay();
                 
+                // Close modal
                 document.getElementById('customFilterModal').classList.add('hidden');
-                alert(`Custom filter applied: ${rules.length} rule(s) with ${logic} logic`);
+                alert(`Custom filter with ${rules.length} rule(s) added successfully!`);
+            });
+            
+            // Add event listeners to quick filter sliders to update unified display
+            ['kiScoreMinSlider', 'kiScoreMaxSlider', 'loanAmountMinSlider', 'loanAmountMaxSlider', 
+             'tenureMinSlider', 'tenureMaxSlider', 'interestRateMinSlider', 'interestRateMaxSlider'].forEach(id => {
+                document.getElementById(id)?.addEventListener('change', updateUnifiedFiltersDisplay);
             });
 
             validateMappedPoolBtn.addEventListener('click', () => updatePoolSubStep('poolValidationErrorSubStep'));
