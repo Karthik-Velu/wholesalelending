@@ -1142,46 +1142,6 @@
                             </div>
                             </div>
                             <!-- End Filter & Structuring Section -->
-                            <!-- Sensitivity Analysis Modal -->
-                            <div id="sensitivityModal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 items-center justify-center z-50">
-                                <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
-                                    <div class="flex justify-between items-center mb-4">
-                                        <h3 class="text-lg font-bold">Sensitivity Analysis Results</h3>
-                                        <button id="closeSensitivityModalBtn" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
-                                    </div>
-                                    <p class="text-sm text-gray-600 mb-4">Impact of changing the Expected Loss Rate from <span id="baseLossRate" class="font-bold"></span> to <span id="stressedLossRate" class="font-bold"></span>.</p>
-                                    <table class="w-full text-sm text-left">
-                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                            <tr>
-                                                <th class="px-4 py-2">Tranche</th>
-                                                <th class="px-4 py-2 text-right">Base Case Cashflow (KES M)</th>
-                                                <th class="px-4 py-2 text-right">Stressed Case Cashflow (KES M)</th>
-                                                <th class="px-4 py-2 text-right">Impact (KES M)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="border-b">
-                                                <td class="px-4 py-2 font-medium">Senior Tranche</td>
-                                                <td id="baseSenior" class="px-4 py-2 text-right"></td>
-                                                <td id="stressedSenior" class="px-4 py-2 text-right"></td>
-                                                <td id="impactSenior" class="px-4 py-2 text-right text-green-600"></td>
-                                            </tr>
-                                            <tr class="border-b">
-                                                <td class="px-4 py-2 font-medium">Mezzanine Tranche</td>
-                                                <td id="baseMezz" class="px-4 py-2 text-right"></td>
-                                                <td id="stressedMezz" class="px-4 py-2 text-right"></td>
-                                                <td id="impactMezz" class="px-4 py-2 text-right text-green-600"></td>
-                                            </tr>
-                                            <tr class="bg-red-50">
-                                                <td class="px-4 py-2 font-bold text-red-800">Equity Tranche</td>
-                                                <td id="baseEquity" class="px-4 py-2 text-right font-bold"></td>
-                                                <td id="stressedEquity" class="px-4 py-2 text-right font-bold text-red-800"></td>
-                                                <td id="impactEquity" class="px-4 py-2 text-right font-bold text-red-800"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1863,7 +1823,7 @@
     </div>
     
     <!-- Report Preview Modal -->
-    <div id="reportPreviewModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+    <div id="reportPreviewModal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
         <div class="relative top-20 mx-auto p-5 border w-11/12 max-w-5xl shadow-lg rounded-md bg-white">
             <div class="flex justify-between items-center pb-3 border-b">
                 <h3 class="text-xl font-bold text-gray-900" id="previewModalTitle">Report Preview</h3>
@@ -1885,7 +1845,7 @@
     </div>
     
     <!-- Create New Field Modal -->
-    <div id="createFieldModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+    <div id="createFieldModal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
         <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
             <div class="flex justify-between items-center pb-3 border-b">
                 <h3 class="text-xl font-bold text-gray-900">Create New Field</h3>
@@ -1924,7 +1884,7 @@
     </div>
 
     <!-- Add Validation Rules Modal -->
-    <div id="validationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+    <div id="validationModal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
         <div class="relative top-20 mx-auto p-5 border w-full max-w-3xl shadow-lg rounded-md bg-white">
             <div class="flex justify-between items-center pb-3 border-b">
                 <h3 class="text-xl font-bold text-gray-900">Add Validation Rules</h3>
@@ -1951,7 +1911,7 @@
     </div>
 
     <!-- Custom Filter Builder Modal -->
-    <div id="customFilterModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+    <div id="customFilterModal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
         <div class="relative top-20 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
             <div class="flex justify-between items-center pb-3 border-b">
                 <h3 class="text-xl font-bold text-gray-900">Custom Filter Builder</h3>
@@ -2127,8 +2087,6 @@
             const finalizeTransactionNameInput = document.getElementById('newTransactionName');
             const cancelFinalizeBtn = document.getElementById('cancelFinalizeBtn');
             const saveTransactionBtn = document.getElementById('saveTransactionBtn');
-            const sensitivityModal = document.getElementById('sensitivityModal');
-            const closeSensitivityModalBtn = document.getElementById('closeSensitivityModalBtn');
 
             let countiesMultiSelect;
 
@@ -3836,8 +3794,6 @@
             }
 
             applyFiltersBtn.addEventListener('click', applyFilters);
-            runSensitivitySimulationBtn.addEventListener('click', () => runSensitivitySimulation(true));
-            closeSensitivityModalBtn.addEventListener('click', () => sensitivityModal.classList.remove('active'));
 
             finalizePoolBtn.addEventListener('click', () => {
                 finalizePoolModal.classList.add('active');
