@@ -2312,6 +2312,8 @@
             }
 
             function renderOriginators() {
+                if (!originatorsTableBody) return;
+                if (!state.originators || state.originators.length === 0) return;
                 originatorsTableBody.innerHTML = '';
                 state.originators.forEach(o => {
                     const row = `
@@ -3789,18 +3791,22 @@
             });
 
             function applyFilters() {
-                simulationResultsPanel.classList.remove('hidden');
-                simulationOriginatorName.textContent = 'Filtered Pool Results';
-                
-                // Get filter values
-                const kiScoreMin = parseInt(kiScoreMinSlider.value);
-                const kiScoreMax = parseInt(kiScoreMaxSlider.value);
-                const loanAmountMin = parseInt(loanAmountMinSlider.value);
-                const loanAmountMax = parseInt(loanAmountMaxSlider.value);
-                const tenureMin = parseInt(tenureMinSlider.value);
-                const tenureMax = parseInt(tenureMaxSlider.value);
-                const interestMin = parseInt(interestRateMinSlider.value);
-                const interestMax = parseInt(interestRateMaxSlider.value);
+                try {
+                    if (!simulationResultsPanel) return;
+                    simulationResultsPanel.classList.remove('hidden');
+                    if (simulationOriginatorName) {
+                        simulationOriginatorName.textContent = 'Filtered Pool Results';
+                    }
+                    
+                    // Get filter values with null checks
+                    const kiScoreMin = parseInt(kiScoreMinSlider?.value || 1);
+                    const kiScoreMax = parseInt(kiScoreMaxSlider?.value || 100);
+                    const loanAmountMin = parseInt(loanAmountMinSlider?.value || 10000);
+                    const loanAmountMax = parseInt(loanAmountMaxSlider?.value || 250000);
+                    const tenureMin = parseInt(tenureMinSlider?.value || 1);
+                    const tenureMax = parseInt(tenureMaxSlider?.value || 48);
+                    const interestMin = parseInt(interestRateMinSlider?.value || 12);
+                    const interestMax = parseInt(interestRateMaxSlider?.value || 36);
                 
                 // Calculate filtered pool metrics (mock data)
                 const filteredLoanCount = 7540;
@@ -3830,9 +3836,9 @@
                 state.simulationBaseCase = { ...baseCase, lossRate: filteredLossRate };
                 
                 // Generate enhanced comparison charts based on ACTUAL filter values
-                // Get interest rate filter values
-                const interestMin = parseInt(interestRateMinSlider.value);
-                const interestMax = parseInt(interestRateMaxSlider.value);
+                // Get interest rate filter values with null checks
+                const interestMin = parseInt(interestRateMinSlider?.value || 12);
+                const interestMax = parseInt(interestRateMaxSlider?.value || 36);
                 
                 // Risk by Interest Rate - Comparison Chart (Bins aligned with filter)
                 let interestLabels = [];
@@ -4281,6 +4287,9 @@
                     }
                 } catch (e) {
                     console.warn('Error generating filter comparison table:', e);
+                }
+                } catch (e) {
+                    console.error('Error in applyFilters:', e);
                 }
             }
 
