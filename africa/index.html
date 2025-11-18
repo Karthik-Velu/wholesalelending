@@ -2167,6 +2167,7 @@
             const finalizePoolModal = document.createElement('div');
             finalizePoolModal.id = 'finalizePoolModal';
             finalizePoolModal.className = 'modal fixed inset-0 bg-gray-600 bg-opacity-50 items-center justify-center z-50';
+            finalizePoolModal.style.display = 'none'; // Ensure it's hidden by default
             finalizePoolModal.innerHTML = `
                 <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
                     <h3 class="text-lg font-bold mb-4">✅ Finalize Filtered Pool</h3>
