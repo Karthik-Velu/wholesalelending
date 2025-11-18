@@ -2202,7 +2202,8 @@
 
 
             function initializeData() {
-                state.originators = [
+                try {
+                    state.originators = [
                     { id: 'mc', name: 'Acacia Finance Ltd', score: 'BBB', par: '5.5%', yield: '36.0%', aum: '3.2B' },
                     { id: 'ak', name: 'Baobab Micro Bank', score: 'AA-', par: '3.8%', yield: '32.5%', aum: '6.8B' },
                     { id: 'faulu', name: 'Cedar Credit Bank', score: 'A', par: '4.8%', yield: '31.5%', aum: '4.5B' },
@@ -2236,9 +2237,16 @@
                 ];
 
                 initializeCovenantData();
-                renderOriginators();
-                renderActiveTransactions();
-                renderAvailablePortfolios();
+                    renderOriginators();
+                    renderActiveTransactions();
+                    renderAvailablePortfolios();
+                } catch (e) {
+                    console.error('Error in initializeData:', e);
+                    // Ensure at least originators array is initialized
+                    if (!state.originators) state.originators = [];
+                    if (!state.transactions) state.transactions = [];
+                    if (!state.availablePortfolios) state.availablePortfolios = [];
+                }
             }
 
             function initializeCovenantData() {
@@ -2330,8 +2338,11 @@
             }
 
             function renderActiveTransactions() {
-                activeTransactionsTableBody.innerHTML = '';
-                state.transactions.forEach(tx => {
+                if (!activeTransactionsTableBody) return;
+                if (!state.transactions || state.transactions.length === 0) return;
+                try {
+                    activeTransactionsTableBody.innerHTML = '';
+                    state.transactions.forEach(tx => {
                     const actionButton = tx.covenantsSet 
                         ? `<button class="view-performance-btn font-medium text-teal-600 hover:underline" data-tx-id="${tx.id}">View Performance</button>`
                         : `<button class="setup-covenant-btn font-medium text-orange-600 hover:underline" data-tx-id="${tx.id}">Setup Covenant</button>`;
@@ -2348,12 +2359,18 @@
                         </tr>
                     `;
                     activeTransactionsTableBody.innerHTML += row;
-                });
+                    });
+                } catch (e) {
+                    console.error('Error rendering active transactions:', e);
+                }
             }
 
             function renderAvailablePortfolios() {
-                availablePortfoliosTableBody.innerHTML = '';
-                state.availablePortfolios.forEach(p => {
+                if (!availablePortfoliosTableBody) return;
+                if (!state.availablePortfolios || state.availablePortfolios.length === 0) return;
+                try {
+                    availablePortfoliosTableBody.innerHTML = '';
+                    state.availablePortfolios.forEach(p => {
                     const row = `
                         <tr class="bg-white border-b">
                             <td class="px-6 py-4 font-medium text-gray-900">${p.name}</td>
@@ -2366,7 +2383,10 @@
                         </tr>
                     `;
                     availablePortfoliosTableBody.innerHTML += row;
-                });
+                    });
+                } catch (e) {
+                    console.error('Error rendering available portfolios:', e);
+                }
             }
 
             function updateMainView(targetView, txId = null) {
@@ -7050,17 +7070,32 @@ Contact: cashmanagement@kaleidofin.com
             }
             
             // Initial Load - Initialize data FIRST, then render views
-            initializeData();
-            initializeMappingFields();
-            initializeCountyMultiSelect();
-            updateMainView('dealScreen');
-            showPage('dealScreenHomePage');
-            updateHomeTab('originators');
+            try {
+                initializeData();
+                initializeMappingFields();
+                initializeCountyMultiSelect();
+                updateMainView('dealScreen');
+                showPage('dealScreenHomePage');
+                updateHomeTab('originators');
+            } catch (e) {
+                console.error('Error during initial page load:', e);
+                // Try to at least show the page even if initialization fails
+                try {
+                    if (dealScreenView) dealScreenView.classList.add('active');
+                    if (dealScreenBtn) dealScreenBtn.classList.add('active');
+                } catch (e2) {
+                    console.error('Critical error - cannot initialize page:', e2);
+                }
+            }
             
             // Initialize non-critical features after a delay (ensures DOM is ready)
             setTimeout(() => {
-                initializeTranchingStructure();
-                initializeCollapsibleSections();
+                try {
+                    initializeTranchingStructure();
+                    initializeCollapsibleSections();
+                } catch (e) {
+                    console.warn('Error initializing non-critical features:', e);
+                }
             }, 200);
         });
     </script>
