@@ -1313,7 +1313,7 @@
 
             <!-- KI DealTrack View -->
             <div id="dealTrackView" class="view">
-                 <div class="bg-white border-b">
+                 <div class="bg-white border-b sticky top-16 z-30">
                     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                         <nav id="dealTrackNav" class="flex space-x-8 -mb-px">
                             <button data-track-view="covenantMonitoring" class="home-tab-link py-4 px-1 text-sm font-medium">Covenant Monitoring</button>
@@ -1324,7 +1324,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
                     <!-- Covenant Setup Page -->
                     <div id="covenantSetupPage" class="page-view">
                         <div class="max-w-4xl mx-auto">
@@ -2436,16 +2436,27 @@
             }
             
             function renderInsightsPage(txId) {
-                // Insights page HTML already exists, just ensure it's visible
-                // The content is static HTML, no dynamic rendering needed
-                const insightsPage = document.getElementById('insightsPage');
-                if (insightsPage) {
+                try {
+                    const insightsPage = document.getElementById('insightsPage');
+                    if (!insightsPage) {
+                        console.warn('Insights page not found');
+                        return;
+                    }
+                    
+                    // Ensure page is visible
+                    insightsPage.classList.add('active');
+                    
                     // Update transaction name if needed
-                    const txName = state.transactions.find(t => t.id === txId)?.name || 'Transaction';
+                    const txName = state.transactions.find(t => t.id === txId)?.name || (txId || 'Transaction');
                     const txNameEl = insightsPage.querySelector('strong');
                     if (txNameEl) {
                         txNameEl.textContent = txName;
                     }
+                    
+                    // The content is static HTML, no additional rendering needed
+                    console.log('Insights page rendered for transaction:', txName);
+                } catch (e) {
+                    console.error('Error rendering insights page:', e);
                 }
             }
 
@@ -4963,78 +4974,135 @@
             }
             
             function renderPerformancePage(txId) {
-                createOrUpdateChart('posByLoanPurposeChart', {
-                    type: 'doughnut',
-                    data: { labels: ['Boda-Boda', 'Agri-Finance', 'SME Capital', 'Other'], datasets: [{ data: [45, 25, 20, 10], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e'] }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
-                });
-                createOrUpdateChart('posByCountyChart', {
-                    type: 'doughnut',
-                    data: { labels: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Other'], datasets: [{ data: [40, 22, 18, 12, 8], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4'] }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
-                });
-
-                const barOptions = { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, title: { display: true, text: 'PAR 30+ (%)' } } } };
-                createOrUpdateChart('parByLoanPurposeChart', { type: 'bar', data: { labels: ['Boda-Boda', 'Agri-Finance', 'SME Capital', 'Other'], datasets: [{ data: [4.2, 3.1, 5.5, 6.8], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#ef4444'] }] }, options: barOptions });
-                createOrUpdateChart('parByCountyChart', { type: 'bar', data: { labels: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Other'], datasets: [{ data: [4.1, 4.5, 8.1, 3.9, 5.2], backgroundColor: ['#14b8a6', '#5eead4', '#ef4444', '#0d9488', '#0f766e'] }] }, options: barOptions });
-                createOrUpdateChart('parByLoanCycleChart', { type: 'bar', data: { labels: ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4+'], datasets: [{ data: [7.5, 4.1, 2.5, 1.8], backgroundColor: ['#ef4444', '#f97316', '#14b8a6', '#0d9488'] }] }, options: barOptions });
-                createOrUpdateChart('parByKiScoreChart', { type: 'bar', data: { labels: ['> 60', '41-60', '21-40', '< 20'], datasets: [{ data: [9.2, 6.3, 3.1, 1.5], backgroundColor: ['#ef4444', '#f97316', '#14b8a6', '#0d9488'] }] }, options: barOptions });
-
-                createOrUpdateChart('vintageAnalysisChart', {
-                    type: 'line',
-                    data: {
-                        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                        datasets: [
-                            { label: 'Q3 2024', data: [0.5, 1.1, 1.8, 2.5, 3.0, 3.4, 3.7, 3.9, 4.1, 4.2, 4.3, 4.3], borderColor: '#06b6d4', tension: 0.1 },
-                            { label: 'Q4 2024', data: [0.4, 0.9, 1.5, 2.1, 2.6, 3.0, 3.3, 3.5, 3.6, null, null, null], borderColor: '#14b8a6', tension: 0.1 },
-                            { label: 'Q1 2025', data: [0.3, 0.8, 1.3, 1.9, 2.3, null, null, null, null, null, null, null], borderColor: '#84cc16', tension: 0.1 },
-                            { label: 'Q2 2025', data: [0.2, 0.6, 1.1, null, null, null, null, null, null, null, null, null], borderColor: '#f97316', tension: 0.1 }
-                        ]
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: false,
-                        plugins: { legend: { position: 'bottom' } },
-                        scales: {
-                            x: { title: { display: true, text: 'Months on Book' } },
-                            y: { title: { display: true, text: 'PAR 90+ (%)' }, beginAtZero: true }
-                        }
+                try {
+                    const performancePage = document.getElementById('performancePage');
+                    if (!performancePage) {
+                        console.warn('Performance page not found');
+                        return;
                     }
-                });
+                    
+                    // Ensure page is visible
+                    performancePage.classList.add('active');
+                    
+                    // Check if chart elements exist before rendering
+                    if (document.getElementById('posByLoanPurposeChart')) {
+                        createOrUpdateChart('posByLoanPurposeChart', {
+                            type: 'doughnut',
+                            data: { labels: ['Boda-Boda', 'Agri-Finance', 'SME Capital', 'Other'], datasets: [{ data: [45, 25, 20, 10], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e'] }] },
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+                        });
+                    }
+                    
+                    if (document.getElementById('posByCountyChart')) {
+                        createOrUpdateChart('posByCountyChart', {
+                            type: 'doughnut',
+                            data: { labels: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Other'], datasets: [{ data: [40, 22, 18, 12, 8], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4'] }] },
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+                        });
+                    }
+
+                    const barOptions = { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, title: { display: true, text: 'PAR 30+ (%)' } } } };
+                    
+                    if (document.getElementById('parByLoanPurposeChart')) {
+                        createOrUpdateChart('parByLoanPurposeChart', { type: 'bar', data: { labels: ['Boda-Boda', 'Agri-Finance', 'SME Capital', 'Other'], datasets: [{ data: [4.2, 3.1, 5.5, 6.8], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#ef4444'] }] }, options: barOptions });
+                    }
+                    if (document.getElementById('parByCountyChart')) {
+                        createOrUpdateChart('parByCountyChart', { type: 'bar', data: { labels: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Other'], datasets: [{ data: [4.1, 4.5, 8.1, 3.9, 5.2], backgroundColor: ['#14b8a6', '#5eead4', '#ef4444', '#0d9488', '#0f766e'] }] }, options: barOptions });
+                    }
+                    if (document.getElementById('parByLoanCycleChart')) {
+                        createOrUpdateChart('parByLoanCycleChart', { type: 'bar', data: { labels: ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4+'], datasets: [{ data: [7.5, 4.1, 2.5, 1.8], backgroundColor: ['#ef4444', '#f97316', '#14b8a6', '#0d9488'] }] }, options: barOptions });
+                    }
+                    if (document.getElementById('parByKiScoreChart')) {
+                        createOrUpdateChart('parByKiScoreChart', { type: 'bar', data: { labels: ['> 60', '41-60', '21-40', '< 20'], datasets: [{ data: [9.2, 6.3, 3.1, 1.5], backgroundColor: ['#ef4444', '#f97316', '#14b8a6', '#0d9488'] }] }, options: barOptions });
+                    }
+                    if (document.getElementById('vintageAnalysisChart')) {
+                        createOrUpdateChart('vintageAnalysisChart', {
+                            type: 'line',
+                            data: {
+                                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+                                datasets: [
+                                    { label: 'Q3 2024', data: [0.5, 1.1, 1.8, 2.5, 3.0, 3.4, 3.7, 3.9, 4.1, 4.2, 4.3, 4.3], borderColor: '#06b6d4', tension: 0.1 },
+                                    { label: 'Q4 2024', data: [0.4, 0.9, 1.5, 2.1, 2.6, 3.0, 3.3, 3.5, 3.6, null, null, null], borderColor: '#14b8a6', tension: 0.1 },
+                                    { label: 'Q1 2025', data: [0.3, 0.8, 1.3, 1.9, 2.3, null, null, null, null, null, null, null], borderColor: '#84cc16', tension: 0.1 },
+                                    { label: 'Q2 2025', data: [0.2, 0.6, 1.1, null, null, null, null, null, null, null, null, null], borderColor: '#f97316', tension: 0.1 }
+                                ]
+                            },
+                            options: {
+                                responsive: true, maintainAspectRatio: false,
+                                plugins: { legend: { position: 'bottom' } },
+                                scales: {
+                                    x: { title: { display: true, text: 'Months on Book' } },
+                                    y: { title: { display: true, text: 'PAR 90+ (%)' }, beginAtZero: true }
+                                }
+                            }
+                        });
+                    }
+                    
+                    console.log('Performance page rendered for transaction:', txId);
+                } catch (e) {
+                    console.error('Error rendering performance page:', e);
+                }
             }
 
             function renderImpactPage(txId) {
-                createOrUpdateChart('genderPerformanceChart', {
-                    type: 'bar',
-                    data: { labels: ['PAR 30+', 'Collection %'], datasets: [ { label: 'Female', data: [4.8, 98.5], backgroundColor: '#14b8a6' }, { label: 'Male', data: [5.3, 97.9], backgroundColor: '#0f766e' } ] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
-                });
-                createOrUpdateChart('sdgDoughnutChart', {
-                    type: 'doughnut',
-                    data: { labels: ['No Poverty', 'Decent Work', 'Reduced Inequality'], datasets: [{ data: [48, 32, 20], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '60%' }
-                });
-                createOrUpdateChart('sectorDoughnutChart', {
-                    type: 'doughnut',
-                    data: { labels: ['Retail', 'Transport', 'Agriculture', 'Services', 'Other'], datasets: [{ data: [35, 25, 20, 15, 5], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4'] }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } }, cutout: '60%' }
-                });
-                createOrUpdateChart('ruralUrbanChart', {
-                    type: 'bar',
-                    data: { labels: ['Rural', 'Peri-Urban', 'Urban'], datasets: [{ label: 'Borrower Count', data: [5197, 2362, 1891], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-                });
-                 createOrUpdateChart('borrowerProfileChart', {
-                    type: 'bar',
-                    data: {
-                        labels: ['First-Time Borrowers', 'Youth (<35)', 'Female Entrepreneurs'],
-                        datasets: [{
-                            label: 'Number of Borrowers',
-                            data: [2835, 3780, 1850],
-                            backgroundColor: ['#14b8a6', '#5eead4', '#0d9488']
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
-                });
+                try {
+                    const impactPage = document.getElementById('impactPage');
+                    if (!impactPage) {
+                        console.warn('Impact page not found');
+                        return;
+                    }
+                    
+                    // Ensure page is visible
+                    impactPage.classList.add('active');
+                    
+                    // Check if chart elements exist before rendering
+                    if (document.getElementById('genderPerformanceChart')) {
+                        createOrUpdateChart('genderPerformanceChart', {
+                            type: 'bar',
+                            data: { labels: ['PAR 30+', 'Collection %'], datasets: [ { label: 'Female', data: [4.8, 98.5], backgroundColor: '#14b8a6' }, { label: 'Male', data: [5.3, 97.9], backgroundColor: '#0f766e' } ] },
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
+                        });
+                    }
+                    if (document.getElementById('sdgDoughnutChart')) {
+                        createOrUpdateChart('sdgDoughnutChart', {
+                            type: 'doughnut',
+                            data: { labels: ['No Poverty', 'Decent Work', 'Reduced Inequality'], datasets: [{ data: [48, 32, 20], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }] },
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '60%' }
+                        });
+                    }
+                    if (document.getElementById('sectorDoughnutChart')) {
+                        createOrUpdateChart('sectorDoughnutChart', {
+                            type: 'doughnut',
+                            data: { labels: ['Retail', 'Transport', 'Agriculture', 'Services', 'Other'], datasets: [{ data: [35, 25, 20, 15, 5], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4'] }] },
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } }, cutout: '60%' }
+                        });
+                    }
+                    if (document.getElementById('ruralUrbanChart')) {
+                        createOrUpdateChart('ruralUrbanChart', {
+                            type: 'bar',
+                            data: { labels: ['Rural', 'Peri-Urban', 'Urban'], datasets: [{ label: 'Borrower Count', data: [5197, 2362, 1891], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }] },
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                        });
+                    }
+                    if (document.getElementById('borrowerProfileChart')) {
+                        createOrUpdateChart('borrowerProfileChart', {
+                            type: 'bar',
+                            data: {
+                                labels: ['First-Time Borrowers', 'Youth (<35)', 'Female Entrepreneurs'],
+                                datasets: [{
+                                    label: 'Number of Borrowers',
+                                    data: [2835, 3780, 1850],
+                                    backgroundColor: ['#14b8a6', '#5eead4', '#0d9488']
+                                }]
+                            },
+                            options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
+                        });
+                    }
+                    
+                    console.log('Impact page rendered for transaction:', txId);
+                } catch (e) {
+                    console.error('Error rendering impact page:', e);
+                }
             }
 
             function renderReportsPage(txId) {
