@@ -4145,8 +4145,6 @@
             setupRangeSlider(tenureMinSlider, tenureMaxSlider, tenureMinLabel, tenureMaxLabel, val => val);
             setupRangeSlider(interestRateMinSlider, interestRateMaxSlider, interestRateMinLabel, interestRateMaxLabel, val => `${val}%`);
 
-            sensitivityLossSlider.addEventListener('input', (e) => { sensitivityLossLabel.textContent = `${parseFloat(e.target.value).toFixed(1)}%`; });
-            sensitivityPrepaymentSlider.addEventListener('input', (e) => { sensitivityPrepaymentLabel.textContent = `${parseFloat(e.target.value).toFixed(1)}%`; });
 
 
             // --- DealTrack Initialization ---
