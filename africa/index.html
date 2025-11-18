@@ -3856,11 +3856,8 @@
                 state.simulationBaseCase = { ...baseCase, lossRate: filteredLossRate };
                 
                 // Generate enhanced comparison charts based on ACTUAL filter values
-                // Get interest rate filter values with null checks
-                const interestMin = parseInt(interestRateMinSlider?.value || 12);
-                const interestMax = parseInt(interestRateMaxSlider?.value || 36);
-                
                 // Risk by Interest Rate - Comparison Chart (Bins aligned with filter)
+                // Note: interestMin and interestMax are already declared above
                 let interestLabels = [];
                 let interestSelectedKi = [];
                 let interestRestKi = [];
