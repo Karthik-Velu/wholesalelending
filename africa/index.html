@@ -1405,6 +1405,7 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- Covenant Monitoring Page (Updated) -->
                     <div id="covenantMonitoringPage" class="page-view">
                         <div class="max-w-7xl mx-auto">
@@ -2410,7 +2411,13 @@
             }
             
             function updateDealTrackPage(pageId, txId = null) {
-                dealTrackPages.forEach(page => page.classList.toggle('active', page.id === pageId));
+                // First, hide all pages
+                dealTrackPages.forEach(page => page.classList.remove('active'));
+                // Then show only the selected page
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                }
                 
                 // Get transaction ID based on which page we're on
                 let currentTxId = txId;
