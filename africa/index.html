@@ -386,7 +386,7 @@
                             <div id="initialRiskAnalytics" class="mb-8">
                                 <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200 mb-6">
                                     <div class="flex items-center justify-between mb-4">
-                                        <div>
+                                    <div>
                                             <h3 class="text-xl font-bold text-gray-800">📊 Pre-Filter Risk Analytics</h3>
                                             <p class="text-sm text-gray-600 mt-1">Explore risk distribution across the uploaded pool to identify optimal filter criteria</p>
                                         </div>
@@ -609,10 +609,10 @@
                                                 <select id="countiesMultiSelect" multiple></select>
                                             </div>
                                         </div>
-                                            </div>
+                                    </div>
                                             
                                             <!-- Custom Filters -->
-                                            <div class="space-y-4">
+                                        <div class="space-y-4">
                                                 <div class="flex items-center justify-between mb-3">
                                                     <h5 class="font-semibold text-gray-700">Custom Filters</h5>
                                                     <button id="openCustomFilterBtn" class="text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 font-semibold">
@@ -628,21 +628,21 @@
                                                             <option value="AND">Match ALL (AND)</option>
                                                             <option value="OR">Match ANY (OR)</option>
                                                         </select>
-                                                    </div>
+                                            </div>
                                                     <div id="activeFiltersContainer" class="space-y-2 text-xs">
                                                         <!-- Filter chips will appear here -->
                                                         <div class="text-gray-600 italic">No filters applied. Using default ranges.</div>
-                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                                </div>
+                                            </div>
                                         
                                         <div class="mt-6 pt-4 border-t">
                                             <button id="applyFiltersBtn" class="w-full bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-700 text-sm">Apply All Filters</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
-                                </div>
                                 <div id="simulationResultsPanel" class="bg-white rounded-lg border space-y-6 hidden">
                                     <button id="toggleResultsSection" class="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50">
                                         <h4 class="text-lg font-semibold text-gray-800">Filter Results</h4>
@@ -751,9 +751,9 @@
                                             </svg>
                                             Download Filtered Pool (CSV)
                                         </button>
-                                    </div>
-                                </div>
-                                    
+                                            </div>
+                                        </div>
+
                                     <!-- POST-FINALIZATION: Cashflow Generation Section -->
                                     <div id="postFinalizationSection" class="hidden border-t mt-6 pt-6">
                                         <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg border border-green-200">
@@ -766,13 +766,13 @@
                                                         Pool Finalized Successfully
                                                     </h4>
                                                     <p class="text-sm text-gray-600 mt-1">Filtered pool locked. Ready to generate expected cashflows using AI models.</p>
-                                                </div>
+                                    </div>
                                                 <div class="bg-white px-4 py-2 rounded-lg border border-green-300 text-center">
                                                     <p class="text-xs text-gray-500">Finalized Pool</p>
                                                     <p class="text-xl font-bold text-green-700" id="finalizedLoanCount">9,540 loans</p>
                                                     <p class="text-xs text-gray-500 mt-1">KES <span id="finalizedPoolValue">980M</span></p>
-                                                </div>
-                                            </div>
+                                    </div>
+                                </div>
                                             
                                             <div class="bg-white p-4 rounded-lg border border-green-200 mb-4">
                                                 <h5 class="font-semibold text-gray-700 mb-3">📋 Finalized Pool Summary</h5>
@@ -780,11 +780,11 @@
                                                     <div>
                                                         <p class="text-gray-500">WA KI Score</p>
                                                         <p class="font-bold text-teal-600" id="finalizedKiScore">25</p>
-                                                    </div>
+                            </div>
                                                     <div>
                                                         <p class="text-gray-500">Est. Loss Rate</p>
                                                         <p class="font-bold text-red-600" id="finalizedLossRate">4.1%</p>
-                                                    </div>
+                                    </div>
                                                     <div>
                                                         <p class="text-gray-500">WA Tenure</p>
                                                         <p class="font-bold text-gray-700" id="finalizedTenure">18 mo</p>
@@ -1213,8 +1213,8 @@
                                                                         <th class="px-4 py-2 text-right">Std Dev</th>
                                                                         <th class="px-4 py-2 text-right">Sharpe Ratio</th>
                                                                         <th class="px-4 py-2 text-right">Prob of Loss</th>
-                                                                    </tr>
-                                                                </thead>
+                                            </tr>
+                                        </thead>
                                                                 <tbody class="divide-y">
                                                                     <tr class="hover:bg-gray-50">
                                                                         <td class="px-4 py-2 font-medium text-green-800">Senior (Class A)</td>
@@ -1224,7 +1224,7 @@
                                                                         <td class="px-4 py-2 text-right">0.8%</td>
                                                                         <td class="px-4 py-2 text-right font-bold text-green-700">1.15</td>
                                                                         <td class="px-4 py-2 text-right text-green-700">0.1%</td>
-                                                                    </tr>
+                                            </tr>
                                                                     <tr class="hover:bg-gray-50">
                                                                         <td class="px-4 py-2 font-medium text-blue-800">Mezzanine (Class B)</td>
                                                                         <td class="px-4 py-2 text-right font-bold">22.8%</td>
@@ -1233,7 +1233,7 @@
                                                                         <td class="px-4 py-2 text-right">2.1%</td>
                                                                         <td class="px-4 py-2 text-right font-bold text-blue-700">0.95</td>
                                                                         <td class="px-4 py-2 text-right text-blue-700">2.8%</td>
-                                                                    </tr>
+                                            </tr>
                                                                     <tr class="hover:bg-gray-50">
                                                                         <td class="px-4 py-2 font-medium text-purple-800">Equity / Junior</td>
                                                                         <td class="px-4 py-2 text-right font-bold">28.5%</td>
@@ -1242,16 +1242,16 @@
                                                                         <td class="px-4 py-2 text-right">8.5%</td>
                                                                         <td class="px-4 py-2 text-right font-bold text-purple-700">0.72</td>
                                                                         <td class="px-4 py-2 text-right text-orange-700">18.5%</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                                                         <div class="mt-4 p-3 bg-gray-50 rounded text-xs">
                                                             <p class="text-gray-700">
                                                                 <strong>Note:</strong> VaR (Value at Risk) = 5th percentile IRR. CVaR (Conditional Value at Risk / Expected Shortfall) = Average of outcomes below P5. 
                                                                 Sharpe Ratio = (Expected Return - Risk-Free Rate) / Std Dev. Risk-Free Rate assumed at 13% (CBK Rate).
                                                             </p>
-                                                        </div>
+                            </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1619,6 +1619,15 @@
                                     <button class="text-teal-600 hover:text-teal-700 text-sm font-semibold">Export All Data</button>
                                 </div>
                                 
+                                <!-- Collection Efficiency Explanation -->
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                                    <h4 class="font-semibold text-blue-800 mb-2">Understanding Collection Efficiency Metrics</h4>
+                                    <div class="text-sm text-blue-700 space-y-1">
+                                        <p><strong>Unadjusted Collection Efficiency:</strong> Shows actual collections as a percentage of projected collections. Can exceed 100% when over-collection occurs (actual collections exceed projected).</p>
+                                        <p><strong>Adjusted Collection Efficiency:</strong> Caps collection efficiency at 100%, treating any over-collection as perfect collection (100%). This provides a conservative view that doesn't credit over-collection beyond the projected amount.</p>
+                                    </div>
+                                </div>
+
                                 <!-- Key Metrics Summary -->
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
                                     <div class="bg-gray-50 p-4 rounded-lg border">
@@ -1632,31 +1641,24 @@
                                         <p class="text-xs text-gray-600 mt-1">Active accounts</p>
                                     </div>
                                     <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Current Month Collection Efficiency</p>
-                                        <p id="reportCurrentMonthCE" class="text-2xl font-bold text-gray-800">98.8%</p>
+                                        <p class="text-xs text-gray-500 uppercase">Current Month CE (Unadjusted)</p>
+                                        <p id="reportCurrentMonthCEUnadjusted" class="text-2xl font-bold text-gray-800">98.8%</p>
                                         <p class="text-xs text-green-600 mt-1">vs projected</p>
                                     </div>
                                     <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Cumulative Collection Efficiency</p>
-                                        <p id="reportCumulativeCE" class="text-2xl font-bold text-gray-800">97.5%</p>
+                                        <p class="text-xs text-gray-500 uppercase">Current Month CE (Adjusted)</p>
+                                        <p id="reportCurrentMonthCEAdjusted" class="text-2xl font-bold text-gray-800">98.8%</p>
+                                        <p class="text-xs text-green-600 mt-1">capped at 100%</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Cumulative CE (Unadjusted)</p>
+                                        <p id="reportCumulativeCEUnadjusted" class="text-2xl font-bold text-gray-800">97.5%</p>
                                         <p class="text-xs text-gray-600 mt-1">Since inception</p>
                                     </div>
                                     <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Current Month Shortfall</p>
-                                        <p id="reportCurrentMonthShortfall" class="text-2xl font-bold text-gray-800">1.2%</p>
-                                        <p class="text-xs text-red-600 mt-1">Aggregate</p>
-                                    </div>
-                                    <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Cumulative Shortfall</p>
-                                        <p id="reportCumulativeShortfall" class="text-2xl font-bold text-gray-800">2.5%</p>
+                                        <p class="text-xs text-gray-500 uppercase">Cumulative CE (Adjusted)</p>
+                                        <p id="reportCumulativeCEAdjusted" class="text-2xl font-bold text-gray-800">97.5%</p>
                                         <p class="text-xs text-gray-600 mt-1">Since inception</p>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-                                    <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">XIRR %</p>
-                                        <p id="reportXIRR" class="text-2xl font-bold text-gray-800">14.0%</p>
-                                        <p class="text-xs text-gray-600 mt-1">Calculated separately</p>
                                     </div>
                                 </div>
 
@@ -1721,41 +1723,29 @@
                                     </div>
                                 </div>
 
-                                <!-- Portfolio Composition -->
-                                <div class="mb-8">
-                                    <div class="flex items-center justify-between mb-3">
-                                        <h4 class="font-semibold text-gray-800">Portfolio Composition by Bundle Choice</h4>
-                                        <div class="flex items-center space-x-2">
-                                            <label class="text-xs text-gray-600">Metric:</label>
-                                            <select id="compositionMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                <option value="aum">AUM</option>
-                                                <option value="ce">Collection Efficiency</option>
-                                                <option value="shortfall">Shortfall</option>
-                                            </select>
-                                            <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
-                                            <select id="compositionAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                <option value="false">No</option>
-                                                <option value="true">Yes</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="bg-white border rounded-lg p-4">
-                                        <div class="chart-container h-64"><canvas id="reportCompositionChart"></canvas></div>
-                                    </div>
-                                </div>
 
-                                <!-- Geographic & Vintage Analysis -->
+                                <!-- Portfolio Composition & Geographic Analysis -->
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                     <div>
                                         <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Geographic Concentration & Risk</h4>
+                                            <h4 class="font-semibold text-gray-800">Portfolio by Bundle Choice</h4>
                                             <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">Metric:</label>
-                                                <select id="geoMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="ce">Collection Efficiency</option>
-                                                    <option value="shortfall">Shortfall</option>
+                                                <label class="text-xs text-gray-600">Adjusted:</label>
+                                                <select id="compositionAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="false">No</option>
+                                                    <option value="true">Yes</option>
                                                 </select>
-                                                <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportCompositionChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Geographic Concentration</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">Adjusted:</label>
                                                 <select id="geoAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
                                                     <option value="false">No</option>
                                                     <option value="true">Yes</option>
@@ -1766,19 +1756,23 @@
                                             <div class="chart-container h-64"><canvas id="reportGeoChart"></canvas></div>
                                         </div>
                                     </div>
+                                </div>
+
+                                <!-- Origination & Maturity Cohort Analysis -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                     <div>
                                         <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Origination Cohort Analysis</h4>
+                                            <h4 class="font-semibold text-gray-800">Origination Cohort Analysis (Quarterly)</h4>
                                             <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">Metric:</label>
-                                                <select id="vintageMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="ce">Collection Efficiency</option>
-                                                    <option value="shortfall">Shortfall</option>
-                                                </select>
-                                                <label class="text-xs text-gray-600 ml-2">View:</label>
+                                                <label class="text-xs text-gray-600">View:</label>
                                                 <select id="vintageViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
                                                     <option value="current">Current Month</option>
                                                     <option value="cumulative">Cumulative</option>
+                                                </select>
+                                                <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
+                                                <select id="vintageAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="false">No</option>
+                                                    <option value="true">Yes</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -1786,63 +1780,38 @@
                                             <div class="chart-container h-64"><canvas id="reportVintageChart"></canvas></div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <!-- Maturity Cohort Analysis -->
-                                <div class="mb-8">
-                                    <div class="flex items-center justify-between mb-3">
-                                        <h4 class="font-semibold text-gray-800">Maturity Cohort Analysis</h4>
-                                        <div class="flex items-center space-x-2">
-                                            <label class="text-xs text-gray-600">Metric:</label>
-                                            <select id="maturityMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                <option value="ce">Collection Efficiency</option>
-                                                <option value="shortfall">Shortfall</option>
-                                            </select>
-                                            <label class="text-xs text-gray-600 ml-2">View:</label>
-                                            <select id="maturityViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                <option value="current">Current Month</option>
-                                                <option value="cumulative">Cumulative</option>
-                                            </select>
-                                            <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
-                                            <select id="maturityAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                <option value="false">No</option>
-                                                <option value="true">Yes</option>
-                                            </select>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Maturity Cohort Analysis</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">View:</label>
+                                                <select id="maturityViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="current">Current Month</option>
+                                                    <option value="cumulative">Cumulative</option>
+                                                </select>
+                                                <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
+                                                <select id="maturityAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="false">No</option>
+                                                    <option value="true">Yes</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="bg-white border rounded-lg p-4">
-                                        <div class="chart-container h-64"><canvas id="reportMaturityCohortChart"></canvas></div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportMaturityCohortChart"></canvas></div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Additional Risk Cuts -->
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                     <div>
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Risk by Gender</h4>
-                                            <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">Metric:</label>
-                                                <select id="genderMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="ce">Collection Efficiency</option>
-                                                    <option value="shortfall">Shortfall</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Risk by Gender</h4>
                                         <div class="bg-white border rounded-lg p-4">
                                             <div class="chart-container h-64"><canvas id="reportGenderChart"></canvas></div>
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Risk by Liability Bucket</h4>
-                                            <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">Metric:</label>
-                                                <select id="liabilityMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="ce">Collection Efficiency</option>
-                                                    <option value="shortfall">Shortfall</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Risk by Liability Bucket</h4>
                                         <div class="bg-white border rounded-lg p-4">
                                             <div class="chart-container h-64"><canvas id="reportLiabilityBucketChart"></canvas></div>
                                         </div>
@@ -1850,41 +1819,30 @@
                                 </div>
 
                                 <div class="mb-8">
-                                    <div class="flex items-center justify-between mb-3">
-                                        <h4 class="font-semibold text-gray-800">Risk by Renewal Status</h4>
-                                        <div class="flex items-center space-x-2">
-                                            <label class="text-xs text-gray-600">Metric:</label>
-                                            <select id="renewalMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                <option value="ce">Collection Efficiency</option>
-                                                <option value="shortfall">Shortfall</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <h4 class="font-semibold text-gray-800 mb-3">Risk by Renewal Status</h4>
                                     <div class="bg-white border rounded-lg p-4">
                                         <div class="chart-container h-64"><canvas id="reportRenewalChart"></canvas></div>
                                     </div>
                                 </div>
 
-                                <!-- Covenant Tests & Compliance -->
+                                <!-- Tranche Cashflow Comparison (Cumulative) -->
                                 <div class="mb-8">
-                                    <h4 class="font-semibold text-gray-800 mb-3">Covenant Tests & Triggers</h4>
+                                    <h4 class="font-semibold text-gray-800 mb-3">Tranche Cashflow: Projected vs Actual (Cumulative)</h4>
                                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportCovenantTestsChart"></canvas></div>
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-700 mb-2">Senior Tranche (Class A)</h5>
+                                            <div class="bg-white border rounded-lg p-4">
+                                                <div class="chart-container h-64"><canvas id="reportSeniorTrancheCashflowChart"></canvas></div>
+                                            </div>
                                         </div>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportCETriggerChart"></canvas></div>
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-700 mb-2">Mezzanine Tranche (Class B)</h5>
+                                            <div class="bg-white border rounded-lg p-4">
+                                                <div class="chart-container h-64"><canvas id="reportMezzanineTrancheCashflowChart"></canvas></div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <!-- Tranche-Level Payment Breakdown -->
-                                <div class="mb-8">
-                                    <h4 class="font-semibold text-gray-800 mb-3">Tranche-Level Payments (This Month)</h4>
-                                    <div class="bg-white border rounded-lg p-4">
-                                        <div class="chart-container h-80"><canvas id="reportTranchePaymentsChart"></canvas></div>
-                                    </div>
-                                    <p class="text-xs text-gray-600 mt-2">Detailed breakdown of Senior (Class A) and Mezzanine (Class B) payments</p>
+                                    <p class="text-xs text-gray-600 mt-2">Cumulative cashflow from Day 0 to current month</p>
                                 </div>
 
                                 <!-- 3-Way Comparison: Actual vs Day 0 vs Demand -->
@@ -1896,22 +1854,13 @@
                                     <p class="text-xs text-gray-600 mt-2">Comparing Actual vs Day 0 Projections vs Contractual Demands across months</p>
                                 </div>
 
-                                <!-- Credit Enhancement Detailed -->
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                                    <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">Credit Enhancement: Actual vs Day 0</h4>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportCreditEnhancementChart"></canvas></div>
-                                        </div>
-                                        <p class="text-xs text-gray-600 mt-2">CE cushion trend showing improvement vs initial day</p>
+                                <!-- Available Credit Enhancement (Time Series) -->
+                                <div class="mb-8">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Available Credit Enhancement Over Time</h4>
+                                    <div class="bg-white border rounded-lg p-4">
+                                        <div class="chart-container h-64"><canvas id="reportAvailableCEChart"></canvas></div>
                                     </div>
-                                    <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">Reserve Account Status</h4>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportReserveAccountChart"></canvas></div>
-                                        </div>
-                                        <p class="text-xs text-gray-600 mt-2">Reserve account balance vs target requirement</p>
-                                    </div>
+                                    <p class="text-xs text-gray-600 mt-2">Shows available credit enhancement decreasing as it gets utilized. Includes Overcollateralization (OC) and Junior Liquidity Facility (JLF).</p>
                                 </div>
 
                                 <!-- Payment Performance vs Obligations -->
@@ -2357,7 +2306,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Transaction Name</label>
-                        <input type="text" id="newTransactionName" placeholder="e.g., RMFB-BODA-002" class="w-full border-gray-300 rounded-md shadow-sm">
+                    <input type="text" id="newTransactionName" placeholder="e.g., RMFB-BODA-002" class="w-full border-gray-300 rounded-md shadow-sm">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Comments (Optional)</label>
@@ -2380,7 +2329,7 @@
 
             function initializeData() {
                 try {
-                    state.originators = [
+                state.originators = [
                     { id: 'mc', name: 'Acacia Finance Ltd', score: 'BBB', par: '5.5%', yield: '36.0%', aum: '3.2B' },
                     { id: 'ak', name: 'Baobab Micro Bank', score: 'AA-', par: '3.8%', yield: '32.5%', aum: '6.8B' },
                     { id: 'faulu', name: 'Cedar Credit Bank', score: 'A', par: '4.8%', yield: '31.5%', aum: '4.5B' },
@@ -2414,9 +2363,9 @@
                 ];
 
                 initializeCovenantData();
-                    renderOriginators();
-                    renderActiveTransactions();
-                    renderAvailablePortfolios();
+                renderOriginators();
+                renderActiveTransactions();
+                renderAvailablePortfolios();
                 } catch (e) {
                     console.error('Error in initializeData:', e);
                     // Ensure at least originators array is initialized
@@ -2518,8 +2467,8 @@
                 if (!activeTransactionsTableBody) return;
                 if (!state.transactions || state.transactions.length === 0) return;
                 try {
-                    activeTransactionsTableBody.innerHTML = '';
-                    state.transactions.forEach(tx => {
+                activeTransactionsTableBody.innerHTML = '';
+                state.transactions.forEach(tx => {
                     const actionButton = tx.covenantsSet 
                         ? `<button class="view-performance-btn font-medium text-teal-600 hover:underline" data-tx-id="${tx.id}">View Performance</button>`
                         : `<button class="setup-covenant-btn font-medium text-orange-600 hover:underline" data-tx-id="${tx.id}">Setup Covenant</button>`;
@@ -2536,7 +2485,7 @@
                         </tr>
                     `;
                     activeTransactionsTableBody.innerHTML += row;
-                    });
+                });
                 } catch (e) {
                     console.error('Error rendering active transactions:', e);
                 }
@@ -2546,8 +2495,8 @@
                 if (!availablePortfoliosTableBody) return;
                 if (!state.availablePortfolios || state.availablePortfolios.length === 0) return;
                 try {
-                    availablePortfoliosTableBody.innerHTML = '';
-                    state.availablePortfolios.forEach(p => {
+                availablePortfoliosTableBody.innerHTML = '';
+                state.availablePortfolios.forEach(p => {
                     const row = `
                         <tr class="bg-white border-b">
                             <td class="px-6 py-4 font-medium text-gray-900">${p.name}</td>
@@ -2560,7 +2509,7 @@
                         </tr>
                     `;
                     availablePortfoliosTableBody.innerHTML += row;
-                    });
+                });
                 } catch (e) {
                     console.error('Error rendering available portfolios:', e);
                 }
@@ -4091,7 +4040,7 @@
                 
                 createOrUpdateChart('filteredRiskByInterestRateChart', 'bar', {
                     labels: interestLabels,
-                    datasets: [{
+                        datasets: [{
                         label: 'Selected Group WA KI Score',
                         data: interestSelectedKi,
                         backgroundColor: 'rgba(20, 184, 166, 0.7)'
@@ -4180,7 +4129,7 @@
                         yAxisID: 'y1'
                     }]
                 }, {
-                    scales: {
+                        scales: {
                         y: { position: 'left', title: { display: true, text: 'WA KI Score' } },
                         y1: { position: 'right', title: { display: true, text: 'PAR30 (%)' }, grid: { drawOnChartArea: false } }
                     },
@@ -5174,56 +5123,56 @@
                     
                     // Check if chart elements exist before rendering
                     if (document.getElementById('posByLoanPurposeChart')) {
-                        createOrUpdateChart('posByLoanPurposeChart', {
-                            type: 'doughnut',
-                            data: { labels: ['Boda-Boda', 'Agri-Finance', 'SME Capital', 'Other'], datasets: [{ data: [45, 25, 20, 10], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e'] }] },
-                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
-                        });
+                createOrUpdateChart('posByLoanPurposeChart', {
+                    type: 'doughnut',
+                    data: { labels: ['Boda-Boda', 'Agri-Finance', 'SME Capital', 'Other'], datasets: [{ data: [45, 25, 20, 10], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e'] }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+                });
                     }
                     
                     if (document.getElementById('posByCountyChart')) {
-                        createOrUpdateChart('posByCountyChart', {
-                            type: 'doughnut',
-                            data: { labels: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Other'], datasets: [{ data: [40, 22, 18, 12, 8], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4'] }] },
-                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
-                        });
+                createOrUpdateChart('posByCountyChart', {
+                    type: 'doughnut',
+                    data: { labels: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Other'], datasets: [{ data: [40, 22, 18, 12, 8], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4'] }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+                });
                     }
 
-                    const barOptions = { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, title: { display: true, text: 'PAR 30+ (%)' } } } };
+                const barOptions = { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, title: { display: true, text: 'PAR 30+ (%)' } } } };
                     
                     if (document.getElementById('parByLoanPurposeChart')) {
-                        createOrUpdateChart('parByLoanPurposeChart', { type: 'bar', data: { labels: ['Boda-Boda', 'Agri-Finance', 'SME Capital', 'Other'], datasets: [{ data: [4.2, 3.1, 5.5, 6.8], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#ef4444'] }] }, options: barOptions });
+                createOrUpdateChart('parByLoanPurposeChart', { type: 'bar', data: { labels: ['Boda-Boda', 'Agri-Finance', 'SME Capital', 'Other'], datasets: [{ data: [4.2, 3.1, 5.5, 6.8], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#ef4444'] }] }, options: barOptions });
                     }
                     if (document.getElementById('parByCountyChart')) {
-                        createOrUpdateChart('parByCountyChart', { type: 'bar', data: { labels: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Other'], datasets: [{ data: [4.1, 4.5, 8.1, 3.9, 5.2], backgroundColor: ['#14b8a6', '#5eead4', '#ef4444', '#0d9488', '#0f766e'] }] }, options: barOptions });
+                createOrUpdateChart('parByCountyChart', { type: 'bar', data: { labels: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Other'], datasets: [{ data: [4.1, 4.5, 8.1, 3.9, 5.2], backgroundColor: ['#14b8a6', '#5eead4', '#ef4444', '#0d9488', '#0f766e'] }] }, options: barOptions });
                     }
                     if (document.getElementById('parByLoanCycleChart')) {
-                        createOrUpdateChart('parByLoanCycleChart', { type: 'bar', data: { labels: ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4+'], datasets: [{ data: [7.5, 4.1, 2.5, 1.8], backgroundColor: ['#ef4444', '#f97316', '#14b8a6', '#0d9488'] }] }, options: barOptions });
+                createOrUpdateChart('parByLoanCycleChart', { type: 'bar', data: { labels: ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4+'], datasets: [{ data: [7.5, 4.1, 2.5, 1.8], backgroundColor: ['#ef4444', '#f97316', '#14b8a6', '#0d9488'] }] }, options: barOptions });
                     }
                     if (document.getElementById('parByKiScoreChart')) {
-                        createOrUpdateChart('parByKiScoreChart', { type: 'bar', data: { labels: ['> 60', '41-60', '21-40', '< 20'], datasets: [{ data: [9.2, 6.3, 3.1, 1.5], backgroundColor: ['#ef4444', '#f97316', '#14b8a6', '#0d9488'] }] }, options: barOptions });
+                createOrUpdateChart('parByKiScoreChart', { type: 'bar', data: { labels: ['> 60', '41-60', '21-40', '< 20'], datasets: [{ data: [9.2, 6.3, 3.1, 1.5], backgroundColor: ['#ef4444', '#f97316', '#14b8a6', '#0d9488'] }] }, options: barOptions });
                     }
                     if (document.getElementById('vintageAnalysisChart')) {
-                        createOrUpdateChart('vintageAnalysisChart', {
-                            type: 'line',
-                            data: {
-                                labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-                                datasets: [
-                                    { label: 'Q3 2024', data: [0.5, 1.1, 1.8, 2.5, 3.0, 3.4, 3.7, 3.9, 4.1, 4.2, 4.3, 4.3], borderColor: '#06b6d4', tension: 0.1 },
-                                    { label: 'Q4 2024', data: [0.4, 0.9, 1.5, 2.1, 2.6, 3.0, 3.3, 3.5, 3.6, null, null, null], borderColor: '#14b8a6', tension: 0.1 },
-                                    { label: 'Q1 2025', data: [0.3, 0.8, 1.3, 1.9, 2.3, null, null, null, null, null, null, null], borderColor: '#84cc16', tension: 0.1 },
-                                    { label: 'Q2 2025', data: [0.2, 0.6, 1.1, null, null, null, null, null, null, null, null, null], borderColor: '#f97316', tension: 0.1 }
-                                ]
-                            },
-                            options: {
-                                responsive: true, maintainAspectRatio: false,
-                                plugins: { legend: { position: 'bottom' } },
-                                scales: {
-                                    x: { title: { display: true, text: 'Months on Book' } },
-                                    y: { title: { display: true, text: 'PAR 90+ (%)' }, beginAtZero: true }
-                                }
-                            }
-                        });
+                createOrUpdateChart('vintageAnalysisChart', {
+                    type: 'line',
+                    data: {
+                        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+                        datasets: [
+                            { label: 'Q3 2024', data: [0.5, 1.1, 1.8, 2.5, 3.0, 3.4, 3.7, 3.9, 4.1, 4.2, 4.3, 4.3], borderColor: '#06b6d4', tension: 0.1 },
+                            { label: 'Q4 2024', data: [0.4, 0.9, 1.5, 2.1, 2.6, 3.0, 3.3, 3.5, 3.6, null, null, null], borderColor: '#14b8a6', tension: 0.1 },
+                            { label: 'Q1 2025', data: [0.3, 0.8, 1.3, 1.9, 2.3, null, null, null, null, null, null, null], borderColor: '#84cc16', tension: 0.1 },
+                            { label: 'Q2 2025', data: [0.2, 0.6, 1.1, null, null, null, null, null, null, null, null, null], borderColor: '#f97316', tension: 0.1 }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom' } },
+                        scales: {
+                            x: { title: { display: true, text: 'Months on Book' } },
+                            y: { title: { display: true, text: 'PAR 90+ (%)' }, beginAtZero: true }
+                        }
+                    }
+                });
                     }
                     
                     console.log('Performance page rendered for transaction:', txId);
@@ -5245,47 +5194,47 @@
                     
                     // Check if chart elements exist before rendering
                     if (document.getElementById('genderPerformanceChart')) {
-                        createOrUpdateChart('genderPerformanceChart', {
-                            type: 'bar',
-                            data: { labels: ['PAR 30+', 'Collection %'], datasets: [ { label: 'Female', data: [4.8, 98.5], backgroundColor: '#14b8a6' }, { label: 'Male', data: [5.3, 97.9], backgroundColor: '#0f766e' } ] },
-                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
-                        });
+                createOrUpdateChart('genderPerformanceChart', {
+                    type: 'bar',
+                    data: { labels: ['PAR 30+', 'Collection %'], datasets: [ { label: 'Female', data: [4.8, 98.5], backgroundColor: '#14b8a6' }, { label: 'Male', data: [5.3, 97.9], backgroundColor: '#0f766e' } ] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
+                });
                     }
                     if (document.getElementById('sdgDoughnutChart')) {
-                        createOrUpdateChart('sdgDoughnutChart', {
-                            type: 'doughnut',
-                            data: { labels: ['No Poverty', 'Decent Work', 'Reduced Inequality'], datasets: [{ data: [48, 32, 20], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }] },
-                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '60%' }
-                        });
+                createOrUpdateChart('sdgDoughnutChart', {
+                    type: 'doughnut',
+                    data: { labels: ['No Poverty', 'Decent Work', 'Reduced Inequality'], datasets: [{ data: [48, 32, 20], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '60%' }
+                });
                     }
                     if (document.getElementById('sectorDoughnutChart')) {
-                        createOrUpdateChart('sectorDoughnutChart', {
-                            type: 'doughnut',
-                            data: { labels: ['Retail', 'Transport', 'Agriculture', 'Services', 'Other'], datasets: [{ data: [35, 25, 20, 15, 5], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4'] }] },
-                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } }, cutout: '60%' }
-                        });
+                createOrUpdateChart('sectorDoughnutChart', {
+                    type: 'doughnut',
+                    data: { labels: ['Retail', 'Transport', 'Agriculture', 'Services', 'Other'], datasets: [{ data: [35, 25, 20, 15, 5], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4'] }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } }, cutout: '60%' }
+                });
                     }
                     if (document.getElementById('ruralUrbanChart')) {
-                        createOrUpdateChart('ruralUrbanChart', {
-                            type: 'bar',
-                            data: { labels: ['Rural', 'Peri-Urban', 'Urban'], datasets: [{ label: 'Borrower Count', data: [5197, 2362, 1891], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }] },
-                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-                        });
+                createOrUpdateChart('ruralUrbanChart', {
+                    type: 'bar',
+                    data: { labels: ['Rural', 'Peri-Urban', 'Urban'], datasets: [{ label: 'Borrower Count', data: [5197, 2362, 1891], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                });
                     }
                     if (document.getElementById('borrowerProfileChart')) {
-                        createOrUpdateChart('borrowerProfileChart', {
-                            type: 'bar',
-                            data: {
-                                labels: ['First-Time Borrowers', 'Youth (<35)', 'Female Entrepreneurs'],
-                                datasets: [{
-                                    label: 'Number of Borrowers',
-                                    data: [2835, 3780, 1850],
-                                    backgroundColor: ['#14b8a6', '#5eead4', '#0d9488']
-                                }]
-                            },
-                            options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
-                        });
-                    }
+                 createOrUpdateChart('borrowerProfileChart', {
+                    type: 'bar',
+                    data: {
+                        labels: ['First-Time Borrowers', 'Youth (<35)', 'Female Entrepreneurs'],
+                        datasets: [{
+                            label: 'Number of Borrowers',
+                            data: [2835, 3780, 1850],
+                            backgroundColor: ['#14b8a6', '#5eead4', '#0d9488']
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
+                });
+            }
                     
                     console.log('Impact page rendered for transaction:', txId);
                 } catch (e) {
@@ -5429,11 +5378,14 @@
             function groupByOriginationCohort(loans) {
                 const cohorts = {};
                 loans.forEach(loan => {
-                    const month = loan['Disbursed month'];
-                    if (!cohorts[month]) {
-                        cohorts[month] = [];
+                    const disbursedDate = new Date(loan.LOAN_DISBURSED_AT);
+                    const year = disbursedDate.getFullYear();
+                    const quarter = Math.floor(disbursedDate.getMonth() / 3) + 1;
+                    const quarterKey = `Q${quarter} ${year}`;
+                    if (!cohorts[quarterKey]) {
+                        cohorts[quarterKey] = [];
                     }
-                    cohorts[month].push(loan);
+                    cohorts[quarterKey].push(loan);
                 });
                 return cohorts;
             }
@@ -5535,11 +5487,10 @@
                 // Update key metrics
                 document.getElementById('reportPoolSize').textContent = 'KES 475.87M';
                 document.getElementById('reportTotalLoans').textContent = '12,450';
-                document.getElementById('reportCurrentMonthCE').textContent = currentMonthCE.toFixed(1) + '%';
-                document.getElementById('reportCumulativeCE').textContent = cumulativeCE.toFixed(1) + '%';
-                document.getElementById('reportCurrentMonthShortfall').textContent = currentMonthShortfall.toFixed(1) + '%';
-                document.getElementById('reportCumulativeShortfall').textContent = cumulativeShortfall.toFixed(1) + '%';
-                document.getElementById('reportXIRR').textContent = '14.0%';
+                document.getElementById('reportCurrentMonthCEUnadjusted').textContent = currentMonthCE.toFixed(1) + '%';
+                document.getElementById('reportCurrentMonthCEAdjusted').textContent = currentMonthCEAdjusted.toFixed(1) + '%';
+                document.getElementById('reportCumulativeCEUnadjusted').textContent = cumulativeCE.toFixed(1) + '%';
+                document.getElementById('reportCumulativeCEAdjusted').textContent = cumulativeCEAdjusted.toFixed(1) + '%';
 
                 // Generate monthly collection efficiency data for trend charts
                 const monthlyLabels = [];
@@ -5735,45 +5686,69 @@
                     }
                 });
 
-                // Portfolio Composition by Bundle Choice
-                const compositionMetric = document.getElementById('compositionMetricToggle')?.value || 'aum';
+                // Portfolio Composition by Bundle Choice (AUM, AUM%, Collection Efficiency)
                 const compositionAdjusted = document.getElementById('compositionAdjustedToggle')?.value === 'true';
                 const bundleMetrics = calculateRiskMetricsByDimension(mockLoans, 'BUNDLE_CHOICE', currentMonthIndex, compositionAdjusted, false);
                 const bundleLabels = Object.keys(bundleMetrics);
-                const bundleData = bundleLabels.map(label => {
-                    if (compositionMetric === 'aum') return bundleMetrics[label].aum / 1000000; // Convert to millions
-                    if (compositionMetric === 'ce') return bundleMetrics[label].collectionEfficiency;
-                    return bundleMetrics[label].shortfall;
-                });
+                const totalAUM = Object.values(bundleMetrics).reduce((sum, m) => sum + m.aum, 0);
+                const bundleAUM = bundleLabels.map(label => bundleMetrics[label].aum / 1000000); // Convert to millions
+                const bundleAUMPercent = bundleLabels.map(label => (bundleMetrics[label].aum / totalAUM) * 100);
+                const bundleCE = bundleLabels.map(label => bundleMetrics[label].collectionEfficiency);
 
                 createOrUpdateChart('reportCompositionChart', {
-                    type: 'doughnut',
+                    type: 'bar',
                     data: {
                         labels: bundleLabels,
-                        datasets: [{
-                            data: bundleData,
-                            backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4']
-                        }]
+                        datasets: [
+                            {
+                                label: 'AUM (KES M)',
+                                data: bundleAUM,
+                                backgroundColor: '#14b8a6',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'AUM (%)',
+                                data: bundleAUMPercent,
+                                backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'Collection Efficiency (%)',
+                                data: bundleCE,
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                yAxisID: 'y1',
+                                type: 'line',
+                                borderWidth: 3,
+                                fill: false,
+                                tension: 0.4
+                            }
+                        ]
                     },
                     options: { 
                         responsive: true, 
                         maintainAspectRatio: false, 
                         plugins: { 
-                            legend: { position: 'right' },
-                            title: { display: true, text: `Portfolio by Bundle Choice - ${compositionMetric.toUpperCase()}` }
-                        } 
+                            legend: { display: true, position: 'bottom' },
+                            title: { display: true, text: 'Portfolio by Bundle Choice: AUM, AUM %, and Collection Efficiency' }
+                        },
+                        scales: {
+                            y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                        }
                     }
                 });
 
-                // Geographic Concentration & Risk
-                const geoMetric = document.getElementById('geoMetricToggle')?.value || 'ce';
+                // Geographic Concentration (AUM, AUM%, Collection Efficiency)
                 const geoAdjusted = document.getElementById('geoAdjustedToggle')?.value === 'true';
                 const geoMetrics = calculateRiskMetricsByDimension(mockLoans, 'COUNTY', currentMonthIndex, geoAdjusted, false);
                 const geoLabels = Object.keys(geoMetrics).slice(0, 7); // Top 7 counties
+                const totalGeoAUM = Object.values(geoMetrics).reduce((sum, m) => sum + m.aum, 0);
                 const geoAUM = geoLabels.map(label => geoMetrics[label].aum / 1000000);
-                const geoRiskData = geoLabels.map(label => {
-                    return geoMetric === 'ce' ? geoMetrics[label].collectionEfficiency : geoMetrics[label].shortfall;
-                });
+                const geoAUMPercent = geoLabels.map(label => (geoMetrics[label].aum / totalGeoAUM) * 100);
+                const geoCE = geoLabels.map(label => geoMetrics[label].collectionEfficiency);
 
                 createOrUpdateChart('reportGeoChart', {
                     type: 'bar',
@@ -5784,13 +5759,26 @@
                                 label: 'AUM (KES M)',
                                 data: geoAUM,
                                 backgroundColor: '#14b8a6',
-                                yAxisID: 'y'
+                                yAxisID: 'y',
+                                type: 'bar'
                             },
                             {
-                                label: geoMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
-                                data: geoRiskData,
-                                backgroundColor: geoMetric === 'ce' ? 'rgba(59, 130, 246, 0.7)' : 'rgba(239, 68, 68, 0.7)',
-                                yAxisID: 'y1'
+                                label: 'AUM (%)',
+                                data: geoAUMPercent,
+                                backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'Collection Efficiency (%)',
+                                data: geoCE,
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                yAxisID: 'y1',
+                                type: 'line',
+                                borderWidth: 3,
+                                fill: false,
+                                tension: 0.4
                             }
                         ]
                     },
@@ -5800,21 +5788,36 @@
                         indexAxis: 'y', 
                         plugins: { legend: { display: true, position: 'bottom' } },
                         scales: {
-                            y: { position: 'left', title: { display: true, text: 'AUM (KES M)' } },
-                            y1: { position: 'right', title: { display: true, text: geoMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %' }, grid: { drawOnChartArea: false } }
+                            y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
                         }
                     }
                 });
 
-                // Origination Cohort Analysis
-                const vintageMetric = document.getElementById('vintageMetricToggle')?.value || 'ce';
+                // Origination Cohort Analysis (Quarterly)
                 const vintageView = document.getElementById('vintageViewToggle')?.value || 'current';
+                const vintageAdjusted = document.getElementById('vintageAdjustedToggle')?.value === 'true';
                 const originationCohorts = groupByOriginationCohort(mockLoans);
-                const cohortMonths = Object.keys(originationCohorts).sort().slice(-6); // Last 6 months
-                const cohortData = cohortMonths.map(month => {
-                    const cohortLoans = originationCohorts[month];
+                const cohortQuarters = Object.keys(originationCohorts).sort().slice(-6); // Last 6 quarters
+                
+                const cohortAUM = [];
+                const cohortAUMPercent = [];
+                const cohortCE = [];
+                const totalCohortAUM = Object.values(originationCohorts).reduce((sum, loans) => {
+                    return sum + loans.reduce((loanSum, loan) => {
+                        if (vintageView === 'cumulative') {
+                            return loanSum + loan.projectedCashflow.slice(0, currentMonthIndex + 1).reduce((a, b) => a + b, 0);
+                        } else {
+                            return loanSum + (loan.projectedCashflow[currentMonthIndex] || 0);
+                        }
+                    }, 0);
+                }, 0);
+                
+                cohortQuarters.forEach(quarter => {
+                    const cohortLoans = originationCohorts[quarter];
                     let totalProjected = 0;
                     let totalActual = 0;
+                    let cohortTotalAUM = 0;
                     
                     cohortLoans.forEach(loan => {
                         if (vintageView === 'cumulative') {
@@ -5822,58 +5825,93 @@
                                 if (idx <= currentMonthIndex) {
                                     totalProjected += proj;
                                     totalActual += loan.actualCashflow[idx] || 0;
+                                    cohortTotalAUM += proj;
                                 }
                             });
                         } else {
                             if (loan.projectedCashflow.length > currentMonthIndex) {
                                 totalProjected += loan.projectedCashflow[currentMonthIndex] || 0;
                                 totalActual += loan.actualCashflow[currentMonthIndex] || 0;
+                                cohortTotalAUM += loan.projectedCashflow[currentMonthIndex] || 0;
                             }
                         }
                     });
                     
-                    if (vintageMetric === 'ce') {
-                        return calculateCollectionEfficiency(totalActual, totalProjected, false);
-                    }
-                    return calculateShortfall(totalActual, totalProjected);
+                    cohortAUM.push(cohortTotalAUM / 1000000); // Convert to millions
+                    cohortAUMPercent.push((cohortTotalAUM / totalCohortAUM) * 100);
+                    cohortCE.push(calculateCollectionEfficiency(totalActual, totalProjected, vintageAdjusted));
                 });
 
                 createOrUpdateChart('reportVintageChart', {
-                    type: 'line',
+                    type: 'bar',
                     data: {
-                        labels: cohortMonths.map(m => {
-                            const [year, month] = m.split('-');
-                            return `${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][parseInt(month) - 1]} ${year}`;
-                        }),
-                        datasets: [{
-                            label: vintageMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
-                            data: cohortData,
-                            borderColor: '#14b8a6',
-                            backgroundColor: 'rgba(20, 184, 166, 0.1)',
-                            fill: true,
-                            tension: 0.4
-                        }]
+                        labels: cohortQuarters,
+                        datasets: [
+                            {
+                                label: 'AUM (KES M)',
+                                data: cohortAUM,
+                                backgroundColor: '#14b8a6',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'AUM (%)',
+                                data: cohortAUMPercent,
+                                backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'Collection Efficiency (%)',
+                                data: cohortCE,
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                yAxisID: 'y1',
+                                type: 'line',
+                                borderWidth: 3,
+                                fill: false,
+                                tension: 0.4
+                            }
+                        ]
                     },
                     options: { 
                         responsive: true, 
                         maintainAspectRatio: false, 
                         plugins: { 
-                            legend: { display: false },
-                            title: { display: true, text: `Origination Cohort Analysis - ${vintageView === 'cumulative' ? 'Cumulative' : 'Current Month'}` }
-                        } 
+                            legend: { display: true, position: 'bottom' },
+                            title: { display: true, text: `Origination Cohort Analysis (Quarterly) - ${vintageView === 'cumulative' ? 'Cumulative' : 'Current Month'}` }
+                        },
+                        scales: {
+                            y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                        }
                     }
                 });
 
-                // Maturity Cohort Analysis
-                const maturityMetric = document.getElementById('maturityMetricToggle')?.value || 'ce';
+                // Maturity Cohort Analysis (AUM, AUM%, Collection Efficiency)
                 const maturityView = document.getElementById('maturityViewToggle')?.value || 'current';
                 const maturityAdjusted = document.getElementById('maturityAdjustedToggle')?.value === 'true';
                 const maturityCohorts = groupByMaturityCohort(mockLoans, currentDate);
                 const maturityLabels = Object.keys(maturityCohorts);
-                const maturityData = maturityLabels.map(cohort => {
+                
+                const maturityAUM = [];
+                const maturityAUMPercent = [];
+                const maturityCE = [];
+                const totalMaturityAUM = Object.values(maturityCohorts).reduce((sum, loans) => {
+                    return sum + loans.reduce((loanSum, loan) => {
+                        if (maturityView === 'cumulative') {
+                            return loanSum + loan.projectedCashflow.slice(0, currentMonthIndex + 1).reduce((a, b) => a + b, 0);
+                        } else {
+                            return loanSum + (loan.projectedCashflow[currentMonthIndex] || 0);
+                        }
+                    }, 0);
+                }, 0);
+                
+                maturityLabels.forEach(cohort => {
                     const cohortLoans = maturityCohorts[cohort];
                     let totalProjected = 0;
                     let totalActual = 0;
+                    let cohortTotalAUM = 0;
                     
                     cohortLoans.forEach(loan => {
                         if (maturityView === 'cumulative') {
@@ -5881,115 +5919,220 @@
                                 if (idx <= currentMonthIndex) {
                                     totalProjected += proj;
                                     totalActual += loan.actualCashflow[idx] || 0;
+                                    cohortTotalAUM += proj;
                                 }
                             });
                         } else {
                             if (loan.projectedCashflow.length > currentMonthIndex) {
                                 totalProjected += loan.projectedCashflow[currentMonthIndex] || 0;
                                 totalActual += loan.actualCashflow[currentMonthIndex] || 0;
+                                cohortTotalAUM += loan.projectedCashflow[currentMonthIndex] || 0;
                             }
                         }
                     });
                     
-                    if (maturityMetric === 'ce') {
-                        return calculateCollectionEfficiency(totalActual, totalProjected, maturityAdjusted);
-                    }
-                    return calculateShortfall(totalActual, totalProjected);
+                    maturityAUM.push(cohortTotalAUM / 1000000); // Convert to millions
+                    maturityAUMPercent.push((cohortTotalAUM / totalMaturityAUM) * 100);
+                    maturityCE.push(calculateCollectionEfficiency(totalActual, totalProjected, maturityAdjusted));
                 });
 
                 createOrUpdateChart('reportMaturityCohortChart', {
                     type: 'bar',
                     data: {
                         labels: maturityLabels,
-                        datasets: [{
-                            label: maturityMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
-                            data: maturityData,
-                            backgroundColor: '#14b8a6'
-                        }]
+                        datasets: [
+                            {
+                                label: 'AUM (KES M)',
+                                data: maturityAUM,
+                                backgroundColor: '#14b8a6',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'AUM (%)',
+                                data: maturityAUMPercent,
+                                backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'Collection Efficiency (%)',
+                                data: maturityCE,
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                yAxisID: 'y1',
+                                type: 'line',
+                                borderWidth: 3,
+                                fill: false,
+                                tension: 0.4
+                            }
+                        ]
                     },
                     options: { 
                         responsive: true, 
                         maintainAspectRatio: false, 
                         plugins: { 
-                            legend: { display: false },
+                            legend: { display: true, position: 'bottom' },
                             title: { display: true, text: `Maturity Cohort Analysis - ${maturityView === 'cumulative' ? 'Cumulative' : 'Current Month'}` }
-                        } 
+                        },
+                        scales: {
+                            y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                        }
                     }
                 });
 
-                // Risk by Gender
-                const genderMetric = document.getElementById('genderMetricToggle')?.value || 'ce';
+                // Risk by Gender (AUM, AUM%, Collection Efficiency)
                 const genderMetrics = calculateRiskMetricsByDimension(mockLoans, 'FARMERS_GENDER', currentMonthIndex, false, false);
                 const genderLabels = Object.keys(genderMetrics);
-                const genderData = genderLabels.map(label => {
-                    return genderMetric === 'ce' ? genderMetrics[label].collectionEfficiency : genderMetrics[label].shortfall;
-                });
+                const totalGenderAUM = Object.values(genderMetrics).reduce((sum, m) => sum + m.aum, 0);
+                const genderAUM = genderLabels.map(label => genderMetrics[label].aum / 1000000);
+                const genderAUMPercent = genderLabels.map(label => (genderMetrics[label].aum / totalGenderAUM) * 100);
+                const genderCE = genderLabels.map(label => genderMetrics[label].collectionEfficiency);
 
                 createOrUpdateChart('reportGenderChart', {
                     type: 'bar',
                     data: {
                         labels: genderLabels,
-                        datasets: [{
-                            label: genderMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
-                            data: genderData,
-                            backgroundColor: ['#14b8a6', '#5eead4']
-                        }]
+                        datasets: [
+                            {
+                                label: 'AUM (KES M)',
+                                data: genderAUM,
+                                backgroundColor: '#14b8a6',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'AUM (%)',
+                                data: genderAUMPercent,
+                                backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'Collection Efficiency (%)',
+                                data: genderCE,
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                yAxisID: 'y1',
+                                type: 'line',
+                                borderWidth: 3,
+                                fill: false,
+                                tension: 0.4
+                            }
+                        ]
                     },
                     options: { 
                         responsive: true, 
                         maintainAspectRatio: false, 
-                        plugins: { legend: { display: false } } 
+                        plugins: { legend: { display: true, position: 'bottom' } },
+                        scales: {
+                            y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                        }
                     }
                 });
 
-                // Risk by Liability Bucket
-                const liabilityMetric = document.getElementById('liabilityMetricToggle')?.value || 'ce';
+                // Risk by Liability Bucket (AUM, AUM%, Collection Efficiency)
                 const liabilityMetrics = calculateRiskMetricsByDimension(mockLoans, 'Disbursed_Liability_Bucket', currentMonthIndex, false, false);
                 const liabilityLabels = ['<20K', '20K-39K', '40K-59K', '60K-79K', '80K-99K', '100K+'];
-                const liabilityData = liabilityLabels.map(label => {
-                    if (!liabilityMetrics[label]) return 0;
-                    return liabilityMetric === 'ce' ? liabilityMetrics[label].collectionEfficiency : liabilityMetrics[label].shortfall;
-                });
+                const totalLiabilityAUM = liabilityLabels.reduce((sum, label) => sum + (liabilityMetrics[label]?.aum || 0), 0);
+                const liabilityAUM = liabilityLabels.map(label => (liabilityMetrics[label]?.aum || 0) / 1000000);
+                const liabilityAUMPercent = liabilityLabels.map(label => ((liabilityMetrics[label]?.aum || 0) / totalLiabilityAUM) * 100);
+                const liabilityCE = liabilityLabels.map(label => liabilityMetrics[label]?.collectionEfficiency || 0);
 
                 createOrUpdateChart('reportLiabilityBucketChart', {
                     type: 'bar',
                     data: {
                         labels: liabilityLabels,
-                        datasets: [{
-                            label: liabilityMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
-                            data: liabilityData,
-                            backgroundColor: '#14b8a6'
-                        }]
+                        datasets: [
+                            {
+                                label: 'AUM (KES M)',
+                                data: liabilityAUM,
+                                backgroundColor: '#14b8a6',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'AUM (%)',
+                                data: liabilityAUMPercent,
+                                backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'Collection Efficiency (%)',
+                                data: liabilityCE,
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                yAxisID: 'y1',
+                                type: 'line',
+                                borderWidth: 3,
+                                fill: false,
+                                tension: 0.4
+                            }
+                        ]
                     },
                     options: { 
                         responsive: true, 
                         maintainAspectRatio: false, 
-                        plugins: { legend: { display: false } } 
+                        plugins: { legend: { display: true, position: 'bottom' } },
+                        scales: {
+                            y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                        }
                     }
                 });
 
-                // Risk by Renewal Status
-                const renewalMetric = document.getElementById('renewalMetricToggle')?.value || 'ce';
+                // Risk by Renewal Status (AUM, AUM%, Collection Efficiency)
                 const renewalMetrics = calculateRiskMetricsByDimension(mockLoans, 'IS_RENEWAL', currentMonthIndex, false, false);
-                const renewalLabels = Object.keys(renewalMetrics).map(k => k === 'true' ? 'Renewal' : 'New');
-                const renewalData = Object.keys(renewalMetrics).map(key => {
-                    return renewalMetric === 'ce' ? renewalMetrics[key].collectionEfficiency : renewalMetrics[key].shortfall;
-                });
+                const renewalKeys = Object.keys(renewalMetrics);
+                const renewalLabels = renewalKeys.map(k => k === 'true' ? 'Renewal' : 'New');
+                const totalRenewalAUM = Object.values(renewalMetrics).reduce((sum, m) => sum + m.aum, 0);
+                const renewalAUM = renewalKeys.map(key => renewalMetrics[key].aum / 1000000);
+                const renewalAUMPercent = renewalKeys.map(key => (renewalMetrics[key].aum / totalRenewalAUM) * 100);
+                const renewalCE = renewalKeys.map(key => renewalMetrics[key].collectionEfficiency);
 
                 createOrUpdateChart('reportRenewalChart', {
                     type: 'bar',
                     data: {
                         labels: renewalLabels,
-                        datasets: [{
-                            label: renewalMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
-                            data: renewalData,
-                            backgroundColor: ['#14b8a6', '#5eead4']
-                        }]
+                        datasets: [
+                            {
+                                label: 'AUM (KES M)',
+                                data: renewalAUM,
+                                backgroundColor: '#14b8a6',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'AUM (%)',
+                                data: renewalAUMPercent,
+                                backgroundColor: 'rgba(34, 197, 94, 0.7)',
+                                yAxisID: 'y',
+                                type: 'bar'
+                            },
+                            {
+                                label: 'Collection Efficiency (%)',
+                                data: renewalCE,
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                yAxisID: 'y1',
+                                type: 'line',
+                                borderWidth: 3,
+                                fill: false,
+                                tension: 0.4
+                            }
+                        ]
                     },
                     options: { 
                         responsive: true, 
                         maintainAspectRatio: false, 
-                        plugins: { legend: { display: false } } 
+                        plugins: { legend: { display: true, position: 'bottom' } },
+                        scales: {
+                            y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                        }
                     }
                 });
 
@@ -6033,24 +6176,26 @@
                     }
                 });
 
-                // Credit Enhancement Trend vs Day 0
-                createOrUpdateChart('reportCreditEnhancementChart', {
+                // Available Credit Enhancement Over Time (Time Series)
+                // OC: 20% of Pool (KES 95.17M), JLF: 12% of Pool (KES 57.10M) = Total 32%
+                // As utilized, available amounts decrease
+                const ceTimeLabels = ['Day 0', 'Month 3', 'Month 6', 'Month 9', 'Month 12', 'Month 14 (Current)'];
+                const initialOC = 20.0; // 20% of pool
+                const initialJLF = 12.0; // 12% of pool
+                
+                // Simulate utilization over time (available decreases as utilized)
+                const availableOC = [initialOC, 19.8, 19.5, 19.2, 19.0, 18.8];
+                const availableJLF = [initialJLF, 12.0, 12.0, 11.9, 11.8, 11.7];
+                const availableTotal = availableOC.map((oc, idx) => oc + availableJLF[idx]);
+                
+                createOrUpdateChart('reportAvailableCEChart', {
                     type: 'line',
                     data: {
-                        labels: ['Day 0', 'Month 3', 'Month 6', 'Month 9', 'Month 12', 'Month 14 (Current)'],
+                        labels: ceTimeLabels,
                         datasets: [
                             {
-                                label: 'Day 0 Baseline',
-                                data: [15.0, 15.0, 15.0, 15.0, 15.0, 15.0],
-                                borderColor: '#9CA3AF',
-                                backgroundColor: 'rgba(156, 163, 175, 0.1)',
-                                borderDash: [5, 5],
-                                borderWidth: 2,
-                                fill: false
-                            },
-                            {
-                                label: 'Actual CE %',
-                                data: [15.0, 14.8, 15.1, 15.3, 15.3, 15.5],
+                                label: 'Total Available CE (%)',
+                                data: availableTotal,
                                 borderColor: '#14b8a6',
                                 backgroundColor: 'rgba(20, 184, 166, 0.1)',
                                 borderWidth: 3,
@@ -6058,13 +6203,81 @@
                                 tension: 0.4
                             },
                             {
-                                label: 'Minimum Required (12%)',
-                                data: [12.0, 12.0, 12.0, 12.0, 12.0, 12.0],
-                                borderColor: '#ef4444',
-                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                                borderDash: [10, 5],
+                                label: 'Available Overcollateralization (%)',
+                                data: availableOC,
+                                borderColor: '#22c55e',
+                                backgroundColor: 'rgba(34, 197, 94, 0.1)',
                                 borderWidth: 2,
-                                fill: false
+                                fill: false,
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Available Junior Liquidity Facility (%)',
+                                data: availableJLF,
+                                borderColor: '#3b82f6',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                borderWidth: 2,
+                                fill: false,
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            title: { 
+                                display: true, 
+                                text: 'Available Credit Enhancement Decreasing as Utilized Over Time'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 0,
+                                max: 35,
+                                title: { display: true, text: 'Available Credit Enhancement (%)' }
+                            },
+                            x: {
+                                title: { display: true, text: 'Time Period' }
+                            }
+                        }
+                    }
+                });
+
+                // Tranche Cashflow Comparison Charts (Cumulative)
+                // Senior Tranche: KES 286.51M @ 14% XIRR
+                // Mezzanine Tranche: KES 75.00M @ 14.5% XIRR
+                const trancheTimeLabels = ['Month 1', 'Month 3', 'Month 6', 'Month 9', 'Month 12', 'Month 14 (Current)'];
+                
+                // Senior Tranche cumulative cashflow
+                const seniorProjectedCumulative = [3.2, 9.6, 19.2, 28.8, 38.4, 44.8];
+                const seniorActualCumulative = [3.15, 9.5, 19.0, 28.5, 38.0, 44.2];
+                
+                createOrUpdateChart('reportSeniorTrancheCashflowChart', {
+                    type: 'line',
+                    data: {
+                        labels: trancheTimeLabels,
+                        datasets: [
+                            {
+                                label: 'Projected Cumulative Cashflow (KES M)',
+                                data: seniorProjectedCumulative,
+                                borderColor: '#9CA3AF',
+                                backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                fill: false,
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Actual Cumulative Cashflow (KES M)',
+                                data: seniorActualCumulative,
+                                borderColor: '#3B82F6',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
                             }
                         ]
                     },
@@ -6077,35 +6290,43 @@
                         },
                         scales: {
                             y: {
-                                beginAtZero: false,
-                                min: 10,
-                                max: 18,
-                                title: { display: true, text: 'Credit Enhancement %' }
+                                beginAtZero: true,
+                                title: { display: true, text: 'Cumulative Cashflow (KES M)' }
+                            },
+                            x: {
+                                title: { display: true, text: 'Time Period' }
                             }
                         }
                     }
                 });
 
-                // Covenant Tests Chart (Collection Efficiency based)
-                createOrUpdateChart('reportCovenantTestsChart', {
-                    type: 'bar',
+                // Mezzanine Tranche cumulative cashflow
+                const mezzProjectedCumulative = [0.84, 2.52, 5.04, 7.56, 10.08, 11.76];
+                const mezzActualCumulative = [0.82, 2.48, 4.95, 7.42, 9.88, 11.52];
+                
+                createOrUpdateChart('reportMezzanineTrancheCashflowChart', {
+                    type: 'line',
                     data: {
-                        labels: ['Cumulative\nCollection\nEfficiency', 'Current Month\nCollection\nEfficiency', 'Cumulative\nShortfall', 'Current Month\nShortfall'],
+                        labels: trancheTimeLabels,
                         datasets: [
                             {
-                                label: 'Actual',
-                                data: [cumulativeCE, currentMonthCE, cumulativeShortfall, currentMonthShortfall],
-                                backgroundColor: 'rgba(20, 184, 166, 0.7)',
-                                borderColor: '#14b8a6',
-                                borderWidth: 2
+                                label: 'Projected Cumulative Cashflow (KES M)',
+                                data: mezzProjectedCumulative,
+                                borderColor: '#9CA3AF',
+                                backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                fill: false,
+                                tension: 0.4
                             },
                             {
-                                label: 'Threshold',
-                                data: [95.0, 95.0, 5.0, 5.0],
-                                backgroundColor: 'rgba(239, 68, 68, 0.3)',
-                                borderColor: '#ef4444',
-                                borderWidth: 2,
-                                borderDash: [5, 5]
+                                label: 'Actual Cumulative Cashflow (KES M)',
+                                data: mezzActualCumulative,
+                                borderColor: '#8B5CF6',
+                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
                             }
                         ]
                     },
@@ -6114,59 +6335,20 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { position: 'bottom' },
-                            title: { display: true, text: 'All Tests: PASS ✓' }
+                            title: { display: false }
                         },
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                max: 100,
-                                title: { display: true, text: 'Percentage %' }
+                                title: { display: true, text: 'Cumulative Cashflow (KES M)' }
+                            },
+                            x: {
+                                title: { display: true, text: 'Time Period' }
                             }
                         }
                     }
                 });
 
-                // Credit Enhancement Structure Chart
-                // Overcollateralization: 20% of Pool (KES 95.17M)
-                // Junior Liquidity Facility: 12% of Pool (KES 57.10M) = Total CE 32%
-                // Note: No specific trigger levels defined in term sheet - structural protection
-                createOrUpdateChart('reportCETriggerChart', {
-                    type: 'bar',
-                    data: {
-                        labels: ['Total CE\n(OC + JLF)\n32%', 'Overcollat.\n20%', 'Junior Liquidity\nFacility\n12%', 'Assumed Min\nRequired\n15%'],
-                        datasets: [{
-                            label: 'Credit Enhancement %',
-                            data: [32.0, 20.0, 12.0, 15.0],
-                            backgroundColor: [
-                                'rgba(20, 184, 166, 0.8)',
-                                'rgba(34, 197, 94, 0.7)',
-                                'rgba(59, 130, 246, 0.7)',
-                                'rgba(239, 68, 68, 0.6)'
-                            ],
-                            borderColor: ['#14b8a6', '#22c55e', '#3b82f6', '#ef4444'],
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false },
-                            title: { 
-                                display: true, 
-                                text: 'Structural CE: 32% | No covenant triggers in term sheet',
-                                font: { size: 11 }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 35,
-                                title: { display: true, text: 'Credit Enhancement %' }
-                            }
-                        }
-                    }
-                });
 
                 // Tranche-Level Payments Chart (Total Cashflow - No Principal/Interest Split)
                 // Based on ki platform PCC Series 1: Apollo Agriculture
@@ -6271,32 +6453,6 @@
                     }
                 });
 
-                // Junior Liquidity Facility Status Chart
-                // Fixed deposit by Originator: 12% of pool = KES 57.10M
-                createOrUpdateChart('reportReserveAccountChart', {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Liquidity Facility (Fixed Deposit)', 'Available if Needed'],
-                        datasets: [{
-                            data: [57.10, 0.0],
-                            backgroundColor: ['#14b8a6', '#E5E7EB'],
-                            borderColor: ['#0D9488', '#D1D5DB'],
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom' },
-                            title: { 
-                                display: true, 
-                                text: 'Junior Liquidity Facility: KES 57.10M (12% of Pool) ✓ FULLY FUNDED',
-                                font: { size: 11 }
-                            }
-                        }
-                    }
-                });
 
                 // Payment Compliance Chart
                 // Based on actual deal structure: Bullet payment, only interest monthly
@@ -7518,18 +7674,12 @@ Contact: cashmanagement@kaleidofin.com
                 'collectionEfficiencyViewToggle',
                 'adjustedCollectionEfficiencyViewToggle',
                 'shortfallViewToggle',
-                'compositionMetricToggle',
                 'compositionAdjustedToggle',
-                'geoMetricToggle',
                 'geoAdjustedToggle',
-                'vintageMetricToggle',
                 'vintageViewToggle',
-                'maturityMetricToggle',
+                'vintageAdjustedToggle',
                 'maturityViewToggle',
-                'maturityAdjustedToggle',
-                'genderMetricToggle',
-                'liabilityMetricToggle',
-                'renewalMetricToggle'
+                'maturityAdjustedToggle'
             ];
 
             toggleIds.forEach(toggleId => {
@@ -7936,9 +8086,9 @@ Contact: cashmanagement@kaleidofin.com
             
             // Initial Load - Initialize data FIRST, then render views
             try {
-                initializeData();
-                initializeMappingFields();
-                initializeCountyMultiSelect();
+            initializeData();
+            initializeMappingFields();
+            initializeCountyMultiSelect();
                 updateMainView('dealScreen');
                 showPage('dealScreenHomePage');
                 updateHomeTab('originators');
