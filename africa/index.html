@@ -1553,7 +1553,7 @@
                                         <p class="text-sm text-gray-600 mb-3">Official PMA Letter covering:</p>
                                         <ul class="text-xs text-gray-600 space-y-1 mb-4 ml-4">
                                             <li>✓ Tested Eligibility Criteria verification</li>
-                                            <li>✓ Delinquency Ratio, Dynamic Default Ratio calculations</li>
+                                            <li>✓ Collection Efficiency and Shortfall calculations</li>
                                             <li>✓ Portfolio Concentration Limits confirmation</li>
                                             <li>✓ Discounted Balance & Collections reconciliation</li>
                                             <li>✓ Manifest errors identification</li>
@@ -1592,7 +1592,7 @@
                                         <ul class="text-xs text-gray-600 space-y-1 mb-4 ml-4">
                                             <li>✓ Receivables Portfolio Summary</li>
                                             <li>✓ Senior/Mezzanine/Junior Notes balances</li>
-                                            <li>✓ Tests: PAR30, PAR60, PAR90, LTV</li>
+                                            <li>✓ Tests: Collection Efficiency, Shortfall thresholds</li>
                                             <li>✓ Priority of Payments waterfall</li>
                                             <li>✓ Available Receipts breakdown</li>
                                         </ul>
@@ -1620,7 +1620,7 @@
                                 </div>
                                 
                                 <!-- Key Metrics Summary -->
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
                                     <div class="bg-gray-50 p-4 rounded-lg border">
                                         <p class="text-xs text-gray-500 uppercase">Pool Size</p>
                                         <p id="reportPoolSize" class="text-2xl font-bold text-gray-800">KES 234.5M</p>
@@ -1632,62 +1632,236 @@
                                         <p class="text-xs text-gray-600 mt-1">Active accounts</p>
                                     </div>
                                     <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">GNPA %</p>
-                                        <p id="reportGNPA" class="text-2xl font-bold text-gray-800">3.2%</p>
-                                        <p class="text-xs text-green-600 mt-1">▼ 0.3% improvement</p>
+                                        <p class="text-xs text-gray-500 uppercase">Current Month Collection Efficiency</p>
+                                        <p id="reportCurrentMonthCE" class="text-2xl font-bold text-gray-800">98.8%</p>
+                                        <p class="text-xs text-green-600 mt-1">vs projected</p>
                                     </div>
                                     <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Avg Yield</p>
-                                        <p id="reportYield" class="text-2xl font-bold text-gray-800">18.5%</p>
-                                        <p class="text-xs text-gray-600 mt-1">Portfolio weighted</p>
+                                        <p class="text-xs text-gray-500 uppercase">Cumulative Collection Efficiency</p>
+                                        <p id="reportCumulativeCE" class="text-2xl font-bold text-gray-800">97.5%</p>
+                                        <p class="text-xs text-gray-600 mt-1">Since inception</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Current Month Shortfall</p>
+                                        <p id="reportCurrentMonthShortfall" class="text-2xl font-bold text-gray-800">1.2%</p>
+                                        <p class="text-xs text-red-600 mt-1">Aggregate</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Cumulative Shortfall</p>
+                                        <p id="reportCumulativeShortfall" class="text-2xl font-bold text-gray-800">2.5%</p>
+                                        <p class="text-xs text-gray-600 mt-1">Since inception</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">XIRR %</p>
+                                        <p id="reportXIRR" class="text-2xl font-bold text-gray-800">14.0%</p>
+                                        <p class="text-xs text-gray-600 mt-1">Calculated separately</p>
                                     </div>
                                 </div>
 
-                                <!-- Collection & Cash Flow Analysis -->
+                                <!-- Collection Efficiency Charts (Unadjusted & Adjusted) -->
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                     <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">Collection Efficiency Trend</h4>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Collection Efficiency Trend (Unadjusted)</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">View:</label>
+                                                <select id="collectionEfficiencyViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="current">Current Month</option>
+                                                    <option value="cumulative">Cumulative</option>
+                                                    <option value="both">Both</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="bg-white border rounded-lg p-4">
                                             <div class="chart-container h-64"><canvas id="reportCollectionChart"></canvas></div>
                                         </div>
                                     </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Collection Efficiency Trend (Adjusted)</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">View:</label>
+                                                <select id="adjustedCollectionEfficiencyViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="current">Current Month</option>
+                                                    <option value="cumulative">Cumulative</option>
+                                                    <option value="both">Both</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportAdjustedCollectionChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cash Flow Waterfall & Shortfall Distribution -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                     <div>
                                         <h4 class="font-semibold text-gray-800 mb-3">Cash Flow Waterfall (This Month)</h4>
                                         <div class="bg-white border rounded-lg p-4">
                                             <div class="chart-container h-64"><canvas id="reportWaterfallChart"></canvas></div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <!-- Delinquency & Portfolio Composition -->
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                     <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">DPD Bucket Analysis</h4>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Shortfall Bucket Distribution</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">View:</label>
+                                                <select id="shortfallViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="current">Current Month</option>
+                                                    <option value="cumulative">Cumulative</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportDPDChart"></canvas></div>
+                                            <div class="chart-container h-64"><canvas id="reportShortfallChart"></canvas></div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">Portfolio Composition</h4>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportCompositionChart"></canvas></div>
+                                </div>
+
+                                <!-- Portfolio Composition -->
+                                <div class="mb-8">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h4 class="font-semibold text-gray-800">Portfolio Composition by Bundle Choice</h4>
+                                        <div class="flex items-center space-x-2">
+                                            <label class="text-xs text-gray-600">Metric:</label>
+                                            <select id="compositionMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                <option value="aum">AUM</option>
+                                                <option value="ce">Collection Efficiency</option>
+                                                <option value="shortfall">Shortfall</option>
+                                            </select>
+                                            <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
+                                            <select id="compositionAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                <option value="false">No</option>
+                                                <option value="true">Yes</option>
+                                            </select>
                                         </div>
+                                    </div>
+                                    <div class="bg-white border rounded-lg p-4">
+                                        <div class="chart-container h-64"><canvas id="reportCompositionChart"></canvas></div>
                                     </div>
                                 </div>
 
                                 <!-- Geographic & Vintage Analysis -->
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                     <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">Geographic Concentration</h4>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Geographic Concentration & Risk</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">Metric:</label>
+                                                <select id="geoMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="ce">Collection Efficiency</option>
+                                                    <option value="shortfall">Shortfall</option>
+                                                </select>
+                                                <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
+                                                <select id="geoAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="false">No</option>
+                                                    <option value="true">Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="bg-white border rounded-lg p-4">
                                             <div class="chart-container h-64"><canvas id="reportGeoChart"></canvas></div>
                                         </div>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">Vintage Analysis</h4>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Origination Cohort Analysis</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">Metric:</label>
+                                                <select id="vintageMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="ce">Collection Efficiency</option>
+                                                    <option value="shortfall">Shortfall</option>
+                                                </select>
+                                                <label class="text-xs text-gray-600 ml-2">View:</label>
+                                                <select id="vintageViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="current">Current Month</option>
+                                                    <option value="cumulative">Cumulative</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="bg-white border rounded-lg p-4">
                                             <div class="chart-container h-64"><canvas id="reportVintageChart"></canvas></div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <!-- Maturity Cohort Analysis -->
+                                <div class="mb-8">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h4 class="font-semibold text-gray-800">Maturity Cohort Analysis</h4>
+                                        <div class="flex items-center space-x-2">
+                                            <label class="text-xs text-gray-600">Metric:</label>
+                                            <select id="maturityMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                <option value="ce">Collection Efficiency</option>
+                                                <option value="shortfall">Shortfall</option>
+                                            </select>
+                                            <label class="text-xs text-gray-600 ml-2">View:</label>
+                                            <select id="maturityViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                <option value="current">Current Month</option>
+                                                <option value="cumulative">Cumulative</option>
+                                            </select>
+                                            <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
+                                            <select id="maturityAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                <option value="false">No</option>
+                                                <option value="true">Yes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white border rounded-lg p-4">
+                                        <div class="chart-container h-64"><canvas id="reportMaturityCohortChart"></canvas></div>
+                                    </div>
+                                </div>
+
+                                <!-- Additional Risk Cuts -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Risk by Gender</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">Metric:</label>
+                                                <select id="genderMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="ce">Collection Efficiency</option>
+                                                    <option value="shortfall">Shortfall</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportGenderChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Risk by Liability Bucket</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">Metric:</label>
+                                                <select id="liabilityMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="ce">Collection Efficiency</option>
+                                                    <option value="shortfall">Shortfall</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportLiabilityBucketChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-8">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h4 class="font-semibold text-gray-800">Risk by Renewal Status</h4>
+                                        <div class="flex items-center space-x-2">
+                                            <label class="text-xs text-gray-600">Metric:</label>
+                                            <select id="renewalMetricToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                <option value="ce">Collection Efficiency</option>
+                                                <option value="shortfall">Shortfall</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white border rounded-lg p-4">
+                                        <div class="chart-container h-64"><canvas id="reportRenewalChart"></canvas></div>
                                     </div>
                                 </div>
 
@@ -5119,6 +5293,198 @@
                 }
             }
 
+            // Mock loan-level data structure matching the provided schema
+            function generateMockLoanData() {
+                const counties = ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret', 'Thika', 'Machakos', 'Meru'];
+                const wards = ['Ward A', 'Ward B', 'Ward C', 'Ward D', 'Ward E'];
+                const genders = ['MALE', 'FEMALE'];
+                const bundleChoices = ['Open Store', 'Full Bundle', 'Planting Bundle'];
+                const liabilityBuckets = ['<20K', '20K-39K', '40K-59K', '60K-79K', '80K-99K', '100K+'];
+                const isRenewalOptions = [true, false];
+                
+                const loans = [];
+                const currentDate = new Date();
+                
+                for (let i = 0; i < 12450; i++) {
+                    const disbursedDate = new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
+                    const tenure = Math.floor(Math.random() * 18) + 6; // 6-24 months
+                    const deadlineDate = new Date(disbursedDate);
+                    deadlineDate.setMonth(deadlineDate.getMonth() + tenure);
+                    
+                    const monthlyProjected = 5000 + Math.random() * 45000;
+                    const projectedCashflow = [];
+                    const actualCashflow = [];
+                    
+                    // Generate monthly cashflows
+                    for (let month = 0; month < tenure; month++) {
+                        const projected = monthlyProjected;
+                        projectedCashflow.push(projected);
+                        
+                        // Actual with variations (some over-collection, some shortfall)
+                        let actual = projected;
+                        const rand = Math.random();
+                        if (rand < 0.05) {
+                            // Over-collection (5% of loans)
+                            actual = projected * (1.05 + Math.random() * 0.15);
+                        } else if (rand < 0.15) {
+                            // Partial payment (10% of loans)
+                            actual = projected * (0.3 + Math.random() * 0.5);
+                        } else if (rand < 0.20) {
+                            // Default (5% of loans)
+                            actual = 0;
+                        } else {
+                            // Normal payment (80% of loans)
+                            actual = projected * (0.95 + Math.random() * 0.1);
+                        }
+                        actualCashflow.push(actual);
+                    }
+                    
+                    const disbursedMonth = `${disbursedDate.getFullYear()}-${String(disbursedDate.getMonth() + 1).padStart(2, '0')}`;
+                    const liability = 15000 + Math.random() * 100000;
+                    let liabilityBucket = '<20K';
+                    if (liability >= 100000) liabilityBucket = '100K+';
+                    else if (liability >= 80000) liabilityBucket = '80K-99K';
+                    else if (liability >= 60000) liabilityBucket = '60K-79K';
+                    else if (liability >= 40000) liabilityBucket = '40K-59K';
+                    else if (liability >= 20000) liabilityBucket = '20K-39K';
+                    
+                    loans.push({
+                        LOAN_APPLICATION_ID: `LOAN-${String(i + 1).padStart(6, '0')}`,
+                        FARMER_ID: `FARMER-${String(Math.floor(Math.random() * 5000) + 1).padStart(6, '0')}`,
+                        FARMERS_GENDER: genders[Math.floor(Math.random() * genders.length)],
+                        WARD: wards[Math.floor(Math.random() * wards.length)],
+                        COUNTY: counties[Math.floor(Math.random() * counties.length)],
+                        IS_RENEWAL: isRenewalOptions[Math.floor(Math.random() * isRenewalOptions.length)],
+                        LOAN_DISBURSED_AT: disbursedDate.toISOString(),
+                        'Disbursed month': disbursedMonth,
+                        DISBURSED_LIABILITY: liability,
+                        Disbursed_Liability_Bucket: liabilityBucket,
+                        TENURE: tenure,
+                        DEADLINE_DATE: deadlineDate.toISOString(),
+                        BUNDLE_CHOICE: bundleChoices[Math.floor(Math.random() * bundleChoices.length)],
+                        projectedCashflow: projectedCashflow,
+                        actualCashflow: actualCashflow
+                    });
+                }
+                
+                return loans;
+            }
+
+            // Calculation functions
+            function calculateCollectionEfficiency(actual, projected, adjusted = false) {
+                if (!projected || projected === 0) return 0;
+                const efficiency = (actual / projected) * 100;
+                if (adjusted) {
+                    return Math.min(efficiency, 100); // Cap at 100%
+                }
+                return efficiency; // Can exceed 100% for over-collection
+            }
+
+            function calculateShortfall(actual, projected) {
+                if (!projected || projected === 0) return 0;
+                return ((projected - actual) / projected) * 100; // Positive = shortfall, negative = over-collection
+            }
+
+            function calculateCumulativeMetrics(monthlyData, adjusted = false) {
+                let totalProjected = 0;
+                let totalActual = 0;
+                
+                monthlyData.forEach(month => {
+                    totalProjected += month.projected || 0;
+                    totalActual += month.actual || 0;
+                });
+                
+                return {
+                    collectionEfficiency: calculateCollectionEfficiency(totalActual, totalProjected, adjusted),
+                    shortfall: calculateShortfall(totalActual, totalProjected)
+                };
+            }
+
+            function groupByMaturityCohort(loans, currentDate) {
+                const cohorts = {
+                    '0-3 months': [],
+                    '3-6 months': [],
+                    '6-12 months': [],
+                    '12+ months': []
+                };
+                
+                loans.forEach(loan => {
+                    const deadlineDate = new Date(loan.DEADLINE_DATE);
+                    const monthsRemaining = Math.ceil((deadlineDate - currentDate) / (1000 * 60 * 60 * 24 * 30));
+                    
+                    if (monthsRemaining <= 3) {
+                        cohorts['0-3 months'].push(loan);
+                    } else if (monthsRemaining <= 6) {
+                        cohorts['3-6 months'].push(loan);
+                    } else if (monthsRemaining <= 12) {
+                        cohorts['6-12 months'].push(loan);
+                    } else {
+                        cohorts['12+ months'].push(loan);
+                    }
+                });
+                
+                return cohorts;
+            }
+
+            function groupByOriginationCohort(loans) {
+                const cohorts = {};
+                loans.forEach(loan => {
+                    const month = loan['Disbursed month'];
+                    if (!cohorts[month]) {
+                        cohorts[month] = [];
+                    }
+                    cohorts[month].push(loan);
+                });
+                return cohorts;
+            }
+
+            function calculateRiskMetricsByDimension(loans, dimension, currentMonthIndex = null, adjusted = false, cumulative = false) {
+                const groups = {};
+                
+                loans.forEach(loan => {
+                    const key = loan[dimension];
+                    if (!groups[key]) {
+                        groups[key] = [];
+                    }
+                    groups[key].push(loan);
+                });
+                
+                const metrics = {};
+                Object.keys(groups).forEach(key => {
+                    const groupLoans = groups[key];
+                    let totalProjected = 0;
+                    let totalActual = 0;
+                    
+                    groupLoans.forEach(loan => {
+                        if (cumulative) {
+                            // Sum all months up to current
+                            loan.projectedCashflow.forEach((proj, idx) => {
+                                if (currentMonthIndex === null || idx <= currentMonthIndex) {
+                                    totalProjected += proj;
+                                    totalActual += loan.actualCashflow[idx] || 0;
+                                }
+                            });
+                        } else {
+                            // Only current month
+                            const monthIdx = currentMonthIndex !== null ? currentMonthIndex : loan.projectedCashflow.length - 1;
+                            if (monthIdx < loan.projectedCashflow.length) {
+                                totalProjected += loan.projectedCashflow[monthIdx] || 0;
+                                totalActual += loan.actualCashflow[monthIdx] || 0;
+                            }
+                        }
+                    });
+                    
+                    metrics[key] = {
+                        collectionEfficiency: calculateCollectionEfficiency(totalActual, totalProjected, adjusted),
+                        shortfall: calculateShortfall(totalActual, totalProjected),
+                        loanCount: groupLoans.length,
+                        aum: totalProjected
+                    };
+                });
+                
+                return metrics;
+            }
+
             function renderReportsPage(txId) {
                 // Populate transaction selector for reports
                 const reportsSelector = document.getElementById('reportsTransactionSelector');
@@ -5133,32 +5499,167 @@
                     });
                 }
 
-                // Collection Efficiency Trend
+                // Generate mock loan data
+                const mockLoans = generateMockLoanData();
+                const currentDate = new Date();
+                const currentMonthIndex = 14; // Assuming we're at month 14
+
+                // Calculate aggregate metrics
+                let totalProjectedCurrent = 0;
+                let totalActualCurrent = 0;
+                let totalProjectedCumulative = 0;
+                let totalActualCumulative = 0;
+
+                mockLoans.forEach(loan => {
+                    // Current month
+                    if (loan.projectedCashflow.length > currentMonthIndex) {
+                        totalProjectedCurrent += loan.projectedCashflow[currentMonthIndex] || 0;
+                        totalActualCurrent += loan.actualCashflow[currentMonthIndex] || 0;
+                    }
+                    // Cumulative
+                    loan.projectedCashflow.forEach((proj, idx) => {
+                        if (idx <= currentMonthIndex) {
+                            totalProjectedCumulative += proj;
+                            totalActualCumulative += loan.actualCashflow[idx] || 0;
+                        }
+                    });
+                });
+
+                const currentMonthCE = calculateCollectionEfficiency(totalActualCurrent, totalProjectedCurrent, false);
+                const currentMonthCEAdjusted = calculateCollectionEfficiency(totalActualCurrent, totalProjectedCurrent, true);
+                const cumulativeCE = calculateCollectionEfficiency(totalActualCumulative, totalProjectedCumulative, false);
+                const cumulativeCEAdjusted = calculateCollectionEfficiency(totalActualCumulative, totalProjectedCumulative, true);
+                const currentMonthShortfall = calculateShortfall(totalActualCurrent, totalProjectedCurrent);
+                const cumulativeShortfall = calculateShortfall(totalActualCumulative, totalProjectedCumulative);
+
+                // Update key metrics
+                document.getElementById('reportPoolSize').textContent = 'KES 475.87M';
+                document.getElementById('reportTotalLoans').textContent = '12,450';
+                document.getElementById('reportCurrentMonthCE').textContent = currentMonthCE.toFixed(1) + '%';
+                document.getElementById('reportCumulativeCE').textContent = cumulativeCE.toFixed(1) + '%';
+                document.getElementById('reportCurrentMonthShortfall').textContent = currentMonthShortfall.toFixed(1) + '%';
+                document.getElementById('reportCumulativeShortfall').textContent = cumulativeShortfall.toFixed(1) + '%';
+                document.getElementById('reportXIRR').textContent = '14.0%';
+
+                // Generate monthly collection efficiency data for trend charts
+                const monthlyLabels = [];
+                const monthlyCEUnadjusted = [];
+                const monthlyCEAdjusted = [];
+                const monthlyCECumulativeUnadjusted = [];
+                const monthlyCECumulativeAdjusted = [];
+
+                for (let month = 0; month <= currentMonthIndex && month < 12; month++) {
+                    monthlyLabels.push(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][month] || `Month ${month + 1}`);
+                    
+                    let monthProjected = 0;
+                    let monthActual = 0;
+                    let cumProjected = 0;
+                    let cumActual = 0;
+
+                    mockLoans.forEach(loan => {
+                        if (loan.projectedCashflow.length > month) {
+                            monthProjected += loan.projectedCashflow[month] || 0;
+                            monthActual += loan.actualCashflow[month] || 0;
+                        }
+                        for (let i = 0; i <= month && i < loan.projectedCashflow.length; i++) {
+                            cumProjected += loan.projectedCashflow[i] || 0;
+                            cumActual += loan.actualCashflow[i] || 0;
+                        }
+                    });
+
+                    monthlyCEUnadjusted.push(calculateCollectionEfficiency(monthActual, monthProjected, false));
+                    monthlyCEAdjusted.push(calculateCollectionEfficiency(monthActual, monthProjected, true));
+                    monthlyCECumulativeUnadjusted.push(calculateCollectionEfficiency(cumActual, cumProjected, false));
+                    monthlyCECumulativeAdjusted.push(calculateCollectionEfficiency(cumActual, cumProjected, true));
+                }
+
+                // Collection Efficiency Trend (Unadjusted)
+                const viewToggle = document.getElementById('collectionEfficiencyViewToggle')?.value || 'both';
+                const unadjustedDatasets = [];
+                if (viewToggle === 'current' || viewToggle === 'both') {
+                    unadjustedDatasets.push({
+                        label: 'Current Month Collection Efficiency %',
+                        data: monthlyCEUnadjusted,
+                        borderColor: '#14b8a6',
+                        backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    });
+                }
+                if (viewToggle === 'cumulative' || viewToggle === 'both') {
+                    unadjustedDatasets.push({
+                        label: 'Cumulative Collection Efficiency %',
+                        data: monthlyCECumulativeUnadjusted,
+                        borderColor: '#0d9488',
+                        backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderDash: [5, 5]
+                    });
+                }
+
                 createOrUpdateChart('reportCollectionChart', {
                     type: 'line',
                     data: {
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                        datasets: [{
-                            label: 'Collection Efficiency %',
-                            data: [97.2, 97.5, 98.1, 97.8, 98.3, 98.5, 98.2, 98.7, 98.4, 98.9, 99.1, 98.8],
-                            borderColor: '#14b8a6',
-                            backgroundColor: 'rgba(20, 184, 166, 0.1)',
-                            fill: true,
-                            tension: 0.4
-                        }]
+                        labels: monthlyLabels,
+                        datasets: unadjustedDatasets
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, min: 96, max: 100 } } }
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { display: true, position: 'bottom' } }, 
+                        scales: { y: { beginAtZero: false, min: 90, max: 110 } } 
+                    }
                 });
 
-                // Cash Flow Waterfall (Simplified Summary)
+                // Collection Efficiency Trend (Adjusted)
+                const adjustedViewToggle = document.getElementById('adjustedCollectionEfficiencyViewToggle')?.value || 'both';
+                const adjustedDatasets = [];
+                if (adjustedViewToggle === 'current' || adjustedViewToggle === 'both') {
+                    adjustedDatasets.push({
+                        label: 'Current Month Collection Efficiency % (Adjusted)',
+                        data: monthlyCEAdjusted,
+                        borderColor: '#14b8a6',
+                        backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    });
+                }
+                if (adjustedViewToggle === 'cumulative' || adjustedViewToggle === 'both') {
+                    adjustedDatasets.push({
+                        label: 'Cumulative Collection Efficiency % (Adjusted)',
+                        data: monthlyCECumulativeAdjusted,
+                        borderColor: '#0d9488',
+                        backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderDash: [5, 5]
+                    });
+                }
+
+                createOrUpdateChart('reportAdjustedCollectionChart', {
+                    type: 'line',
+                    data: {
+                        labels: monthlyLabels,
+                        datasets: adjustedDatasets
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { display: true, position: 'bottom' } }, 
+                        scales: { y: { beginAtZero: false, min: 90, max: 100 } } 
+                    }
+                });
+
+                // Cash Flow Waterfall (Total Cashflow - No Principal/Interest Split)
                 createOrUpdateChart('reportWaterfallChart', {
                     type: 'bar',
                     data: {
-                        labels: ['Inflows', 'Senior Fees', 'Interest Paid', 'Principal Paid', 'Reserve Top-up', 'Residual'],
+                        labels: ['Inflows', 'Senior Fees', 'Total Cashflow Paid', 'Reserve Top-up', 'Residual'],
                         datasets: [{
                             label: 'Amount (KES M)',
-                            data: [22.0, -1.2, -8.0, -10.3, -1.2, 1.3],
-                            backgroundColor: ['#14b8a6', '#9CA3AF', '#EF4444', '#DC2626', '#F59E0B', '#10B981']
+                            data: [44.8, -2.5, -4.26, -0.5, 3.2],
+                            backgroundColor: ['#14b8a6', '#9CA3AF', '#3B82F6', '#F59E0B', '#10B981']
                         }]
                     },
                     options: { 
@@ -5166,7 +5667,7 @@
                         maintainAspectRatio: false, 
                         plugins: { 
                             legend: { display: false },
-                            title: { display: true, text: 'Simplified Waterfall (See Tranche chart for detailed breakdown)' }
+                            title: { display: true, text: 'Simplified Waterfall - Total Cashflow (See Tranche chart for detailed breakdown)' }
                         },
                         scales: {
                             y: {
@@ -5176,61 +5677,320 @@
                     }
                 });
 
-                // DPD Bucket Analysis
-                createOrUpdateChart('reportDPDChart', {
-                    type: 'bar',
-                    data: {
-                        labels: ['Current', '1-30 DPD', '31-60 DPD', '61-90 DPD', '90+ DPD'],
-                        datasets: [{
-                            label: 'Number of Loans',
-                            data: [4485, 210, 90, 40, 25],
-                            backgroundColor: ['#10b981', '#f59e0b', '#fb923c', '#f97316', '#ef4444']
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                // Shortfall Bucket Distribution
+                const shortfallView = document.getElementById('shortfallViewToggle')?.value || 'current';
+                const shortfallBuckets = { '0-5%': 0, '5-20%': 0, '20-40%': 0, '40%+': 0 };
+                
+                mockLoans.forEach(loan => {
+                    let shortfall = 0;
+                    if (shortfallView === 'cumulative') {
+                        let cumProjected = 0;
+                        let cumActual = 0;
+                        loan.projectedCashflow.forEach((proj, idx) => {
+                            if (idx <= currentMonthIndex) {
+                                cumProjected += proj;
+                                cumActual += loan.actualCashflow[idx] || 0;
+                            }
+                        });
+                        shortfall = calculateShortfall(cumActual, cumProjected);
+                    } else {
+                        if (loan.projectedCashflow.length > currentMonthIndex) {
+                            shortfall = calculateShortfall(loan.actualCashflow[currentMonthIndex] || 0, loan.projectedCashflow[currentMonthIndex] || 0);
+                        }
+                    }
+                    
+                    if (shortfall <= 5) {
+                        shortfallBuckets['0-5%']++;
+                    } else if (shortfall <= 20) {
+                        shortfallBuckets['5-20%']++;
+                    } else if (shortfall <= 40) {
+                        shortfallBuckets['20-40%']++;
+                    } else {
+                        shortfallBuckets['40%+']++;
+                    }
                 });
 
-                // Portfolio Composition
+                createOrUpdateChart('reportShortfallChart', {
+                    type: 'bar',
+                    data: {
+                        labels: ['0-5%', '5-20%', '20-40%', '40%+'],
+                        datasets: [{
+                            label: 'Number of Loans',
+                            data: [shortfallBuckets['0-5%'], shortfallBuckets['5-20%'], shortfallBuckets['20-40%'], shortfallBuckets['40%+']],
+                            backgroundColor: ['#10b981', '#f59e0b', '#fb923c', '#ef4444']
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { display: false },
+                            title: { display: true, text: `Shortfall Distribution (${shortfallView === 'cumulative' ? 'Cumulative' : 'Current Month'})` }
+                        },
+                        scales: {
+                            y: {
+                                title: { display: true, text: 'Number of Loans' }
+                            }
+                        }
+                    }
+                });
+
+                // Portfolio Composition by Bundle Choice
+                const compositionMetric = document.getElementById('compositionMetricToggle')?.value || 'aum';
+                const compositionAdjusted = document.getElementById('compositionAdjustedToggle')?.value === 'true';
+                const bundleMetrics = calculateRiskMetricsByDimension(mockLoans, 'BUNDLE_CHOICE', currentMonthIndex, compositionAdjusted, false);
+                const bundleLabels = Object.keys(bundleMetrics);
+                const bundleData = bundleLabels.map(label => {
+                    if (compositionMetric === 'aum') return bundleMetrics[label].aum / 1000000; // Convert to millions
+                    if (compositionMetric === 'ce') return bundleMetrics[label].collectionEfficiency;
+                    return bundleMetrics[label].shortfall;
+                });
+
                 createOrUpdateChart('reportCompositionChart', {
                     type: 'doughnut',
                     data: {
-                        labels: ['Boda Boda', 'SME Loans', 'Agri-Finance', 'Personal Loans', 'Other'],
+                        labels: bundleLabels,
                         datasets: [{
-                            data: [45, 25, 15, 10, 5],
+                            data: bundleData,
                             backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4']
                         }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { position: 'right' },
+                            title: { display: true, text: `Portfolio by Bundle Choice - ${compositionMetric.toUpperCase()}` }
+                        } 
+                    }
                 });
 
-                // Geographic Concentration
+                // Geographic Concentration & Risk
+                const geoMetric = document.getElementById('geoMetricToggle')?.value || 'ce';
+                const geoAdjusted = document.getElementById('geoAdjustedToggle')?.value === 'true';
+                const geoMetrics = calculateRiskMetricsByDimension(mockLoans, 'COUNTY', currentMonthIndex, geoAdjusted, false);
+                const geoLabels = Object.keys(geoMetrics).slice(0, 7); // Top 7 counties
+                const geoAUM = geoLabels.map(label => geoMetrics[label].aum / 1000000);
+                const geoRiskData = geoLabels.map(label => {
+                    return geoMetric === 'ce' ? geoMetrics[label].collectionEfficiency : geoMetrics[label].shortfall;
+                });
+
                 createOrUpdateChart('reportGeoChart', {
                     type: 'bar',
                     data: {
-                        labels: ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret', 'Thika', 'Others'],
-                        datasets: [{
-                            label: 'AUM (KES M)',
-                            data: [62, 45, 38, 30, 25, 20, 14],
-                            backgroundColor: '#14b8a6'
-                        }]
+                        labels: geoLabels,
+                        datasets: [
+                            {
+                                label: 'AUM (KES M)',
+                                data: geoAUM,
+                                backgroundColor: '#14b8a6',
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: geoMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
+                                data: geoRiskData,
+                                backgroundColor: geoMetric === 'ce' ? 'rgba(59, 130, 246, 0.7)' : 'rgba(239, 68, 68, 0.7)',
+                                yAxisID: 'y1'
+                            }
+                        ]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        indexAxis: 'y', 
+                        plugins: { legend: { display: true, position: 'bottom' } },
+                        scales: {
+                            y: { position: 'left', title: { display: true, text: 'AUM (KES M)' } },
+                            y1: { position: 'right', title: { display: true, text: geoMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %' }, grid: { drawOnChartArea: false } }
+                        }
+                    }
                 });
 
-                // Vintage Analysis
+                // Origination Cohort Analysis
+                const vintageMetric = document.getElementById('vintageMetricToggle')?.value || 'ce';
+                const vintageView = document.getElementById('vintageViewToggle')?.value || 'current';
+                const originationCohorts = groupByOriginationCohort(mockLoans);
+                const cohortMonths = Object.keys(originationCohorts).sort().slice(-6); // Last 6 months
+                const cohortData = cohortMonths.map(month => {
+                    const cohortLoans = originationCohorts[month];
+                    let totalProjected = 0;
+                    let totalActual = 0;
+                    
+                    cohortLoans.forEach(loan => {
+                        if (vintageView === 'cumulative') {
+                            loan.projectedCashflow.forEach((proj, idx) => {
+                                if (idx <= currentMonthIndex) {
+                                    totalProjected += proj;
+                                    totalActual += loan.actualCashflow[idx] || 0;
+                                }
+                            });
+                        } else {
+                            if (loan.projectedCashflow.length > currentMonthIndex) {
+                                totalProjected += loan.projectedCashflow[currentMonthIndex] || 0;
+                                totalActual += loan.actualCashflow[currentMonthIndex] || 0;
+                            }
+                        }
+                    });
+                    
+                    if (vintageMetric === 'ce') {
+                        return calculateCollectionEfficiency(totalActual, totalProjected, false);
+                    }
+                    return calculateShortfall(totalActual, totalProjected);
+                });
+
                 createOrUpdateChart('reportVintageChart', {
                     type: 'line',
                     data: {
-                        labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025'],
+                        labels: cohortMonths.map(m => {
+                            const [year, month] = m.split('-');
+                            return `${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][parseInt(month) - 1]} ${year}`;
+                        }),
                         datasets: [{
-                            label: 'GNPA %',
-                            data: [3.8, 3.5, 3.2, 3.0, 2.8, 3.2],
+                            label: vintageMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
+                            data: cohortData,
                             borderColor: '#14b8a6',
                             backgroundColor: 'rgba(20, 184, 166, 0.1)',
-                            fill: true
+                            fill: true,
+                            tension: 0.4
                         }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { display: false },
+                            title: { display: true, text: `Origination Cohort Analysis - ${vintageView === 'cumulative' ? 'Cumulative' : 'Current Month'}` }
+                        } 
+                    }
+                });
+
+                // Maturity Cohort Analysis
+                const maturityMetric = document.getElementById('maturityMetricToggle')?.value || 'ce';
+                const maturityView = document.getElementById('maturityViewToggle')?.value || 'current';
+                const maturityAdjusted = document.getElementById('maturityAdjustedToggle')?.value === 'true';
+                const maturityCohorts = groupByMaturityCohort(mockLoans, currentDate);
+                const maturityLabels = Object.keys(maturityCohorts);
+                const maturityData = maturityLabels.map(cohort => {
+                    const cohortLoans = maturityCohorts[cohort];
+                    let totalProjected = 0;
+                    let totalActual = 0;
+                    
+                    cohortLoans.forEach(loan => {
+                        if (maturityView === 'cumulative') {
+                            loan.projectedCashflow.forEach((proj, idx) => {
+                                if (idx <= currentMonthIndex) {
+                                    totalProjected += proj;
+                                    totalActual += loan.actualCashflow[idx] || 0;
+                                }
+                            });
+                        } else {
+                            if (loan.projectedCashflow.length > currentMonthIndex) {
+                                totalProjected += loan.projectedCashflow[currentMonthIndex] || 0;
+                                totalActual += loan.actualCashflow[currentMonthIndex] || 0;
+                            }
+                        }
+                    });
+                    
+                    if (maturityMetric === 'ce') {
+                        return calculateCollectionEfficiency(totalActual, totalProjected, maturityAdjusted);
+                    }
+                    return calculateShortfall(totalActual, totalProjected);
+                });
+
+                createOrUpdateChart('reportMaturityCohortChart', {
+                    type: 'bar',
+                    data: {
+                        labels: maturityLabels,
+                        datasets: [{
+                            label: maturityMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
+                            data: maturityData,
+                            backgroundColor: '#14b8a6'
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { display: false },
+                            title: { display: true, text: `Maturity Cohort Analysis - ${maturityView === 'cumulative' ? 'Cumulative' : 'Current Month'}` }
+                        } 
+                    }
+                });
+
+                // Risk by Gender
+                const genderMetric = document.getElementById('genderMetricToggle')?.value || 'ce';
+                const genderMetrics = calculateRiskMetricsByDimension(mockLoans, 'FARMERS_GENDER', currentMonthIndex, false, false);
+                const genderLabels = Object.keys(genderMetrics);
+                const genderData = genderLabels.map(label => {
+                    return genderMetric === 'ce' ? genderMetrics[label].collectionEfficiency : genderMetrics[label].shortfall;
+                });
+
+                createOrUpdateChart('reportGenderChart', {
+                    type: 'bar',
+                    data: {
+                        labels: genderLabels,
+                        datasets: [{
+                            label: genderMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
+                            data: genderData,
+                            backgroundColor: ['#14b8a6', '#5eead4']
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { display: false } } 
+                    }
+                });
+
+                // Risk by Liability Bucket
+                const liabilityMetric = document.getElementById('liabilityMetricToggle')?.value || 'ce';
+                const liabilityMetrics = calculateRiskMetricsByDimension(mockLoans, 'Disbursed_Liability_Bucket', currentMonthIndex, false, false);
+                const liabilityLabels = ['<20K', '20K-39K', '40K-59K', '60K-79K', '80K-99K', '100K+'];
+                const liabilityData = liabilityLabels.map(label => {
+                    if (!liabilityMetrics[label]) return 0;
+                    return liabilityMetric === 'ce' ? liabilityMetrics[label].collectionEfficiency : liabilityMetrics[label].shortfall;
+                });
+
+                createOrUpdateChart('reportLiabilityBucketChart', {
+                    type: 'bar',
+                    data: {
+                        labels: liabilityLabels,
+                        datasets: [{
+                            label: liabilityMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
+                            data: liabilityData,
+                            backgroundColor: '#14b8a6'
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { display: false } } 
+                    }
+                });
+
+                // Risk by Renewal Status
+                const renewalMetric = document.getElementById('renewalMetricToggle')?.value || 'ce';
+                const renewalMetrics = calculateRiskMetricsByDimension(mockLoans, 'IS_RENEWAL', currentMonthIndex, false, false);
+                const renewalLabels = Object.keys(renewalMetrics).map(k => k === 'true' ? 'Renewal' : 'New');
+                const renewalData = Object.keys(renewalMetrics).map(key => {
+                    return renewalMetric === 'ce' ? renewalMetrics[key].collectionEfficiency : renewalMetrics[key].shortfall;
+                });
+
+                createOrUpdateChart('reportRenewalChart', {
+                    type: 'bar',
+                    data: {
+                        labels: renewalLabels,
+                        datasets: [{
+                            label: renewalMetric === 'ce' ? 'Collection Efficiency %' : 'Shortfall %',
+                            data: renewalData,
+                            backgroundColor: ['#14b8a6', '#5eead4']
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { display: false } } 
+                    }
                 });
 
                 // Collections Comparison: Actual vs Day 0 Projections
@@ -5326,22 +6086,22 @@
                     }
                 });
 
-                // Covenant Tests Chart
+                // Covenant Tests Chart (Collection Efficiency based)
                 createOrUpdateChart('reportCovenantTestsChart', {
                     type: 'bar',
                     data: {
-                        labels: ['Cumulative\nPayment Rate', 'PAR30', 'PAR60', 'PAR90', 'LTV'],
+                        labels: ['Cumulative\nCollection\nEfficiency', 'Current Month\nCollection\nEfficiency', 'Cumulative\nShortfall', 'Current Month\nShortfall'],
                         datasets: [
                             {
                                 label: 'Actual',
-                                data: [98.8, 4.4, 1.0, 0.4, 78.5],
+                                data: [cumulativeCE, currentMonthCE, cumulativeShortfall, currentMonthShortfall],
                                 backgroundColor: 'rgba(20, 184, 166, 0.7)',
                                 borderColor: '#14b8a6',
                                 borderWidth: 2
                             },
                             {
                                 label: 'Threshold',
-                                data: [95.0, 8.0, 5.0, 3.0, 85.0],
+                                data: [95.0, 95.0, 5.0, 5.0],
                                 backgroundColor: 'rgba(239, 68, 68, 0.3)',
                                 borderColor: '#ef4444',
                                 borderWidth: 2,
@@ -5408,14 +6168,14 @@
                     }
                 });
 
-                // Tranche-Level Payments Chart (Detailed Waterfall)
+                // Tranche-Level Payments Chart (Total Cashflow - No Principal/Interest Split)
                 // Based on ki platform PCC Series 1: Apollo Agriculture
                 // Senior: KES 286.51M | Mezzanine: KES 75.00M | Pool: KES 475.87M
                 // Note: Bullet structure - Principal paid at maturity, only interest monthly
                 createOrUpdateChart('reportTranchePaymentsChart', {
                     type: 'bar',
                     data: {
-                        labels: ['Statutory\n& Fees', 'Class A\nInterest\n(14% XIRR)', 'Class A\nPrincipal\n(at maturity)', 'Class B\nInterest\n(14.5% XIRR)', 'Class B\nPrincipal\n(at maturity)', 'Liquidity\nReimbursement', 'Residual'],
+                        labels: ['Statutory\n& Fees', 'Class A\nTotal Cashflow\n(14% XIRR)', 'Class A\nPrincipal\n(at maturity)', 'Class B\nTotal Cashflow\n(14.5% XIRR)', 'Class B\nPrincipal\n(at maturity)', 'Liquidity\nReimbursement', 'Residual'],
                         datasets: [{
                             label: 'Amount (KES M)',
                             data: [2.5, 3.35, 0, 0.91, 0, 0, 3.2],
@@ -5445,7 +6205,7 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: { display: false },
-                            title: { display: true, text: 'Monthly Payments - Bullet Structure (Principal at Final Maturity)' }
+                            title: { display: true, text: 'Monthly Payments - Total Cashflow (Principal at Final Maturity)' }
                         },
                         scales: {
                             y: {
@@ -6188,16 +6948,15 @@ CASH FLOW SUMMARY (THIS MONTH)
 Opening Pool Balance: KES 475.87M
 
 Inflows:
-- Principal Collections: KES 36.5M
-- Interest Collections: KES 6.8M
+- Total Cashflow Collections: KES 43.3M
 - Fees & Other Income: KES 1.5M
 Total Inflows: KES 44.8M
 
 Outflows (Monthly - Bullet Structure):
 - Statutory & Regulatory Dues: KES 0.8M
 - Trustee & Service Provider Fees: KES 1.7M
-- Interest Payment to Senior Notes: KES 3.35M (14% XIRR)
-- Interest Payment to Mezzanine Notes: KES 0.91M (14.5% XIRR)
+- Total Cashflow Payment to Senior Notes: KES 3.35M (14% XIRR)
+- Total Cashflow Payment to Mezzanine Notes: KES 0.91M (14.5% XIRR)
 - Residual to Originator: KES 3.2M
 Total Monthly Outflows: KES 9.96M
 
@@ -6218,7 +6977,7 @@ TILL SENIOR NOTES OUTSTANDING:
    - Servicer Fees: KES 0.95M
    - Independent Credit Platform (Kaleidofin): KES 0.30M
 
-3. Expected Yield Payout to Senior Notes: KES 3.35M ✓ PAID IN FULL
+3. Expected Total Cashflow Payout to Senior Notes: KES 3.35M ✓ PAID IN FULL
    - Expected XIRR: 14.00% p.a.
    - Contractual Amount Due: KES 3.35M
    - Amount Paid: KES 3.35M
@@ -6233,11 +6992,11 @@ TILL SENIOR NOTES OUTSTANDING:
 5. Overdue Senior Principal (if any): KES 0.00
    - Only applicable on/after Final Maturity Date
 
-6. Overdue Senior Interest (if any): KES 0.00
+6. Overdue Senior Cashflow (if any): KES 0.00
    
 ON PAYMENT OF SENIOR NOTES IN FULL:
 
-7. Expected Interest Payout to Mezzanine Notes: KES 0.91M ✓ PAID IN FULL
+7. Expected Total Cashflow Payout to Mezzanine Notes: KES 0.91M ✓ PAID IN FULL
    - Expected XIRR: 14.50% p.a.
    - Contractual Amount Due: KES 0.91M
    - Amount Paid: KES 0.91M
@@ -6314,38 +7073,39 @@ Senior Tranche (Class A):
 - Original Balance: KES 286.51M
 - Current Outstanding: KES 286.51M (100% - no amortization)
 - Expected XIRR: 14.00% p.a.
-- This Month Interest: KES 3.35M
+- This Month Total Cashflow: KES 3.35M
 - Principal Payment: KES 0.00 (Due at Final Maturity: 10-Nov-2026)
-- Status: Interest payments current ✓
+- Status: Cashflow payments current ✓
 
 Mezzanine Tranche (Class B):
 - Original Balance: KES 75.00M
 - Current Outstanding: KES 75.00M (100% - no amortization)
 - Expected XIRR: 14.50% p.a. (Senior XIRR + 50 bps)
-- This Month Interest: KES 0.91M
+- This Month Total Cashflow: KES 0.91M
 - Principal Payment: KES 0.00 (Due at Final Maturity: 10-Nov-2026)
-- Status: Interest payments current ✓
+- Status: Cashflow payments current ✓
 
 Note: Bullet payment structure - Full principal due at Legal Final Maturity
       Liquidity Facility available if pool collections insufficient at maturity
 
 TESTS (COVENANT COMPLIANCE)
 ----------------------------
-Test Name                 | Actual  | Threshold | Status
---------------------------|---------|-----------|----------
-Cumulative Payment Rate   | 98.8%   | ≥ 95.0%   | ✓ PASS
-PAR30 (30+ DPD)          | 4.4%    | ≤ 8.0%    | ✓ PASS
-PAR60 (60+ DPD)          | 1.0%    | ≤ 5.0%    | ✓ PASS
-PAR90 (90+ DPD)          | 0.4%    | ≤ 3.0%    | ✓ PASS
-LTV (Loan-to-Value)      | 78.5%   | ≤ 85.0%   | ✓ PASS
+Test Name                         | Actual  | Threshold | Status
+----------------------------------|---------|-----------|----------
+Cumulative Collection Efficiency  | 97.5%   | ≥ 95.0%   | ✓ PASS
+Current Month Collection Efficiency| 98.8%   | ≥ 95.0%   | ✓ PASS
+Cumulative Shortfall              | 2.5%    | ≤ 5.0%    | ✓ PASS
+Current Month Shortfall           | 1.2%    | ≤ 5.0%    | ✓ PASS
 
 All Tests: ✓ PASSED
 
 PORTFOLIO PERFORMANCE
 ---------------------
 Weighted Average Coupon: 18.5%
-Gross NPA: 3.2%
-Collection Efficiency: 98.8%
+Current Month Collection Efficiency: 98.8%
+Cumulative Collection Efficiency: 97.5%
+Current Month Shortfall: 1.2%
+Cumulative Shortfall: 2.5%
 Prepayment Rate (CPR): 8.5% annualized
 
 COMPARISON: ACTUAL VS INITIAL PROJECTIONS
@@ -6751,6 +7511,32 @@ Contact: cashmanagement@kaleidofin.com
                 const nextMonth = parseInt(month) === 12 ? 1 : parseInt(month) + 1;
                 const nextYear = parseInt(month) === 12 ? parseInt(year) + 1 : year;
                 document.getElementById('paymentDateDisplay').textContent = `01-${monthNames[nextMonth - 1].substring(0,3)}-${nextYear}`;
+            });
+
+            // Add event listeners for all chart toggle dropdowns
+            const toggleIds = [
+                'collectionEfficiencyViewToggle',
+                'adjustedCollectionEfficiencyViewToggle',
+                'shortfallViewToggle',
+                'compositionMetricToggle',
+                'compositionAdjustedToggle',
+                'geoMetricToggle',
+                'geoAdjustedToggle',
+                'vintageMetricToggle',
+                'vintageViewToggle',
+                'maturityMetricToggle',
+                'maturityViewToggle',
+                'maturityAdjustedToggle',
+                'genderMetricToggle',
+                'liabilityMetricToggle',
+                'renewalMetricToggle'
+            ];
+
+            toggleIds.forEach(toggleId => {
+                document.getElementById(toggleId)?.addEventListener('change', () => {
+                    const txId = document.getElementById('reportsTransactionSelector')?.value || state.transactions.filter(t => t.covenantsSet)[0]?.id;
+                    if (txId) renderReportsPage(txId);
+                });
             });
 
             // Modal close event listeners
