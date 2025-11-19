@@ -1863,14 +1863,6 @@
                                     <p class="text-xs text-gray-600 mt-2">Shows available credit enhancement decreasing as it gets utilized. Includes Overcollateralization (OC) and Junior Liquidity Facility (JLF).</p>
                                 </div>
 
-                                <!-- Payment Performance vs Obligations -->
-                                <div class="mb-8">
-                                    <h4 class="font-semibold text-gray-800 mb-3">Payment Performance vs Contractual Obligations</h4>
-                                    <div class="bg-white border rounded-lg p-4">
-                                        <div class="chart-container h-64"><canvas id="reportPaymentComplianceChart"></canvas></div>
-                                    </div>
-                                    <p class="text-xs text-gray-600 mt-2">All contractual obligations met in full</p>
-                                </div>
                             </div>
 
                         </div>
@@ -5559,7 +5551,7 @@
                         responsive: true, 
                         maintainAspectRatio: false, 
                         plugins: { legend: { display: true, position: 'bottom' } }, 
-                        scales: { y: { beginAtZero: false, min: 90, max: 110 } } 
+                        scales: { y: { beginAtZero: false, min: 80, max: 105 } } 
                     }
                 });
 
@@ -5598,7 +5590,7 @@
                         responsive: true, 
                         maintainAspectRatio: false, 
                         plugins: { legend: { display: true, position: 'bottom' } }, 
-                        scales: { y: { beginAtZero: false, min: 90, max: 100 } } 
+                        scales: { y: { beginAtZero: false, min: 80, max: 105 } } 
                     }
                 });
 
@@ -5736,7 +5728,7 @@
                         },
                         scales: {
                             y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
-                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 80, max: 105 }
                         }
                     }
                 });
@@ -5785,11 +5777,10 @@
                     options: { 
                         responsive: true, 
                         maintainAspectRatio: false, 
-                        indexAxis: 'y', 
                         plugins: { legend: { display: true, position: 'bottom' } },
                         scales: {
                             y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
-                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 80, max: 105 }
                         }
                     }
                 });
@@ -5883,7 +5874,7 @@
                         },
                         scales: {
                             y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
-                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 80, max: 105 }
                         }
                     }
                 });
@@ -5977,7 +5968,7 @@
                         },
                         scales: {
                             y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
-                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 80, max: 105 }
                         }
                     }
                 });
@@ -6028,7 +6019,7 @@
                         plugins: { legend: { display: true, position: 'bottom' } },
                         scales: {
                             y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
-                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 80, max: 105 }
                         }
                     }
                 });
@@ -6079,7 +6070,7 @@
                         plugins: { legend: { display: true, position: 'bottom' } },
                         scales: {
                             y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
-                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 80, max: 105 }
                         }
                     }
                 });
@@ -6131,7 +6122,7 @@
                         plugins: { legend: { display: true, position: 'bottom' } },
                         scales: {
                             y: { position: 'left', title: { display: true, text: 'AUM (KES M) / AUM (%)' }, beginAtZero: true },
-                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 90, max: 105 }
+                            y1: { position: 'right', title: { display: true, text: 'Collection Efficiency (%)' }, grid: { drawOnChartArea: false }, beginAtZero: false, min: 80, max: 105 }
                         }
                     }
                 });
@@ -6453,47 +6444,6 @@
                     }
                 });
 
-
-                // Payment Compliance Chart
-                // Based on actual deal structure: Bullet payment, only interest monthly
-                createOrUpdateChart('reportPaymentComplianceChart', {
-                    type: 'bar',
-                    data: {
-                        labels: ['Statutory\n& Fees', 'Senior Int.\n(14% XIRR)', 'Mezz Int.\n(14.5% XIRR)', 'Liquidity\nFacility', 'Residual'],
-                        datasets: [
-                            {
-                                label: 'Contractual Demand',
-                                data: [2.5, 3.35, 0.91, 0, 3.2],
-                                backgroundColor: 'rgba(239, 68, 68, 0.3)',
-                                borderColor: '#ef4444',
-                                borderWidth: 2,
-                                borderDash: [5, 5]
-                            },
-                            {
-                                label: 'Actual Paid',
-                                data: [2.5, 3.35, 0.91, 0, 3.2],
-                                backgroundColor: 'rgba(20, 184, 166, 0.7)',
-                                borderColor: '#14b8a6',
-                                borderWidth: 2
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom' },
-                            title: { display: true, text: 'Monthly Obligations Met ✓ Principal Due at Final Maturity Only' }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: { display: true, text: 'Amount (KES M Monthly)' }
-                            }
-                        }
-                    }
-                });
-
                 // Update key metrics with actual data (ki platform PCC Series 1: Apollo Agriculture)
                 document.getElementById('reportPoolSize').textContent = 'KES 475.87M';
                 document.getElementById('reportTotalLoans').textContent = '12,450';
@@ -6528,28 +6478,7 @@ Re: Portfolio Monitoring Agent Services - ${transaction.name}
 
 We, Kaleidofin Private Limited, in our capacity as the Portfolio Monitoring Agent, hereby provide this letter to the Required Recipients in accordance with Clause 3.1 (Services) and subject to, without limitation, Clause 7.1 (Portfolio Monitoring Agent limitation of liability) of the Portfolio Monitoring Agreement. This letter serves to specify the determinations and confirmations to be made by us for the reporting period ending ${monthName} ${year}, as outlined below:
 
-1. DETERMINATION OF TESTED ELIGIBILITY CRITERIA
-------------------------------------------------
-We confirm that, in our reasonable opinion based on the information provided, there are no breaches of the Tested Eligibility Criteria with respect to the Receivables in the portfolio as of the Month-End Reporting Cut-Off Date.
-
-NEW LOANS ADDED THIS MONTH:
-   • Number of New Loans: 485 loans
-   • Total Value of New Loans: KES 18.5M
-   • Percentage of Pool: 3.9%
-   • All new loans tested and compliant with eligibility criteria
-
-Specific Eligibility Criteria Tested:
-   ✓ Minimum Loan Amount: All receivables ≥ KES 12,500
-   ✓ Maximum Loan Amount: All receivables ≤ KES 1,250,000
-   ✓ Minimum Remaining Tenor: All receivables have ≥ 6 months remaining
-   ✓ Maximum DPD at Origination: All receivables had 0 DPD when originated
-   ✓ Loan Purpose: All receivables fall within approved categories (Agricultural inputs)
-   ✓ Documentation: All receivables have complete documentation
-   ✓ Borrower Eligibility: All borrowers meet approved criteria (ki score thresholds met)
-
-Status: ✓ NO BREACHES IDENTIFIED - ALL CRITERIA SATISFIED (incl. 485 new loans)
-
-2. CONSISTENCY AND CALCULATIONS
+1. CONSISTENCY AND CALCULATIONS
 --------------------------------
 We have reviewed the information provided in the Monthly Receivables Data Tape we received on ${reportDate} and compared it with the information in the systems used by the Servicer to service, administer, collect and manage the Portfolio Receivables which we have access to.
 
@@ -6559,16 +6488,30 @@ The information in the Draft Servicer Report and Monthly Receivables Data Tape r
 
 Additionally, we have calculated the following metrics:
 
-   Delinquency Ratio: 4.4%
-   Dynamic Default Ratio: 0.42%
+   Current Month Collection Efficiency: 98.8%
+   Cumulative Collection Efficiency: 97.5%
+   Current Month Shortfall: 1.2%
+   Cumulative Shortfall: 2.5%
    Repayment Speed: 8.5% CPR
 
 Calculation Details:
-- Delinquency Ratio = (Delinquent Receivables / Total Portfolio Balance) × 100
-- Dynamic Default Ratio = (Defaulted Receivables in Period / Beginning Portfolio Balance) × 100
+- Collection Efficiency = (Actual Collections / Projected Collections) × 100
+- Shortfall = ((Projected Collections - Actual Collections) / Projected Collections) × 100
 - Repayment Speed = Annualized prepayment rate (CPR method)
 
-3. CONCENTRATION LIMITS
+Shortfall Bucket Distribution (Current Month):
+   • 0-5% Shortfall: 8,450 loans (67.9%)
+   • 5-20% Shortfall: 2,890 loans (23.2%)
+   • 20-40% Shortfall: 890 loans (7.1%)
+   • 40%+ Shortfall: 220 loans (1.8%)
+
+Shortfall Bucket Distribution (Cumulative):
+   • 0-5% Shortfall: 7,980 loans (64.1%)
+   • 5-20% Shortfall: 3,120 loans (25.0%)
+   • 20-40% Shortfall: 1,050 loans (8.4%)
+   • 40%+ Shortfall: 300 loans (2.4%)
+
+2. CONCENTRATION LIMITS
 -----------------------
 We confirm that the Portfolio Concentration Limits are satisfied with respect to the current portfolio composition.
 
@@ -6582,7 +6525,7 @@ Product Concentration:
 
 Status: ✓ ALL CONCENTRATION LIMITS SATISFIED
 
-4. DISCOUNTED BALANCE AND COLLECTIONS
+3. DISCOUNTED BALANCE AND COLLECTIONS
 --------------------------------------
 Using the information in the Monthly Receivables Data Tape made available to us by the Servicer on ${reportDate}, we calculate that:
 
@@ -6602,7 +6545,7 @@ e) Collections Reconciliation:
 
 Status: ✓ RECONCILIATION COMPLETE - NO MATERIAL DIFFERENCES
 
-5. SERVICER REPORT VALIDATION
+4. SERVICER REPORT VALIDATION
 ------------------------------
 We have liaised with the Servicer regarding the Monthly Servicer Report and confirm that we are reasonably satisfied with the form and content of the proposed Monthly Servicer Report for ${monthName} ${year}.
 
@@ -6616,50 +6559,32 @@ Average Receivable Size: KES 48,350
 Weighted Average Yield: 18.5%
 Weighted Average Remaining Tenor: 18 months
 
-Delinquency Status:
-- Current (0 DPD): 92.5% (4,485 receivables)
-- 1-30 DPD: 4.3% (210 receivables)
-- 31-60 DPD: 1.9% (90 receivables)
-- 61-90 DPD: 0.8% (40 receivables)
-- 90+ DPD: 0.5% (25 receivables)
+Collection Efficiency & Shortfall Status:
+- Current Month Collection Efficiency: 98.8%
+- Cumulative Collection Efficiency: 97.5%
+- Current Month Shortfall: 1.2%
+- Cumulative Shortfall: 2.5%
 
-REPLENISHED LOANS THIS MONTH
------------------------------
-The following table shows loans that were repaid/prepaid during the month and the new loans 
-that replaced them in the pool to maintain the target pool size:
+Shortfall Bucket Distribution (Current Month):
+- 0-5% Shortfall: 8,450 receivables (67.9%)
+- 5-20% Shortfall: 2,890 receivables (23.2%)
+- 20-40% Shortfall: 890 receivables (7.1%)
+- 40%+ Shortfall: 220 receivables (1.8%)
 
-Loan ID (Repaid) | Repaid Amount | Repaid Date  | New Loan ID | New Loan Amount | Origination Date | County
------------------|---------------|--------------|-------------|-----------------|------------------|-------------
-AGR-10245        | KES 45,200    | 08-Nov-2025  | AGR-12891   | KES 52,000      | 12-Nov-2025     | Nairobi
-AGR-10312        | KES 38,500    | 10-Nov-2025  | AGR-12892   | KES 41,200      | 13-Nov-2025     | Kiambu
-AGR-10489        | KES 62,800    | 12-Nov-2025  | AGR-12893   | KES 68,500      | 15-Nov-2025     | Nakuru
-AGR-10556        | KES 28,900    | 14-Nov-2025  | AGR-12894   | KES 31,000      | 16-Nov-2025     | Mombasa
-AGR-10623        | KES 51,200    | 15-Nov-2025  | AGR-12895   | KES 48,900      | 17-Nov-2025     | Kisumu
-AGR-10701        | KES 44,600    | 18-Nov-2025  | AGR-12896   | KES 47,500      | 19-Nov-2025     | Uasin Gishu
-AGR-10778        | KES 35,700    | 20-Nov-2025  | AGR-12897   | KES 39,800      | 21-Nov-2025     | Machakos
-AGR-10845        | KES 59,400    | 22-Nov-2025  | AGR-12898   | KES 55,600      | 23-Nov-2025     | Meru
-AGR-10912        | KES 48,300    | 24-Nov-2025  | AGR-12899   | KES 51,200      | 25-Nov-2025     | Nyeri
-AGR-10989        | KES 41,500    | 26-Nov-2025  | AGR-12900   | KES 44,800      | 27-Nov-2025     | Kajiado
-
-Summary:
-- Total Loans Repaid/Prepaid: 10 loans
-- Total Amount Repaid: KES 456,100
-- Total New Loans Added: 10 loans  
-- Total New Loan Amount: KES 480,500
-- Net Increase in Pool: KES 24,400 (+5.4%)
-- All new loans meet eligibility criteria and ki score thresholds
-
-Note: This table shows a sample of replenished loans. Full loan-level data available in Monthly Receivables Data Tape.
+Shortfall Bucket Distribution (Cumulative):
+- 0-5% Shortfall: 7,980 receivables (64.1%)
+- 5-20% Shortfall: 3,120 receivables (25.0%)
+- 20-40% Shortfall: 1,050 receivables (8.4%)
+- 40%+ Shortfall: 300 receivables (2.4%)
 
 CONCLUSION
 ----------
 Based on our review and analysis, we confirm that:
-✓ No material breaches of eligibility criteria
 ✓ No manifest errors identified
 ✓ All concentration limits satisfied
 ✓ Collections properly reconciled
 ✓ Servicer Report approved
-✓ All replenished loans tested and compliant
+✓ Collection efficiency metrics within acceptable thresholds
 
 Should you require any further information or clarification, please do not hesitate to contact us.
 
@@ -6720,80 +6645,66 @@ Next Report Due: 2 Business Days after next Month-End Servicer Report
                         </div>
 
                         <!-- 1. Tested Eligibility Criteria -->
+                        <!-- 1. Key Calculations -->
                         <div class="bg-white p-4 rounded-lg border">
-                            <h4 class="font-semibold text-gray-800 mb-3">1. Tested Eligibility Criteria Status</h4>
-                            
-                            <!-- New Loans Added This Month -->
-                            <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
-                                <p class="text-sm font-semibold text-blue-900 mb-2">New Loans Added This Month:</p>
-                                <div class="grid grid-cols-3 gap-2 text-xs">
-                                    <div class="text-center">
-                                        <p class="text-gray-600">Number of Loans</p>
-                                        <p class="text-lg font-bold text-blue-700">485</p>
-                                    </div>
-                                    <div class="text-center">
-                                        <p class="text-gray-600">Total Value</p>
-                                        <p class="text-lg font-bold text-blue-700">KES 18.5M</p>
-                                    </div>
-                                    <div class="text-center">
-                                        <p class="text-gray-600">% of Pool</p>
-                                        <p class="text-lg font-bold text-blue-700">3.9%</p>
-                                    </div>
+                            <h4 class="font-semibold text-gray-800 mb-3">1. Consistency and Calculations</h4>
+                            <div class="grid grid-cols-2 gap-4 mb-3">
+                                <div class="text-center p-3 bg-blue-50 rounded">
+                                    <p class="text-xs text-gray-600 mb-1">Current Month Collection Efficiency</p>
+                                    <p class="text-2xl font-bold text-blue-700">98.8%</p>
                                 </div>
-                                <p class="text-xs text-green-700 font-semibold mt-2">✓ All new loans tested and compliant with eligibility criteria</p>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3 text-sm">
-                                <div class="flex justify-between p-2 bg-green-50 rounded">
-                                    <span class="font-medium">Minimum Loan Amount (KES 12,500)</span>
-                                    <span class="text-green-700 font-bold">✓ PASS</span>
+                                <div class="text-center p-3 bg-blue-50 rounded">
+                                    <p class="text-xs text-gray-600 mb-1">Cumulative Collection Efficiency</p>
+                                    <p class="text-2xl font-bold text-blue-700">97.5%</p>
                                 </div>
-                                <div class="flex justify-between p-2 bg-green-50 rounded">
-                                    <span class="font-medium">Maximum Loan Amount (≤KES 1,250,000)</span>
-                                    <span class="text-green-700 font-bold">✓ PASS</span>
+                                <div class="text-center p-3 bg-orange-50 rounded">
+                                    <p class="text-xs text-gray-600 mb-1">Current Month Shortfall</p>
+                                    <p class="text-2xl font-bold text-orange-700">1.2%</p>
                                 </div>
-                                <div class="flex justify-between p-2 bg-green-50 rounded">
-                                    <span class="font-medium">Minimum Remaining Tenor (≥6 months)</span>
-                                    <span class="text-green-700 font-bold">✓ PASS</span>
-                                </div>
-                                <div class="flex justify-between p-2 bg-green-50 rounded">
-                                    <span class="font-medium">Maximum DPD (0 days at origination)</span>
-                                    <span class="text-green-700 font-bold">✓ PASS</span>
-                                </div>
-                                <div class="flex justify-between p-2 bg-green-50 rounded">
-                                    <span class="font-medium">Loan Purpose (Agricultural Inputs)</span>
-                                    <span class="text-green-700 font-bold">✓ PASS</span>
-                                </div>
-                                <div class="flex justify-between p-2 bg-green-50 rounded">
-                                    <span class="font-medium">Documentation & ki score threshold</span>
-                                    <span class="text-green-700 font-bold">✓ PASS</span>
+                                <div class="text-center p-3 bg-orange-50 rounded">
+                                    <p class="text-xs text-gray-600 mb-1">Cumulative Shortfall</p>
+                                    <p class="text-2xl font-bold text-orange-700">2.5%</p>
                                 </div>
                             </div>
+                            <div class="mt-4">
+                                <p class="text-xs font-semibold text-gray-700 mb-2">Shortfall Bucket Distribution (Current Month):</p>
+                                <div class="space-y-1 text-xs">
+                                    <div class="flex items-center">
+                                        <div class="w-24">0-5%</div>
+                                        <div class="flex-1 bg-gray-200 rounded h-5 relative">
+                                            <div class="bg-green-500 h-5 rounded" style="width: 67.9%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-center text-white font-bold">8,450 (67.9%)</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-24">5-20%</div>
+                                        <div class="flex-1 bg-gray-200 rounded h-5 relative">
+                                            <div class="bg-yellow-500 h-5 rounded" style="width: 23.2%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">2,890 (23.2%)</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-24">20-40%</div>
+                                        <div class="flex-1 bg-gray-200 rounded h-5 relative">
+                                            <div class="bg-orange-500 h-5 rounded" style="width: 7.1%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">890 (7.1%)</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-24">40%+</div>
+                                        <div class="flex-1 bg-gray-200 rounded h-5 relative">
+                                            <div class="bg-red-500 h-5 rounded" style="width: 1.8%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">220 (1.8%)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-green-700 font-semibold mt-3">✓ No manifest errors identified in Servicer data</p>
                         </div>
 
-                        <!-- 2. Key Calculations -->
+                        <!-- 2. Concentration Limits -->
                         <div class="bg-white p-4 rounded-lg border">
-                            <h4 class="font-semibold text-gray-800 mb-3">2. Consistency and Calculations</h4>
-                            <div class="grid grid-cols-3 gap-4 mb-3">
-                                <div class="text-center p-3 bg-blue-50 rounded">
-                                    <p class="text-xs text-gray-600 mb-1">Delinquency Ratio</p>
-                                    <p class="text-2xl font-bold text-blue-700">4.4%</p>
-                                </div>
-                                <div class="text-center p-3 bg-blue-50 rounded">
-                                    <p class="text-xs text-gray-600 mb-1">Dynamic Default Ratio</p>
-                                    <p class="text-2xl font-bold text-blue-700">0.42%</p>
-                                </div>
-                                <div class="text-center p-3 bg-blue-50 rounded">
-                                    <p class="text-xs text-gray-600 mb-1">Repayment Speed (CPR)</p>
-                                    <p class="text-2xl font-bold text-blue-700">8.5%</p>
-                                </div>
-                            </div>
-                            <p class="text-xs text-green-700 font-semibold">✓ No manifest errors identified in Servicer data</p>
-                        </div>
-
-                        <!-- 3. Concentration Limits -->
-                        <div class="bg-white p-4 rounded-lg border">
-                            <h4 class="font-semibold text-gray-800 mb-3">3. Portfolio Concentration Limits</h4>
+                            <h4 class="font-semibold text-gray-800 mb-3">2. Portfolio Concentration Limits</h4>
                             <div class="space-y-2 text-sm">
                                 <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
                                     <span>Highest Single County Concentration</span>
@@ -6814,9 +6725,9 @@ Next Report Due: 2 Business Days after next Month-End Servicer Report
                             </div>
                         </div>
 
-                        <!-- 4. Discounted Balance & Collections -->
+                        <!-- 3. Discounted Balance & Collections -->
                         <div class="bg-white p-4 rounded-lg border">
-                            <h4 class="font-semibold text-gray-800 mb-3">4. Discounted Balance and Collections Reconciliation</h4>
+                            <h4 class="font-semibold text-gray-800 mb-3">3. Discounted Balance and Collections Reconciliation</h4>
                             <div class="grid grid-cols-2 gap-4 text-sm">
                                 <div class="p-3 bg-gray-50 rounded">
                                     <p class="text-gray-600 mb-1">Discounted Balance (excl. Defaulted)</p>
@@ -6855,41 +6766,34 @@ Next Report Due: 2 Business Days after next Month-End Servicer Report
                             </div>
                             
                             <div class="mt-4">
-                                <p class="text-xs font-semibold text-gray-700 mb-2">Delinquency Distribution:</p>
+                                <p class="text-xs font-semibold text-gray-700 mb-2">Shortfall Bucket Distribution (Current Month):</p>
                                 <div class="space-y-1 text-xs">
                                     <div class="flex items-center">
-                                        <div class="w-24">Current (0 DPD)</div>
+                                        <div class="w-24">0-5%</div>
                                         <div class="flex-1 bg-gray-200 rounded h-5 relative">
-                                            <div class="bg-green-500 h-5 rounded" style="width: 92.5%"></div>
-                                            <span class="absolute inset-0 flex items-center justify-center text-white font-bold">92.5%</span>
+                                            <div class="bg-green-500 h-5 rounded" style="width: 67.9%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-center text-white font-bold">67.9%</span>
                                         </div>
                                     </div>
                                     <div class="flex items-center">
-                                        <div class="w-24">1-30 DPD</div>
+                                        <div class="w-24">5-20%</div>
                                         <div class="flex-1 bg-gray-200 rounded h-5 relative">
-                                            <div class="bg-yellow-500 h-5 rounded" style="width: 4.3%"></div>
-                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">4.3%</span>
+                                            <div class="bg-yellow-500 h-5 rounded" style="width: 23.2%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">23.2%</span>
                                         </div>
                                     </div>
                                     <div class="flex items-center">
-                                        <div class="w-24">31-60 DPD</div>
+                                        <div class="w-24">20-40%</div>
                                         <div class="flex-1 bg-gray-200 rounded h-5 relative">
-                                            <div class="bg-orange-500 h-5 rounded" style="width: 1.9%"></div>
-                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">1.9%</span>
+                                            <div class="bg-orange-500 h-5 rounded" style="width: 7.1%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">7.1%</span>
                                         </div>
                                     </div>
                                     <div class="flex items-center">
-                                        <div class="w-24">61-90 DPD</div>
+                                        <div class="w-24">40%+</div>
                                         <div class="flex-1 bg-gray-200 rounded h-5 relative">
-                                            <div class="bg-red-400 h-5 rounded" style="width: 0.8%"></div>
-                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">0.8%</span>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <div class="w-24">90+ DPD</div>
-                                        <div class="flex-1 bg-gray-200 rounded h-5 relative">
-                                            <div class="bg-red-700 h-5 rounded" style="width: 0.5%"></div>
-                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">0.5%</span>
+                                            <div class="bg-red-500 h-5 rounded" style="width: 1.8%"></div>
+                                            <span class="absolute inset-0 flex items-center justify-start pl-2 text-gray-700 font-bold">1.8%</span>
                                         </div>
                                     </div>
                                 </div>
