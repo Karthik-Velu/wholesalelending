@@ -1552,13 +1552,13 @@
                     originator: {
                         title: `KI Score Grade Details for ${name}`,
                         contributors: [
-                            { label: 'Strong Capitalization', value: 'CRAR: 18.5%', icon: '✅' },
+                            { label: 'Strong Capitalization', value: 'CRAR: 24.0%', icon: '✅' },
                             { label: 'Low NPAs', value: 'GNPA: 4.2%', icon: '✅' },
                             { label: 'Diversified Portfolio', value: 'Top 3 products < 60%', icon: '✅' }
                         ],
                         cards: [
                             { title: 'Financial Health', variables: [
-                                { label: 'CRAR', value: '18.5%' }, { label: 'Debt-to-Equity', value: '2.1' }, { label: 'Return on Assets (RoA)', value: '2.8%' }, { label: 'Return on Equity (RoE)', value: '15.2%' }, { label: 'Net Interest Margin', value: '8.1%' }, { label: 'Cost-to-Income Ratio', value: '45%' }, { label: 'Liquidity Ratio', value: '1.5' }, { label: 'Portfolio Growth (YoY)', value: '15%' }, { label: 'Operating Expense Ratio', value: '4.5%' }, { label: 'Provision Coverage Ratio', value: '75%' }
+                                { label: 'CRAR', value: '24.0%' }, { label: 'Debt-to-Equity', value: '2.1' }, { label: 'Return on Assets (RoA)', value: '2.8%' }, { label: 'Return on Equity (RoE)', value: '15.2%' }, { label: 'Net Interest Margin', value: '8.1%' }, { label: 'Cost-to-Income Ratio', value: '45%' }, { label: 'Liquidity Ratio', value: '1.5' }, { label: 'Portfolio Growth (YoY)', value: '15%' }, { label: 'Operating Expense Ratio', value: '4.5%' }, { label: 'Provision Coverage Ratio', value: '75%' }
                             ]},
                             { title: 'Portfolio Quality', variables: [
                                 { label: '90+ DPD % (GNPA)', value: '4.2%' }, { label: 'Write-off Ratio', value: '1.1%' }, { label: 'Collection Efficiency', value: '98.5%' }, { label: '30+ DPD %', value: '5.1%' }, { label: 'Avg. Seasoning', value: '14 Months' }, { label: 'NPA by 2023 Vintage', value: '3.8%' }, { label: 'Geographic Diversification', value: 'High (8 states)' }, { label: 'Product Diversification', value: 'High (5+ products)' }
@@ -1766,7 +1766,7 @@
                         </div>
                         <div>
                             <h4 class="font-bold text-green-800">Robust Growth & Capitalization</h4>
-                            <p class="text-sm text-green-700 mt-1">Consistent portfolio growth (AUM up 15% YoY) combined with a strong CRAR of 18.5% underpins the A+ KI Score, indicating solid financial health and expansion capacity.</p>
+                            <p class="text-sm text-green-700 mt-1">Consistent portfolio growth (AUM up 15% YoY) combined with a strong CRAR of 24.0% underpins the A+ KI Score, indicating solid financial health and expansion capacity.</p>
                         </div>
                     </div>
                      <div class="bg-red-50 border border-red-200 p-4 rounded-lg flex items-start space-x-4">
@@ -1798,7 +1798,7 @@
                     originatorAnalyzing.classList.add('hidden');
                     originatorAnalysisResult.classList.remove('hidden');
                     
-                    const extractedName = "Fusion Microfinance";
+                    const extractedName = "Sigma Microfinance";
                     const extractedCategory = "NBFC-MFI";
                     const extractedScore = "A+";
 
@@ -1878,7 +1878,7 @@
 
             function applyFilters() {
                 simulationResultsPanel.classList.remove('hidden');
-                simulationOriginatorName.textContent = 'For Originator: Fusion Microfinance';
+                simulationOriginatorName.textContent = 'For Originator: Sigma Microfinance';
                 document.getElementById('selectedLoans').textContent = '9,540';
                 document.getElementById('poolValue').textContent = `₹98 Cr`;
                 document.getElementById('poolTenure').textContent = `18 mo`;
@@ -2032,7 +2032,7 @@
                     const newTransaction = {
                         id: name.toUpperCase().replace(/\s/g, '-'),
                         name: name,
-                        originator: 'Fusion Microfinance',
+                        originator: 'Sigma Microfinance',
                         structure: 'Securitisation',
                         grade: document.getElementById('poolGrade').textContent,
                         tenure: document.getElementById('poolTenure').textContent,
