@@ -74,7 +74,7 @@
         </header>
 
         <!-- Main Content Area -->
-        <main class="flex-grow">
+        <main class="flex-grow min-h-0">
             <!-- KI DealScreen View -->
             <div id="dealScreenView" class="view active">
                 <div id="dealScreenHomePage" class="page-view active">
@@ -2580,6 +2580,12 @@
                 }
             }
 
+            function scrollAppToTop() {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            }
+
             function updateMainView(targetView, txId = null) {
                 state.currentView = targetView;
                 dealScreenView.classList.toggle('active', state.currentView === 'dealScreen');
@@ -2590,6 +2596,7 @@
                 if(targetView === 'dealTrack') {
                     populateTransactionSelector(txId);
                 }
+                scrollAppToTop();
             }
 
             function showPage(pageId) {
@@ -2630,6 +2637,7 @@
                 } else if (pageId === 'impactPage') {
                     renderImpactPage(currentTxId);
                 }
+                scrollAppToTop();
             }
             
             function renderInsightsPage(txId) {
