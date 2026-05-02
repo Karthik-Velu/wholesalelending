@@ -36,7 +36,21 @@
         #dealTrackView.view.active:not([hidden]) {
             display: block !important;
         }
-        #dealTrackView { margin: 0; padding: 0; }
+        /* DealTrack comes after DealScreen in DOM; pull it first in flex layout so tabs sit under header */
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
+        #dealTrackView {
+            margin: 0;
+            padding: 0;
+            order: -1;
+        }
+        #dealScreenView {
+            order: 0;
+        }
         #dealTrackView > div:first-child { margin-top: 0; }
         .page-view { display: none; }
         .page-view.active { display: block; }
@@ -59,7 +73,7 @@
     </style>
 </head>
 <body class="bg-gray-50">
-    <div id="app" class="min-h-screen flex flex-col">
+    <div id="app" class="min-h-screen flex flex-col justify-start items-stretch">
         <!-- Main Header -->
         <header class="bg-white shadow-sm sticky top-0 z-40">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -83,7 +97,7 @@
         </header>
 
         <!-- Main Content Area: flex-col justify-start keeps DealTrack flush under header -->
-        <main class="flex flex-1 flex-col justify-start min-h-0 w-full">
+        <main class="w-full flex flex-col justify-start min-h-0 flex-1">
             <!-- KI DealScreen View -->
             <div id="dealScreenView" class="view active">
                 <div id="dealScreenHomePage" class="page-view active">
@@ -1322,7 +1336,7 @@
                 </div>
             </div>
 
-            <div id="dealTrackView" class="view" hidden>
+            <div id="dealTrackView" class="view" hidden style="display: none !important;">
                  <div class="bg-white border-b">
                     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                         <nav id="dealTrackNav" class="flex space-x-8 -mb-px">
@@ -2605,9 +2619,13 @@
                 if (showDealScreen) {
                     dealScreenView.removeAttribute('hidden');
                     dealTrackView.setAttribute('hidden', '');
+                    dealScreenView.style.setProperty('display', 'block', 'important');
+                    dealTrackView.style.setProperty('display', 'none', 'important');
                 } else {
                     dealTrackView.removeAttribute('hidden');
                     dealScreenView.setAttribute('hidden', '');
+                    dealScreenView.style.setProperty('display', 'none', 'important');
+                    dealTrackView.style.setProperty('display', 'block', 'important');
                 }
 
                 if(targetView === 'dealTrack') {
@@ -8160,8 +8178,12 @@ Contact: cashmanagement@kaleidofin.com
                     if (dealScreenView) {
                         dealScreenView.classList.add('active');
                         dealScreenView.removeAttribute('hidden');
+                        dealScreenView.style.setProperty('display', 'block', 'important');
                     }
-                    if (dealTrackView) dealTrackView.setAttribute('hidden', '');
+                    if (dealTrackView) {
+                        dealTrackView.setAttribute('hidden', '');
+                        dealTrackView.style.setProperty('display', 'none', 'important');
+                    }
                     if (dealScreenBtn) dealScreenBtn.classList.add('active');
                     if (dealTrackBtn) dealTrackBtn.classList.remove('active');
                 } catch (e2) {
