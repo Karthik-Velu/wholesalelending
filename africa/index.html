@@ -1492,6 +1492,25 @@
                                     <div class="chart-container h-64"><canvas id="yieldChart"></canvas></div>
                                 </div>
                             </div>
+
+                            <div class="bg-white p-6 rounded-lg border shadow-sm mt-8">
+                                <h3 class="font-semibold text-lg text-gray-800 mb-1">Climate risk signals (Ki Monitor)</h3>
+                                <p class="text-sm text-gray-600 mb-4">Early indicators from geo-tagged exposure, seasonal collection baselines, and segment migration.</p>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm text-left text-gray-500">
+                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                            <tr>
+                                                <th class="px-4 py-2">Signal</th>
+                                                <th class="px-4 py-2">Status</th>
+                                                <th class="px-4 py-2">Detail</th>
+                                                <th class="px-4 py-2 text-center">Trend (3 Mo)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="climateRiskSignalsTableBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1994,6 +2013,60 @@
                                     <select id="impactTransactionSelector" class="w-full md:w-64 block rounded-md border-gray-300 shadow-sm sm:text-sm">
                                         <!-- Options will be populated by JS -->
                                     </select>
+                                </div>
+                            </div>
+
+                            <!-- Climate impact (Ki Monitor–style portfolio metrics) -->
+                            <div class="mb-8 border border-teal-200 rounded-lg bg-gradient-to-br from-teal-50 to-white p-6 shadow-sm">
+                                <h2 class="text-lg font-semibold text-gray-800 mb-2">Climate impact</h2>
+                                <p class="text-sm text-gray-600 mb-5">Activity is classified as Climate Positive (measurable mitigation), Climate Resilient (adaptive capacity), or Climate Vulnerable (high exposure to climate-related stress). Eligible Climate Positive products are counted using the MDB/IDFC Common Principles for climate mitigation finance.</p>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                                    <div class="bg-white p-4 rounded-lg border shadow-sm text-center">
+                                        <p class="text-sm text-gray-500">Mitigation finance share</p>
+                                        <p id="climateKpiMitigationPct" class="text-2xl font-bold text-teal-600 mt-1">—</p>
+                                        <p class="text-xs text-gray-500 mt-1">deployed capital, eligible products</p>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg border shadow-sm text-center">
+                                        <p class="text-sm text-gray-500">Climate impact lending</p>
+                                        <p id="climateKpiTotalLending" class="text-2xl font-bold text-teal-600 mt-1">—</p>
+                                        <p class="text-xs text-gray-500 mt-1">all categories (USD Mn)</p>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg border shadow-sm text-center">
+                                        <p class="text-sm text-gray-500">Originators (climate-tagged)</p>
+                                        <p id="climateKpiOriginators" class="text-2xl font-bold text-teal-600 mt-1">—</p>
+                                        <p class="text-xs text-gray-500 mt-1">with primary category</p>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg border shadow-sm text-center">
+                                        <p class="text-sm text-gray-500">Active climate signals</p>
+                                        <p id="climateKpiSignals" class="text-2xl font-bold text-teal-600 mt-1">—</p>
+                                        <p class="text-xs text-gray-500 mt-1">on Ki Monitor</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                                    <div class="bg-white p-4 rounded-lg border shadow-sm">
+                                        <h3 class="text-sm font-semibold text-gray-800 mb-2 text-center">Climate impact lending by category (USD Mn)</h3>
+                                        <div class="chart-container h-56"><canvas id="climateLendingMixChart"></canvas></div>
+                                    </div>
+                                    <div class="bg-white p-4 rounded-lg border shadow-sm">
+                                        <h3 class="text-sm font-semibold text-gray-800 mb-2 text-center">Network trajectory</h3>
+                                        <div class="chart-container h-56"><canvas id="climateFinanceTrajectoryChart"></canvas></div>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border shadow-sm">
+                                    <h3 class="text-sm font-semibold text-gray-800 mb-3">Reported impact metrics</h3>
+                                    <div class="overflow-x-auto text-sm">
+                                        <table class="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr class="text-xs text-gray-500 uppercase border-b">
+                                                    <th class="py-2 pr-4">Metric</th>
+                                                    <th class="py-2">Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="climateReportedMetricsTableBody" class="text-gray-700">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-3">CO₂e uses published factors for solar, clean cookstoves, and electric mobility; agricultural segments use sector proxies where loan-level data is limited.</p>
                                 </div>
                             </div>
                             
@@ -4969,6 +5042,140 @@
             });
 
             // --- Covenant Monitoring Logic ---
+            function getClimateImpactMetrics(txId) {
+                const base = {
+                    mitigationPct: 34.2,
+                    totalLendingMn: 1.77,
+                    originatorsTagged: 28,
+                    activeSignals: 2,
+                    lendingPositiveMn: 0.42,
+                    lendingResilientMn: 1.05,
+                    lendingVulnerableMn: 0.30,
+                    femaleShareClimatePct: 98,
+                    co2eKt: 124,
+                    agriHouseholdsMn: 2.51,
+                    vulnerableBorrowersMn: 1.12,
+                    fyLabels: ['FY23', 'FY24', 'FY25', 'FY26 est.'],
+                    fyResilient: [0.22, 0.51, 0.73, 1.27],
+                    fyVulnerable: [0.09, 0.20, 0.29, 0.50],
+                    fyTotal: [0.31, 0.71, 1.02, 1.77]
+                };
+                const byTx = {
+                    'RMFB-BODA-001': { mitigationPct: 31.5, activeSignals: 3, lendingPositiveMn: 0.38, lendingResilientMn: 1.12, lendingVulnerableMn: 0.28, totalLendingMn: 1.78 },
+                    'MC-VEHICLE-001': { mitigationPct: 41.2, activeSignals: 1, lendingPositiveMn: 0.58, lendingResilientMn: 0.95, lendingVulnerableMn: 0.22, totalLendingMn: 1.75 },
+                    'JUHUDI-AGRI-021': { mitigationPct: 29.8, activeSignals: 4, lendingResilientMn: 1.18, lendingVulnerableMn: 0.34, totalLendingMn: 1.82 },
+                    'ASA-SME-005': { mitigationPct: 36.0, totalLendingMn: 1.65, activeSignals: 2 }
+                };
+                const m = Object.assign({}, base, byTx[txId] || {});
+                const sumParts = m.lendingPositiveMn + m.lendingResilientMn + m.lendingVulnerableMn;
+                if (Math.abs(sumParts - m.totalLendingMn) > 0.02) {
+                    const scale = m.totalLendingMn / sumParts;
+                    m.lendingPositiveMn *= scale;
+                    m.lendingResilientMn *= scale;
+                    m.lendingVulnerableMn *= scale;
+                }
+                return m;
+            }
+
+            function renderClimateImpactSection(txId) {
+                const m = getClimateImpactMetrics(txId);
+                const setText = (id, val) => {
+                    const n = document.getElementById(id);
+                    if (n) n.textContent = val;
+                };
+                setText('climateKpiMitigationPct', m.mitigationPct.toFixed(1) + '%');
+                setText('climateKpiTotalLending', m.totalLendingMn.toFixed(2));
+                setText('climateKpiOriginators', String(m.originatorsTagged));
+                setText('climateKpiSignals', String(m.activeSignals));
+
+                const tbody = document.getElementById('climateReportedMetricsTableBody');
+                if (tbody) {
+                    tbody.innerHTML = `
+                        <tr class="border-b"><td class="py-2 pr-4">Mitigation finance share (Climate Positive, Common Principles basis)</td><td class="py-2 font-medium text-gray-900">${m.mitigationPct.toFixed(1)}%</td></tr>
+                        <tr class="border-b"><td class="py-2 pr-4">Total climate impact lending by category (USD Mn)</td><td class="py-2 font-medium text-gray-900">Positive ${m.lendingPositiveMn.toFixed(2)} · Resilient ${m.lendingResilientMn.toFixed(2)} · Vulnerable ${m.lendingVulnerableMn.toFixed(2)}</td></tr>
+                        <tr class="border-b"><td class="py-2 pr-4">Agri-households reached (resilient products, Mn)</td><td class="py-2 font-medium text-gray-900">${m.agriHouseholdsMn.toFixed(2)}</td></tr>
+                        <tr class="border-b"><td class="py-2 pr-4">Borrowers in climate-vulnerable segments (Mn)</td><td class="py-2 font-medium text-gray-900">${m.vulnerableBorrowersMn.toFixed(2)}</td></tr>
+                        <tr class="border-b"><td class="py-2 pr-4">Female borrowers in climate-impacted segments</td><td class="py-2 font-medium text-gray-900">${m.femaleShareClimatePct}%</td></tr>
+                        <tr><td class="py-2 pr-4">Est. CO₂e avoided or sequestered (proxy, kt CO₂e)</td><td class="py-2 font-medium text-gray-900">${m.co2eKt}</td></tr>
+                    `;
+                }
+
+                if (document.getElementById('climateLendingMixChart')) {
+                    createOrUpdateChart('climateLendingMixChart', {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Climate Positive', 'Climate Resilient', 'Climate Vulnerable'],
+                            datasets: [{
+                                data: [m.lendingPositiveMn, m.lendingResilientMn, m.lendingVulnerableMn],
+                                backgroundColor: ['#0d9488', '#5eead4', '#f97316']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'right' } },
+                            cutout: '55%'
+                        }
+                    });
+                }
+                if (document.getElementById('climateFinanceTrajectoryChart')) {
+                    createOrUpdateChart('climateFinanceTrajectoryChart', {
+                        type: 'line',
+                        data: {
+                            labels: m.fyLabels,
+                            datasets: [
+                                { label: 'Climate Resilient', data: m.fyResilient, borderColor: '#0d9488', backgroundColor: 'rgba(13,148,136,0.1)', tension: 0.2, fill: true },
+                                { label: 'Climate Vulnerable', data: m.fyVulnerable, borderColor: '#f97316', tension: 0.2, fill: false },
+                                { label: 'Total', data: m.fyTotal, borderColor: '#6366f1', borderDash: [4, 4], tension: 0.2, fill: false }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'bottom' } },
+                            scales: {
+                                y: { beginAtZero: true, title: { display: true, text: 'USD Mn' } }
+                            }
+                        }
+                    });
+                }
+            }
+
+            function renderClimateRiskSignalsPanel(txId) {
+                const tbody = document.getElementById('climateRiskSignalsTableBody');
+                if (!tbody) return;
+                const pill = { ok: 'px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full', watch: 'px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full', alert: 'px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full' };
+                const packs = {
+                    'RMFB-BODA-001': [
+                        { name: 'Geo concentration (climate-risk corridors)', status: 'Watch', cls: pill.watch, detail: 'Elevated PAR 30+ share from two drought-prone counties vs rolling baseline.', trend: '↑' },
+                        { name: 'Seasonal repayment deviation', status: 'Stable', cls: pill.ok, detail: 'Collections tracking expected harvest-linked pattern for agri-heavy cohort.', trend: '→' },
+                        { name: 'Crop-cycle alignment (agri portfolios)', status: 'Watch', cls: pill.watch, detail: 'Repayment dip exceeds seasonal norm in rainfall-stressed wards.', trend: '↑' },
+                        { name: 'Migration to climate-exposed segments', status: 'Stable', cls: pill.ok, detail: 'Share of borrowers in high exposure tags stable QoQ.', trend: '→' }
+                    ],
+                    'MC-VEHICLE-001': [
+                        { name: 'Geo concentration (climate-risk corridors)', status: 'Stable', cls: pill.ok, detail: 'Urban mobility portfolio; limited drought-corridor concentration.', trend: '→' },
+                        { name: 'Seasonal repayment deviation', status: 'Stable', cls: pill.ok, detail: 'Within seasonal baseline.', trend: '→' },
+                        { name: 'Crop-cycle alignment (agri portfolios)', status: 'N/A', cls: pill.ok, detail: 'Minimal agri exposure on this transaction.', trend: '—' },
+                        { name: 'Migration to climate-exposed segments', status: 'Stable', cls: pill.ok, detail: 'No material shift in exposure tags.', trend: '→' }
+                    ],
+                    default: [
+                        { name: 'Geo concentration (climate-risk corridors)', status: 'Stable', cls: pill.ok, detail: 'Portfolio concentration across climate-risk zones within tolerance.', trend: '→' },
+                        { name: 'Seasonal repayment deviation', status: 'Watch', cls: pill.watch, detail: 'One region below seasonal collection baseline; review scheduled.', trend: '↑' },
+                        { name: 'Crop-cycle alignment (agri portfolios)', status: 'Stable', cls: pill.ok, detail: 'Performance broadly aligned with crop income cycles.', trend: '→' },
+                        { name: 'Migration to climate-exposed segments', status: 'Stable', cls: pill.ok, detail: 'Gradual exposure mix unchanged.', trend: '→' }
+                    ]
+                };
+                const rows = packs[txId] || packs.default;
+                tbody.innerHTML = rows.map(r => `
+                    <tr class="border-b">
+                        <td class="px-4 py-2 font-medium text-gray-800">${r.name}</td>
+                        <td class="px-4 py-2"><span class="${r.cls}">${r.status}</span></td>
+                        <td class="px-4 py-2">${r.detail}</td>
+                        <td class="px-4 py-2 text-center text-xl">${r.trend}</td>
+                    </tr>
+                `).join('');
+            }
+
             function populateTransactionSelector(selectedTxId) {
                 const selectors = [transactionSelector, perfTransactionSelector, impactTransactionSelector];
                 selectors.forEach(selector => {
@@ -4987,6 +5194,7 @@
             }
 
             function renderCovenantMonitoringPage(txId) {
+                renderClimateRiskSignalsPanel(txId);
                 const data = state.covenantData[txId];
                 if (!data) {
                     covenantStatusTableBody.innerHTML = '<tr><td colspan="6" class="text-center p-4">No covenant data available for this transaction.</td></tr>';
@@ -5183,6 +5391,8 @@
                     
                     // Ensure page is visible
                     impactPage.classList.add('active');
+
+                    renderClimateImpactSection(txId || state.transactions.find(t => t.covenantsSet)?.id);
                     
                     // Check if chart elements exist before rendering
                     if (document.getElementById('genderPerformanceChart')) {
