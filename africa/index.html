@@ -36,7 +36,7 @@
         #dealTrackView.view.active:not([hidden]) {
             display: block !important;
         }
-        /* DealTrack comes after DealScreen in DOM; pull it first in flex layout so tabs sit under header */
+        /* DealTrack is first child of main (DOM order); keeps tabs under header when DealScreen is hidden */
         main {
             display: flex;
             flex-direction: column;
@@ -46,10 +46,6 @@
         #dealTrackView {
             margin: 0;
             padding: 0;
-            order: -1;
-        }
-        #dealScreenView {
-            order: 0;
         }
         #dealTrackView > div:first-child { margin-top: 0; }
         .page-view { display: none; }
@@ -98,7 +94,583 @@
 
         <!-- Main Content Area: flex-col justify-start keeps DealTrack flush under header -->
         <main class="w-full flex flex-col justify-start min-h-0 flex-1">
-            <!-- KI DealScreen View -->
+            <div id="dealTrackView" class="view" hidden style="display: none !important;">
+                 <div class="bg-white border-b">
+                    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                        <nav id="dealTrackNav" class="flex space-x-8 -mb-px">
+                            <button data-track-view="covenantMonitoring" class="home-tab-link py-4 px-1 text-sm font-medium">Covenant Monitoring</button>
+                            <button data-track-view="reports" class="home-tab-link py-4 px-1 text-sm font-medium">Reports</button>
+                            <button data-track-view="insights" class="home-tab-link py-4 px-1 text-sm font-medium">Insights</button>
+                            <button data-track-view="performance" class="home-tab-link py-4 px-1 text-sm font-medium">Performance</button>
+                            <button data-track-view="impact" class="home-tab-link py-4 px-1 text-sm font-medium">Impact</button>
+                        </nav>
+                    </div>
+                </div>
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <!-- Covenant Setup Page -->
+                    <div id="covenantSetupPage" class="page-view">
+                        <div class="max-w-4xl mx-auto">
+                             <div class="flex justify-between items-center mb-8">
+                                <h1 class="text-2xl font-bold text-gray-800">Covenant Setup</h1>
+                                <button id="backToDealScreenBtn" class="bg-white text-gray-700 border border-gray-300 px-5 py-2 rounded-lg font-semibold hover:bg-gray-50 text-sm">← Back to DealScreen</button>
+                            </div>
+                            <div class="text-center">
+                                <p class="mt-1 text-gray-600 mb-8">Define monitoring rules for transaction: <strong id="covenantSetupTitle"></strong></p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-6 space-y-4">
+                                <h3 class="font-semibold text-lg text-gray-800 border-b pb-3">Financial Covenants</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4 items-center">
+                                    <span>CRAR</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&gt;=</option><option>&lt;=</option></select>
+                                    <div class="relative"><input type="text" value="15" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
+                                    
+                                    <span>Gross NPA</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&lt;=</option><option>&gt;=</option></select>
+                                    <div class="relative"><input type="text" value="5" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
+
+                                    <span>Net NPA</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&lt;=</option><option>&gt;=</option></select>
+                                    <div class="relative"><input type="text" value="3" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
+
+                                    <span>Debt-to-Equity</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&lt;=</option><option>&gt;=</option></select>
+                                    <div class="relative"><input type="text" value="4" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">x</span></div>
+
+                                    <span>Interest Coverage</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&gt;=</option><option>&lt;=</option></select>
+                                    <div class="relative"><input type="text" value="2.0" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">x</span></div>
+
+                                    <span>RoA</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&gt;=</option><option>&lt;=</option></select>
+                                    <div class="relative"><input type="text" value="1.5" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
+                                    
+                                    <span>Opex Ratio</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&lt;=</option><option>&gt;=</option></select>
+                                    <div class="relative"><input type="text" value="6" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
+
+                                    <span>Collection Eff.</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&gt;=</option><option>&lt;=</option></select>
+                                    <div class="relative"><input type="text" value="98" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
+
+                                    <span>Geographic Conc.</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&lt;=</option><option>&gt;=</option></select>
+                                    <div class="relative"><input type="text" value="30" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-6 space-y-4">
+                                <h3 class="font-semibold text-lg text-gray-800 border-b pb-3">Document Requirements</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4 items-center">
+                                    <span>Audited Financials</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>Annually</option><option>Half-Yearly</option><option>Quarterly</option><option>Monthly</option></select>
+                                    <input type="date" value="2026-05-30" class="block w-full rounded-md border-gray-300 shadow-sm">
+                                    
+                                    <span>Unaudited Financials</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>Quarterly</option><option>Annually</option><option>Half-Yearly</option><option>Monthly</option></select>
+                                    <input type="date" value="2025-07-10" class="block w-full rounded-md border-gray-300 shadow-sm">
+
+                                    <span>MIS Portfolio Report</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>Monthly</option><option>Quarterly</option><option>Annually</option><option>Half-Yearly</option></select>
+                                    <input type="date" value="2025-10-01" class="block w-full rounded-md border-gray-300 shadow-sm">
+
+                                    <span>Compliance Certificate</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>Quarterly</option><option>Monthly</option><option>Annually</option><option>Half-Yearly</option></select>
+                                    <input type="date" value="2025-10-01" class="block w-full rounded-md border-gray-300 shadow-sm">
+
+                                    <span>End-Use Certificate</span>
+                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>Half-Yearly</option><option>Quarterly</option><option>Monthly</option><option>Annually</option></select>
+                                    <input type="date" value="2026-07-01" class="block w-full rounded-md border-gray-300 shadow-sm">
+                                </div>
+                            </div>
+                            <div class="text-center mt-8">
+                                <button id="saveCovenantBtn" class="bg-teal-600 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-teal-700">Save Covenants & Activate Monitoring</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Covenant Monitoring Page (Updated) -->
+                    <div id="covenantMonitoringPage" class="page-view">
+                        <div class="max-w-7xl mx-auto">
+                            <div class="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
+                                <h1 class="text-2xl font-bold text-gray-800">Covenant Monitoring</h1>
+                                <div class="flex items-center space-x-2">
+                                    <label for="transactionSelector" class="text-sm font-medium text-gray-700 whitespace-nowrap">Select Transaction:</label>
+                                    <select id="transactionSelector" class="w-full md:w-64 block rounded-md border-gray-300 shadow-sm sm:text-sm">
+                                        <!-- Options will be populated by JS -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Covenant Status Table -->
+                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-8">
+                                <h3 class="font-semibold text-lg text-gray-800 mb-4">Covenant Status</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm text-left text-gray-500">
+                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                            <tr>
+                                                <th class="px-4 py-2">Covenant</th>
+                                                <th class="px-4 py-2">Condition</th>
+                                                <th class="px-4 py-2">Required</th>
+                                                <th class="px-4 py-2">Actual</th>
+                                                <th class="px-4 py-2">Status</th>
+                                                <th class="px-4 py-2 text-center">Trend (3 Mo)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="covenantStatusTableBody">
+                                            <!-- Rows populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                             <!-- Document Status Table -->
+                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-8">
+                                <h3 class="font-semibold text-lg text-gray-800 mb-4">Document Status</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm text-left text-gray-500">
+                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                            <tr>
+                                                <th class="px-4 py-2">Document</th>
+                                                <th class="px-4 py-2">Frequency</th>
+                                                <th class="px-4 py-2">Next Due Date</th>
+                                                <th class="px-4 py-2">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="documentStatusTableBody">
+                                            <!-- Rows populated by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                             <!-- Early Warning System Charts -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div class="bg-white p-4 rounded-lg border shadow-sm">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h3 class="font-semibold text-center">PAR 90+ Movement</h3>
+                                        <span id="par90EWS" class="text-xs font-bold"></span>
+                                    </div>
+                                    <div class="chart-container h-64"><canvas id="par90Chart"></canvas></div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border shadow-sm">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h3 class="font-semibold text-center">Collection Efficiency</h3>
+                                        <span id="collectionEffEWS" class="text-xs font-bold"></span>
+                                    </div>
+                                    <div class="chart-container h-64"><canvas id="collectionEffChart"></canvas></div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border shadow-sm">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h3 class="font-semibold text-center">CRAR Movement</h3>
+                                        <span id="crarEWS" class="text-xs font-bold"></span>
+                                    </div>
+                                    <div class="chart-container h-64"><canvas id="crarChart"></canvas></div>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border shadow-sm">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h3 class="font-semibold text-center">Portfolio Yield</h3>
+                                        <span id="yieldEWS" class="text-xs font-bold"></span>
+                                    </div>
+                                    <div class="chart-container h-64"><canvas id="yieldChart"></canvas></div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-lg border shadow-sm mt-8">
+                                <h3 class="font-semibold text-lg text-gray-800 mb-1">Climate risk signals (Ki Monitor)</h3>
+                                <p class="text-sm text-gray-600 mb-4">Early indicators from geo-tagged exposure, seasonal collection baselines, and segment migration.</p>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm text-left text-gray-500">
+                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                            <tr>
+                                                <th class="px-4 py-2">Signal</th>
+                                                <th class="px-4 py-2">Status</th>
+                                                <th class="px-4 py-2">Detail</th>
+                                                <th class="px-4 py-2 text-center">Trend (3 Mo)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="climateRiskSignalsTableBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Page -->
+                    <div id="reportsPage" class="page-view">
+                        <div class="max-w-7xl mx-auto">
+                            <div class="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
+                                <h1 class="text-2xl font-bold text-gray-800">Compliance & Dynamic Reporting</h1>
+                                <div class="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                                    <div class="flex items-center space-x-2">
+                                        <label for="reportMonthSelector" class="text-sm font-medium text-gray-700 whitespace-nowrap">Report Month:</label>
+                                        <input type="month" id="reportMonthSelector" class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm" value="2025-11" />
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <label for="reportsTransactionSelector" class="text-sm font-medium text-gray-700 whitespace-nowrap">Transaction:</label>
+                                        <select id="reportsTransactionSelector" class="border border-gray-300 rounded-lg px-4 py-1.5 text-sm"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Date Information Banner -->
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <p class="text-xs font-semibold text-blue-700 uppercase mb-1">Report Period</p>
+                                        <p id="reportPeriodDisplay" class="text-sm font-medium text-gray-800">November 2025</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-semibold text-blue-700 uppercase mb-1">Collection Period</p>
+                                        <p id="collectionPeriodDisplay" class="text-sm font-medium text-gray-800">01-Nov-2025 to 30-Nov-2025</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-semibold text-blue-700 uppercase mb-1">Payment Date</p>
+                                        <p id="paymentDateDisplay" class="text-sm font-medium text-gray-800">01-Dec-2025</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Standard Reports Section -->
+                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-8">
+                                <h3 class="font-semibold text-lg text-gray-800 mb-6">Compliance Reports</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <!-- PMA Report -->
+                                    <div class="border rounded-lg p-5 hover:shadow-md transition-shadow">
+                                        <div class="flex items-start justify-between mb-3">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="bg-teal-100 p-2 rounded-lg">
+                                                    <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-semibold text-gray-800">Portfolio Monitoring Agent Report</h4>
+                                                    <p class="text-sm text-gray-500">Monthly PMA Report</p>
+                                                </div>
+                                            </div>
+                                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded">Required</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-3">Official PMA Letter covering:</p>
+                                        <ul class="text-xs text-gray-600 space-y-1 mb-4 ml-4">
+                                            <li>✓ Tested Eligibility Criteria verification</li>
+                                            <li>✓ Collection Efficiency and Shortfall calculations</li>
+                                            <li>✓ Portfolio Concentration Limits confirmation</li>
+                                            <li>✓ Discounted Balance & Collections reconciliation</li>
+                                            <li>✓ Manifest errors identification</li>
+                                        </ul>
+                                        <div class="flex space-x-2">
+                                            <button id="downloadPMAReport" class="flex-1 bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-teal-700 text-sm flex items-center justify-center space-x-2">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                                </svg>
+                                                <span>Download PDF</span>
+                                            </button>
+                                            <button id="previewPMAReport" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 text-sm text-gray-700">Preview</button>
+                                        </div>
+                                        <div class="mt-3 text-xs text-gray-500">
+                                            <span>Due: 2 Business Days after Servicer Report</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cash Manager Report -->
+                                    <div class="border rounded-lg p-5 hover:shadow-md transition-shadow">
+                                        <div class="flex items-start justify-between mb-3">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="bg-blue-100 p-2 rounded-lg">
+                                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h4 class="font-semibold text-gray-800">Cash Manager Investor Report</h4>
+                                                    <p class="text-sm text-gray-500">Monthly Cash Flow Report</p>
+                                                </div>
+                                            </div>
+                                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded">Required</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-3">Monthly Investor Report including:</p>
+                                        <ul class="text-xs text-gray-600 space-y-1 mb-4 ml-4">
+                                            <li>✓ Receivables Portfolio Summary</li>
+                                            <li>✓ Senior/Mezzanine/Junior Notes balances</li>
+                                            <li>✓ Tests: Collection Efficiency, Shortfall thresholds</li>
+                                            <li>✓ Priority of Payments waterfall</li>
+                                            <li>✓ Available Receipts breakdown</li>
+                                        </ul>
+                                        <div class="flex space-x-2">
+                                            <button id="downloadCashReport" class="flex-1 bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-teal-700 text-sm flex items-center justify-center space-x-2">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                                </svg>
+                                                <span>Download PDF</span>
+                                            </button>
+                                            <button id="previewCashReport" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 text-sm text-gray-700">Preview</button>
+                                        </div>
+                                        <div class="mt-3 text-xs text-gray-500">
+                                            <span>Due: 5 Business Days before Payment Date</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dynamic Reporting Dashboards -->
+                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-8">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="font-semibold text-lg text-gray-800">Dynamic Reporting & Analytics</h3>
+                                    <button class="text-teal-600 hover:text-teal-700 text-sm font-semibold">Export All Data</button>
+                                </div>
+                                
+                                <!-- Collection Efficiency Explanation -->
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                                    <h4 class="font-semibold text-blue-800 mb-2">Understanding Collection Efficiency Metrics</h4>
+                                    <div class="text-sm text-blue-700 space-y-1">
+                                        <p><strong>Unadjusted Collection Efficiency:</strong> Shows actual collections as a percentage of projected collections. Can exceed 100% when over-collection occurs (actual collections exceed projected).</p>
+                                        <p><strong>Adjusted Collection Efficiency:</strong> Caps collection efficiency at 100%, treating any over-collection as perfect collection (100%). This provides a conservative view that doesn't credit over-collection beyond the projected amount.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Key Metrics Summary -->
+                                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Pool Size</p>
+                                        <p id="reportPoolSize" class="text-2xl font-bold text-gray-800">KES 234.5M</p>
+                                        <p class="text-xs text-green-600 mt-1">▲ 2.1% from last month</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Total Loans</p>
+                                        <p id="reportTotalLoans" class="text-2xl font-bold text-gray-800">4,850</p>
+                                        <p class="text-xs text-gray-600 mt-1">Active accounts</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Current Month CE (Unadjusted)</p>
+                                        <p id="reportCurrentMonthCEUnadjusted" class="text-2xl font-bold text-gray-800">98.8%</p>
+                                        <p class="text-xs text-green-600 mt-1">vs projected</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Current Month CE (Adjusted)</p>
+                                        <p id="reportCurrentMonthCEAdjusted" class="text-2xl font-bold text-gray-800">98.8%</p>
+                                        <p class="text-xs text-green-600 mt-1">capped at 100%</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Cumulative CE (Unadjusted)</p>
+                                        <p id="reportCumulativeCEUnadjusted" class="text-2xl font-bold text-gray-800">97.5%</p>
+                                        <p class="text-xs text-gray-600 mt-1">Since inception</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border">
+                                        <p class="text-xs text-gray-500 uppercase">Cumulative CE (Adjusted)</p>
+                                        <p id="reportCumulativeCEAdjusted" class="text-2xl font-bold text-gray-800">97.5%</p>
+                                        <p class="text-xs text-gray-600 mt-1">Since inception</p>
+                                    </div>
+                                </div>
+
+                                <!-- Collection Efficiency Charts (Unadjusted & Adjusted) -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Collection Efficiency Trend (Unadjusted)</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">View:</label>
+                                                <select id="collectionEfficiencyViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="current">Current Month</option>
+                                                    <option value="cumulative">Cumulative</option>
+                                                    <option value="both">Both</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportCollectionChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Collection Efficiency Trend (Adjusted)</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">View:</label>
+                                                <select id="adjustedCollectionEfficiencyViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="current">Current Month</option>
+                                                    <option value="cumulative">Cumulative</option>
+                                                    <option value="both">Both</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportAdjustedCollectionChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cash Flow Waterfall & Shortfall Distribution -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Cash Flow Waterfall (This Month)</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportWaterfallChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Shortfall Bucket Distribution</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">View:</label>
+                                                <select id="shortfallViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="current">Current Month</option>
+                                                    <option value="cumulative">Cumulative</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportShortfallChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Portfolio Composition & Geographic Analysis -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Portfolio by Bundle Choice</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">Adjusted:</label>
+                                                <select id="compositionAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="false">No</option>
+                                                    <option value="true">Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportCompositionChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Geographic Concentration</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">Adjusted:</label>
+                                                <select id="geoAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="false">No</option>
+                                                    <option value="true">Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportGeoChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Origination & Maturity Cohort Analysis -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Origination Cohort Analysis (Quarterly)</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">View:</label>
+                                                <select id="vintageViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="current">Current Month</option>
+                                                    <option value="cumulative">Cumulative</option>
+                                                </select>
+                                                <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
+                                                <select id="vintageAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="false">No</option>
+                                                    <option value="true">Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportVintageChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h4 class="font-semibold text-gray-800">Maturity Cohort Analysis</h4>
+                                            <div class="flex items-center space-x-2">
+                                                <label class="text-xs text-gray-600">View:</label>
+                                                <select id="maturityViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="current">Current Month</option>
+                                                    <option value="cumulative">Cumulative</option>
+                                                </select>
+                                                <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
+                                                <select id="maturityAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
+                                                    <option value="false">No</option>
+                                                    <option value="true">Yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportMaturityCohortChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Additional Risk Cuts -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Risk by Gender</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportGenderChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-3">Risk by Liability Bucket</h4>
+                                        <div class="bg-white border rounded-lg p-4">
+                                            <div class="chart-container h-64"><canvas id="reportLiabilityBucketChart"></canvas></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-8">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Risk by Renewal Status</h4>
+                                    <div class="bg-white border rounded-lg p-4">
+                                        <div class="chart-container h-64"><canvas id="reportRenewalChart"></canvas></div>
+                                    </div>
+                                </div>
+
+                                <!-- Tranche Cashflow Comparison (Cumulative) -->
+                                <div class="mb-8">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Tranche Cashflow: Projected vs Actual (Cumulative)</h4>
+                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-700 mb-2">Senior Tranche (Class A)</h5>
+                                            <div class="bg-white border rounded-lg p-4">
+                                                <div class="chart-container h-64"><canvas id="reportSeniorTrancheCashflowChart"></canvas></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h5 class="text-sm font-medium text-gray-700 mb-2">Mezzanine Tranche (Class B)</h5>
+                                            <div class="bg-white border rounded-lg p-4">
+                                                <div class="chart-container h-64"><canvas id="reportMezzanineTrancheCashflowChart"></canvas></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-600 mt-2">Cumulative cashflow from Day 0 to current month</p>
+                                </div>
+
+                                <!-- 3-Way Comparison: Actual vs Day 0 vs Demand -->
+                                <div class="mb-8">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Collections: 3-Way Comparison</h4>
+                                    <div class="bg-white border rounded-lg p-4">
+                                        <div class="chart-container h-80"><canvas id="reportThreeWayComparisonChart"></canvas></div>
+                                    </div>
+                                    <p class="text-xs text-gray-600 mt-2">Comparing Actual vs Day 0 Projections vs Contractual Demands across months</p>
+                                </div>
+
+                                <!-- Available Credit Enhancement (Time Series) -->
+                                <div class="mb-8">
+                                    <h4 class="font-semibold text-gray-800 mb-3">Available Credit Enhancement Over Time</h4>
+                                    <div class="bg-white border rounded-lg p-4">
+                                        <div class="chart-container h-64"><canvas id="reportAvailableCEChart"></canvas></div>
+                                    </div>
+                                    <p class="text-xs text-gray-600 mt-2">Shows available credit enhancement decreasing as it gets utilized. Includes Overcollateralization (OC) and Junior Liquidity Facility (JLF).</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+
+<!-- KI DealScreen View -->
             <div id="dealScreenView" class="view active">
                 <div id="dealScreenHomePage" class="page-view active">
                     <div class="bg-white border-b">
@@ -1336,581 +1908,6 @@
                 </div>
             </div>
 
-            <div id="dealTrackView" class="view" hidden style="display: none !important;">
-                 <div class="bg-white border-b">
-                    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                        <nav id="dealTrackNav" class="flex space-x-8 -mb-px">
-                            <button data-track-view="covenantMonitoring" class="home-tab-link py-4 px-1 text-sm font-medium">Covenant Monitoring</button>
-                            <button data-track-view="reports" class="home-tab-link py-4 px-1 text-sm font-medium">Reports</button>
-                            <button data-track-view="insights" class="home-tab-link py-4 px-1 text-sm font-medium">Insights</button>
-                            <button data-track-view="performance" class="home-tab-link py-4 px-1 text-sm font-medium">Performance</button>
-                            <button data-track-view="impact" class="home-tab-link py-4 px-1 text-sm font-medium">Impact</button>
-                        </nav>
-                    </div>
-                </div>
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <!-- Covenant Setup Page -->
-                    <div id="covenantSetupPage" class="page-view">
-                        <div class="max-w-4xl mx-auto">
-                             <div class="flex justify-between items-center mb-8">
-                                <h1 class="text-2xl font-bold text-gray-800">Covenant Setup</h1>
-                                <button id="backToDealScreenBtn" class="bg-white text-gray-700 border border-gray-300 px-5 py-2 rounded-lg font-semibold hover:bg-gray-50 text-sm">← Back to DealScreen</button>
-                            </div>
-                            <div class="text-center">
-                                <p class="mt-1 text-gray-600 mb-8">Define monitoring rules for transaction: <strong id="covenantSetupTitle"></strong></p>
-                            </div>
-                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-6 space-y-4">
-                                <h3 class="font-semibold text-lg text-gray-800 border-b pb-3">Financial Covenants</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4 items-center">
-                                    <span>CRAR</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&gt;=</option><option>&lt;=</option></select>
-                                    <div class="relative"><input type="text" value="15" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
-                                    
-                                    <span>Gross NPA</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&lt;=</option><option>&gt;=</option></select>
-                                    <div class="relative"><input type="text" value="5" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
-
-                                    <span>Net NPA</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&lt;=</option><option>&gt;=</option></select>
-                                    <div class="relative"><input type="text" value="3" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
-
-                                    <span>Debt-to-Equity</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&lt;=</option><option>&gt;=</option></select>
-                                    <div class="relative"><input type="text" value="4" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">x</span></div>
-
-                                    <span>Interest Coverage</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&gt;=</option><option>&lt;=</option></select>
-                                    <div class="relative"><input type="text" value="2.0" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">x</span></div>
-
-                                    <span>RoA</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&gt;=</option><option>&lt;=</option></select>
-                                    <div class="relative"><input type="text" value="1.5" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
-                                    
-                                    <span>Opex Ratio</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&lt;=</option><option>&gt;=</option></select>
-                                    <div class="relative"><input type="text" value="6" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
-
-                                    <span>Collection Eff.</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&gt;=</option><option>&lt;=</option></select>
-                                    <div class="relative"><input type="text" value="98" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
-
-                                    <span>Geographic Conc.</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>&lt;=</option><option>&gt;=</option></select>
-                                    <div class="relative"><input type="text" value="30" class="block w-full rounded-md border-gray-300 shadow-sm pr-8"><span class="absolute inset-y-0 right-2 flex items-center text-gray-500">%</span></div>
-                                </div>
-                            </div>
-                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-6 space-y-4">
-                                <h3 class="font-semibold text-lg text-gray-800 border-b pb-3">Document Requirements</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4 items-center">
-                                    <span>Audited Financials</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>Annually</option><option>Half-Yearly</option><option>Quarterly</option><option>Monthly</option></select>
-                                    <input type="date" value="2026-05-30" class="block w-full rounded-md border-gray-300 shadow-sm">
-                                    
-                                    <span>Unaudited Financials</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>Quarterly</option><option>Annually</option><option>Half-Yearly</option><option>Monthly</option></select>
-                                    <input type="date" value="2025-07-10" class="block w-full rounded-md border-gray-300 shadow-sm">
-
-                                    <span>MIS Portfolio Report</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>Monthly</option><option>Quarterly</option><option>Annually</option><option>Half-Yearly</option></select>
-                                    <input type="date" value="2025-10-01" class="block w-full rounded-md border-gray-300 shadow-sm">
-
-                                    <span>Compliance Certificate</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>Quarterly</option><option>Monthly</option><option>Annually</option><option>Half-Yearly</option></select>
-                                    <input type="date" value="2025-10-01" class="block w-full rounded-md border-gray-300 shadow-sm">
-
-                                    <span>End-Use Certificate</span>
-                                    <select class="block w-full rounded-md border-gray-300 shadow-sm"><option>Half-Yearly</option><option>Quarterly</option><option>Monthly</option><option>Annually</option></select>
-                                    <input type="date" value="2026-07-01" class="block w-full rounded-md border-gray-300 shadow-sm">
-                                </div>
-                            </div>
-                            <div class="text-center mt-8">
-                                <button id="saveCovenantBtn" class="bg-teal-600 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-teal-700">Save Covenants & Activate Monitoring</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Covenant Monitoring Page (Updated) -->
-                    <div id="covenantMonitoringPage" class="page-view">
-                        <div class="max-w-7xl mx-auto">
-                            <div class="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
-                                <h1 class="text-2xl font-bold text-gray-800">Covenant Monitoring</h1>
-                                <div class="flex items-center space-x-2">
-                                    <label for="transactionSelector" class="text-sm font-medium text-gray-700 whitespace-nowrap">Select Transaction:</label>
-                                    <select id="transactionSelector" class="w-full md:w-64 block rounded-md border-gray-300 shadow-sm sm:text-sm">
-                                        <!-- Options will be populated by JS -->
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Covenant Status Table -->
-                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-8">
-                                <h3 class="font-semibold text-lg text-gray-800 mb-4">Covenant Status</h3>
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-sm text-left text-gray-500">
-                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                            <tr>
-                                                <th class="px-4 py-2">Covenant</th>
-                                                <th class="px-4 py-2">Condition</th>
-                                                <th class="px-4 py-2">Required</th>
-                                                <th class="px-4 py-2">Actual</th>
-                                                <th class="px-4 py-2">Status</th>
-                                                <th class="px-4 py-2 text-center">Trend (3 Mo)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="covenantStatusTableBody">
-                                            <!-- Rows populated by JS -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                             <!-- Document Status Table -->
-                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-8">
-                                <h3 class="font-semibold text-lg text-gray-800 mb-4">Document Status</h3>
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-sm text-left text-gray-500">
-                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                            <tr>
-                                                <th class="px-4 py-2">Document</th>
-                                                <th class="px-4 py-2">Frequency</th>
-                                                <th class="px-4 py-2">Next Due Date</th>
-                                                <th class="px-4 py-2">Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="documentStatusTableBody">
-                                            <!-- Rows populated by JS -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                             <!-- Early Warning System Charts -->
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <div class="bg-white p-4 rounded-lg border shadow-sm">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <h3 class="font-semibold text-center">PAR 90+ Movement</h3>
-                                        <span id="par90EWS" class="text-xs font-bold"></span>
-                                    </div>
-                                    <div class="chart-container h-64"><canvas id="par90Chart"></canvas></div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg border shadow-sm">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <h3 class="font-semibold text-center">Collection Efficiency</h3>
-                                        <span id="collectionEffEWS" class="text-xs font-bold"></span>
-                                    </div>
-                                    <div class="chart-container h-64"><canvas id="collectionEffChart"></canvas></div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg border shadow-sm">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <h3 class="font-semibold text-center">CRAR Movement</h3>
-                                        <span id="crarEWS" class="text-xs font-bold"></span>
-                                    </div>
-                                    <div class="chart-container h-64"><canvas id="crarChart"></canvas></div>
-                                </div>
-                                <div class="bg-white p-4 rounded-lg border shadow-sm">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <h3 class="font-semibold text-center">Portfolio Yield</h3>
-                                        <span id="yieldEWS" class="text-xs font-bold"></span>
-                                    </div>
-                                    <div class="chart-container h-64"><canvas id="yieldChart"></canvas></div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white p-6 rounded-lg border shadow-sm mt-8">
-                                <h3 class="font-semibold text-lg text-gray-800 mb-1">Climate risk signals (Ki Monitor)</h3>
-                                <p class="text-sm text-gray-600 mb-4">Early indicators from geo-tagged exposure, seasonal collection baselines, and segment migration.</p>
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-sm text-left text-gray-500">
-                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                            <tr>
-                                                <th class="px-4 py-2">Signal</th>
-                                                <th class="px-4 py-2">Status</th>
-                                                <th class="px-4 py-2">Detail</th>
-                                                <th class="px-4 py-2 text-center">Trend (3 Mo)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="climateRiskSignalsTableBody">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Reports Page -->
-                    <div id="reportsPage" class="page-view">
-                        <div class="max-w-7xl mx-auto">
-                            <div class="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
-                                <h1 class="text-2xl font-bold text-gray-800">Compliance & Dynamic Reporting</h1>
-                                <div class="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-4">
-                                    <div class="flex items-center space-x-2">
-                                        <label for="reportMonthSelector" class="text-sm font-medium text-gray-700 whitespace-nowrap">Report Month:</label>
-                                        <input type="month" id="reportMonthSelector" class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm" value="2025-11" />
-                                    </div>
-                                    <div class="flex items-center space-x-2">
-                                        <label for="reportsTransactionSelector" class="text-sm font-medium text-gray-700 whitespace-nowrap">Transaction:</label>
-                                        <select id="reportsTransactionSelector" class="border border-gray-300 rounded-lg px-4 py-1.5 text-sm"></select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Date Information Banner -->
-                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div>
-                                        <p class="text-xs font-semibold text-blue-700 uppercase mb-1">Report Period</p>
-                                        <p id="reportPeriodDisplay" class="text-sm font-medium text-gray-800">November 2025</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-semibold text-blue-700 uppercase mb-1">Collection Period</p>
-                                        <p id="collectionPeriodDisplay" class="text-sm font-medium text-gray-800">01-Nov-2025 to 30-Nov-2025</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-semibold text-blue-700 uppercase mb-1">Payment Date</p>
-                                        <p id="paymentDateDisplay" class="text-sm font-medium text-gray-800">01-Dec-2025</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Standard Reports Section -->
-                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-8">
-                                <h3 class="font-semibold text-lg text-gray-800 mb-6">Compliance Reports</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <!-- PMA Report -->
-                                    <div class="border rounded-lg p-5 hover:shadow-md transition-shadow">
-                                        <div class="flex items-start justify-between mb-3">
-                                            <div class="flex items-center space-x-3">
-                                                <div class="bg-teal-100 p-2 rounded-lg">
-                                                    <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                                    </svg>
-                                                </div>
-                                                <div>
-                                                    <h4 class="font-semibold text-gray-800">Portfolio Monitoring Agent Report</h4>
-                                                    <p class="text-sm text-gray-500">Monthly PMA Report</p>
-                                                </div>
-                                            </div>
-                                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded">Required</span>
-                                        </div>
-                                        <p class="text-sm text-gray-600 mb-3">Official PMA Letter covering:</p>
-                                        <ul class="text-xs text-gray-600 space-y-1 mb-4 ml-4">
-                                            <li>✓ Tested Eligibility Criteria verification</li>
-                                            <li>✓ Collection Efficiency and Shortfall calculations</li>
-                                            <li>✓ Portfolio Concentration Limits confirmation</li>
-                                            <li>✓ Discounted Balance & Collections reconciliation</li>
-                                            <li>✓ Manifest errors identification</li>
-                                        </ul>
-                                        <div class="flex space-x-2">
-                                            <button id="downloadPMAReport" class="flex-1 bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-teal-700 text-sm flex items-center justify-center space-x-2">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                                                </svg>
-                                                <span>Download PDF</span>
-                                            </button>
-                                            <button id="previewPMAReport" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 text-sm text-gray-700">Preview</button>
-                                        </div>
-                                        <div class="mt-3 text-xs text-gray-500">
-                                            <span>Due: 2 Business Days after Servicer Report</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Cash Manager Report -->
-                                    <div class="border rounded-lg p-5 hover:shadow-md transition-shadow">
-                                        <div class="flex items-start justify-between mb-3">
-                                            <div class="flex items-center space-x-3">
-                                                <div class="bg-blue-100 p-2 rounded-lg">
-                                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                    </svg>
-                                                </div>
-                                                <div>
-                                                    <h4 class="font-semibold text-gray-800">Cash Manager Investor Report</h4>
-                                                    <p class="text-sm text-gray-500">Monthly Cash Flow Report</p>
-                                                </div>
-                                            </div>
-                                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded">Required</span>
-                                        </div>
-                                        <p class="text-sm text-gray-600 mb-3">Monthly Investor Report including:</p>
-                                        <ul class="text-xs text-gray-600 space-y-1 mb-4 ml-4">
-                                            <li>✓ Receivables Portfolio Summary</li>
-                                            <li>✓ Senior/Mezzanine/Junior Notes balances</li>
-                                            <li>✓ Tests: Collection Efficiency, Shortfall thresholds</li>
-                                            <li>✓ Priority of Payments waterfall</li>
-                                            <li>✓ Available Receipts breakdown</li>
-                                        </ul>
-                                        <div class="flex space-x-2">
-                                            <button id="downloadCashReport" class="flex-1 bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-teal-700 text-sm flex items-center justify-center space-x-2">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                                                </svg>
-                                                <span>Download PDF</span>
-                                            </button>
-                                            <button id="previewCashReport" class="px-4 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 text-sm text-gray-700">Preview</button>
-                                        </div>
-                                        <div class="mt-3 text-xs text-gray-500">
-                                            <span>Due: 5 Business Days before Payment Date</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Dynamic Reporting Dashboards -->
-                            <div class="bg-white p-6 rounded-lg border shadow-sm mb-8">
-                                <div class="flex justify-between items-center mb-6">
-                                    <h3 class="font-semibold text-lg text-gray-800">Dynamic Reporting & Analytics</h3>
-                                    <button class="text-teal-600 hover:text-teal-700 text-sm font-semibold">Export All Data</button>
-                                </div>
-                                
-                                <!-- Collection Efficiency Explanation -->
-                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                                    <h4 class="font-semibold text-blue-800 mb-2">Understanding Collection Efficiency Metrics</h4>
-                                    <div class="text-sm text-blue-700 space-y-1">
-                                        <p><strong>Unadjusted Collection Efficiency:</strong> Shows actual collections as a percentage of projected collections. Can exceed 100% when over-collection occurs (actual collections exceed projected).</p>
-                                        <p><strong>Adjusted Collection Efficiency:</strong> Caps collection efficiency at 100%, treating any over-collection as perfect collection (100%). This provides a conservative view that doesn't credit over-collection beyond the projected amount.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Key Metrics Summary -->
-                                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-                                    <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Pool Size</p>
-                                        <p id="reportPoolSize" class="text-2xl font-bold text-gray-800">KES 234.5M</p>
-                                        <p class="text-xs text-green-600 mt-1">▲ 2.1% from last month</p>
-                                    </div>
-                                    <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Total Loans</p>
-                                        <p id="reportTotalLoans" class="text-2xl font-bold text-gray-800">4,850</p>
-                                        <p class="text-xs text-gray-600 mt-1">Active accounts</p>
-                                    </div>
-                                    <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Current Month CE (Unadjusted)</p>
-                                        <p id="reportCurrentMonthCEUnadjusted" class="text-2xl font-bold text-gray-800">98.8%</p>
-                                        <p class="text-xs text-green-600 mt-1">vs projected</p>
-                                    </div>
-                                    <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Current Month CE (Adjusted)</p>
-                                        <p id="reportCurrentMonthCEAdjusted" class="text-2xl font-bold text-gray-800">98.8%</p>
-                                        <p class="text-xs text-green-600 mt-1">capped at 100%</p>
-                                    </div>
-                                    <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Cumulative CE (Unadjusted)</p>
-                                        <p id="reportCumulativeCEUnadjusted" class="text-2xl font-bold text-gray-800">97.5%</p>
-                                        <p class="text-xs text-gray-600 mt-1">Since inception</p>
-                                    </div>
-                                    <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-xs text-gray-500 uppercase">Cumulative CE (Adjusted)</p>
-                                        <p id="reportCumulativeCEAdjusted" class="text-2xl font-bold text-gray-800">97.5%</p>
-                                        <p class="text-xs text-gray-600 mt-1">Since inception</p>
-                                    </div>
-                                </div>
-
-                                <!-- Collection Efficiency Charts (Unadjusted & Adjusted) -->
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Collection Efficiency Trend (Unadjusted)</h4>
-                                            <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">View:</label>
-                                                <select id="collectionEfficiencyViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="current">Current Month</option>
-                                                    <option value="cumulative">Cumulative</option>
-                                                    <option value="both">Both</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportCollectionChart"></canvas></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Collection Efficiency Trend (Adjusted)</h4>
-                                            <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">View:</label>
-                                                <select id="adjustedCollectionEfficiencyViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="current">Current Month</option>
-                                                    <option value="cumulative">Cumulative</option>
-                                                    <option value="both">Both</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportAdjustedCollectionChart"></canvas></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Cash Flow Waterfall & Shortfall Distribution -->
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                                    <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">Cash Flow Waterfall (This Month)</h4>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportWaterfallChart"></canvas></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Shortfall Bucket Distribution</h4>
-                                            <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">View:</label>
-                                                <select id="shortfallViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="current">Current Month</option>
-                                                    <option value="cumulative">Cumulative</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportShortfallChart"></canvas></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Portfolio Composition & Geographic Analysis -->
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Portfolio by Bundle Choice</h4>
-                                            <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">Adjusted:</label>
-                                                <select id="compositionAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="false">No</option>
-                                                    <option value="true">Yes</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportCompositionChart"></canvas></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Geographic Concentration</h4>
-                                            <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">Adjusted:</label>
-                                                <select id="geoAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="false">No</option>
-                                                    <option value="true">Yes</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportGeoChart"></canvas></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Origination & Maturity Cohort Analysis -->
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Origination Cohort Analysis (Quarterly)</h4>
-                                            <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">View:</label>
-                                                <select id="vintageViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="current">Current Month</option>
-                                                    <option value="cumulative">Cumulative</option>
-                                                </select>
-                                                <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
-                                                <select id="vintageAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="false">No</option>
-                                                    <option value="true">Yes</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportVintageChart"></canvas></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h4 class="font-semibold text-gray-800">Maturity Cohort Analysis</h4>
-                                            <div class="flex items-center space-x-2">
-                                                <label class="text-xs text-gray-600">View:</label>
-                                                <select id="maturityViewToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="current">Current Month</option>
-                                                    <option value="cumulative">Cumulative</option>
-                                                </select>
-                                                <label class="text-xs text-gray-600 ml-2">Adjusted:</label>
-                                                <select id="maturityAdjustedToggle" class="text-xs border border-gray-300 rounded px-2 py-1">
-                                                    <option value="false">No</option>
-                                                    <option value="true">Yes</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportMaturityCohortChart"></canvas></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Additional Risk Cuts -->
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                                    <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">Risk by Gender</h4>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportGenderChart"></canvas></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-gray-800 mb-3">Risk by Liability Bucket</h4>
-                                        <div class="bg-white border rounded-lg p-4">
-                                            <div class="chart-container h-64"><canvas id="reportLiabilityBucketChart"></canvas></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mb-8">
-                                    <h4 class="font-semibold text-gray-800 mb-3">Risk by Renewal Status</h4>
-                                    <div class="bg-white border rounded-lg p-4">
-                                        <div class="chart-container h-64"><canvas id="reportRenewalChart"></canvas></div>
-                                    </div>
-                                </div>
-
-                                <!-- Tranche Cashflow Comparison (Cumulative) -->
-                                <div class="mb-8">
-                                    <h4 class="font-semibold text-gray-800 mb-3">Tranche Cashflow: Projected vs Actual (Cumulative)</h4>
-                                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                        <div>
-                                            <h5 class="text-sm font-medium text-gray-700 mb-2">Senior Tranche (Class A)</h5>
-                                            <div class="bg-white border rounded-lg p-4">
-                                                <div class="chart-container h-64"><canvas id="reportSeniorTrancheCashflowChart"></canvas></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <h5 class="text-sm font-medium text-gray-700 mb-2">Mezzanine Tranche (Class B)</h5>
-                                            <div class="bg-white border rounded-lg p-4">
-                                                <div class="chart-container h-64"><canvas id="reportMezzanineTrancheCashflowChart"></canvas></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-600 mt-2">Cumulative cashflow from Day 0 to current month</p>
-                                </div>
-
-                                <!-- 3-Way Comparison: Actual vs Day 0 vs Demand -->
-                                <div class="mb-8">
-                                    <h4 class="font-semibold text-gray-800 mb-3">Collections: 3-Way Comparison</h4>
-                                    <div class="bg-white border rounded-lg p-4">
-                                        <div class="chart-container h-80"><canvas id="reportThreeWayComparisonChart"></canvas></div>
-                                    </div>
-                                    <p class="text-xs text-gray-600 mt-2">Comparing Actual vs Day 0 Projections vs Contractual Demands across months</p>
-                                </div>
-
-                                <!-- Available Credit Enhancement (Time Series) -->
-                                <div class="mb-8">
-                                    <h4 class="font-semibold text-gray-800 mb-3">Available Credit Enhancement Over Time</h4>
-                                    <div class="bg-white border rounded-lg p-4">
-                                        <div class="chart-container h-64"><canvas id="reportAvailableCEChart"></canvas></div>
-                                    </div>
-                                    <p class="text-xs text-gray-600 mt-2">Shows available credit enhancement decreasing as it gets utilized. Includes Overcollateralization (OC) and Junior Liquidity Facility (JLF).</p>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                        </div>
-                    </div>
 
                     <div id="insightsPage" class="page-view">
                          <div class="text-center mb-8">
