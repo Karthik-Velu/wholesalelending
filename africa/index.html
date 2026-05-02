@@ -25,8 +25,17 @@
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        /* DealScreen / DealTrack use [hidden] so inactive tree takes zero layout (fixes gap above DealTrack) */
         .view { display: none; }
         .view.active { display: block; }
+        #dealScreenView[hidden],
+        #dealTrackView[hidden] {
+            display: none !important;
+        }
+        #dealScreenView.view.active:not([hidden]),
+        #dealTrackView.view.active:not([hidden]) {
+            display: block !important;
+        }
         #dealTrackView { margin: 0; padding: 0; }
         #dealTrackView > div:first-child { margin-top: 0; }
         .page-view { display: none; }
@@ -73,8 +82,8 @@
             </div>
         </header>
 
-        <!-- Main Content Area -->
-        <main class="flex-grow min-h-0">
+        <!-- Main Content Area: flex-col justify-start keeps DealTrack flush under header -->
+        <main class="flex flex-1 flex-col justify-start min-h-0 w-full">
             <!-- KI DealScreen View -->
             <div id="dealScreenView" class="view active">
                 <div id="dealScreenHomePage" class="page-view active">
@@ -1313,7 +1322,7 @@
                 </div>
             </div>
 
-            <div id="dealTrackView" class="view">
+            <div id="dealTrackView" class="view" hidden>
                  <div class="bg-white border-b">
                     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                         <nav id="dealTrackNav" class="flex space-x-8 -mb-px">
@@ -2588,10 +2597,18 @@
 
             function updateMainView(targetView, txId = null) {
                 state.currentView = targetView;
-                dealScreenView.classList.toggle('active', state.currentView === 'dealScreen');
-                dealTrackView.classList.toggle('active', state.currentView === 'dealTrack');
-                dealScreenBtn.classList.toggle('active', state.currentView === 'dealScreen');
-                dealTrackBtn.classList.toggle('active', state.currentView === 'dealTrack');
+                const showDealScreen = targetView === 'dealScreen';
+                dealScreenView.classList.toggle('active', showDealScreen);
+                dealTrackView.classList.toggle('active', !showDealScreen);
+                dealScreenBtn.classList.toggle('active', showDealScreen);
+                dealTrackBtn.classList.toggle('active', !showDealScreen);
+                if (showDealScreen) {
+                    dealScreenView.removeAttribute('hidden');
+                    dealTrackView.setAttribute('hidden', '');
+                } else {
+                    dealTrackView.removeAttribute('hidden');
+                    dealScreenView.setAttribute('hidden', '');
+                }
 
                 if(targetView === 'dealTrack') {
                     populateTransactionSelector(txId);
@@ -8140,8 +8157,13 @@ Contact: cashmanagement@kaleidofin.com
                 console.error('Error during initial page load:', e);
                 // Try to at least show the page even if initialization fails
                 try {
-                    if (dealScreenView) dealScreenView.classList.add('active');
+                    if (dealScreenView) {
+                        dealScreenView.classList.add('active');
+                        dealScreenView.removeAttribute('hidden');
+                    }
+                    if (dealTrackView) dealTrackView.setAttribute('hidden', '');
                     if (dealScreenBtn) dealScreenBtn.classList.add('active');
+                    if (dealTrackBtn) dealTrackBtn.classList.remove('active');
                 } catch (e2) {
                     console.error('Critical error - cannot initialize page:', e2);
                 }
