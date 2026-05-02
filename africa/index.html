@@ -274,23 +274,8 @@
                                 </div>
                             </div>
 
-                            <div class="bg-white p-6 rounded-lg border shadow-sm mt-8">
-                                <h3 class="font-semibold text-lg text-gray-800 mb-1">Climate risk signals (Ki Monitor)</h3>
-                                <p class="text-sm text-gray-600 mb-4">Early indicators from geo-tagged exposure, seasonal collection baselines, and segment migration.</p>
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-sm text-left text-gray-500">
-                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                                            <tr>
-                                                <th class="px-4 py-2">Signal</th>
-                                                <th class="px-4 py-2">Status</th>
-                                                <th class="px-4 py-2">Detail</th>
-                                                <th class="px-4 py-2 text-center">Trend (3 Mo)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="climateRiskSignalsTableBody">
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="bg-teal-50 p-4 rounded-lg border border-teal-100 mt-8 text-sm text-gray-700">
+                                <strong>Climate early warning &amp; relief:</strong> Full forward-looking signals, geography focus, and suggested restructuring / moratorium actions are on the <strong>Impact</strong> tab → section “Climate early warning &amp; relief actions”.
                             </div>
                         </div>
                     </div>
@@ -784,20 +769,35 @@
                     </div>
                      <div id="impactPage" class="page-view">
                         <div class="max-w-7xl mx-auto">
-                             <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+                             <div class="flex flex-col gap-4 mb-6">
                                 <h1 class="text-2xl font-bold text-gray-800">Impact Analysis</h1>
-                                <div class="flex items-center space-x-2">
-                                    <label for="impactTransactionSelector" class="text-sm font-medium text-gray-700 whitespace-nowrap">Select Transaction:</label>
-                                    <select id="impactTransactionSelector" class="w-full md:w-64 block rounded-md border-gray-300 shadow-sm sm:text-sm">
-                                        <!-- Options will be populated by JS -->
-                                    </select>
+                                <div class="flex flex-wrap items-end gap-3">
+                                    <div class="flex flex-col min-w-[10rem]">
+                                        <label for="impactScopeSelector" class="text-xs font-medium text-gray-600">Analysis scope</label>
+                                        <select id="impactScopeSelector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm">
+                                            <option value="transaction">This transaction</option>
+                                            <option value="originator">Originator (NBFI)</option>
+                                            <option value="network">Network (all funded)</option>
+                                        </select>
+                                    </div>
+                                    <div id="impactOriginatorWrap" class="flex flex-col min-w-[12rem] hidden">
+                                        <label for="impactOriginatorSelector" class="text-xs font-medium text-gray-600">Originator</label>
+                                        <select id="impactOriginatorSelector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm"></select>
+                                    </div>
+                                    <div class="flex flex-col min-w-[12rem] flex-1">
+                                        <label for="impactTransactionSelector" class="text-xs font-medium text-gray-600">Transaction <span class="text-gray-400 font-normal">(for “This transaction”)</span></label>
+                                        <select id="impactTransactionSelector" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm">
+                                            <!-- Options will be populated by JS -->
+                                        </select>
+                                    </div>
                                 </div>
+                                <p id="impactScopeHint" class="text-xs text-gray-500"></p>
                             </div>
 
                             <!-- Climate impact (Ki Monitor–style portfolio metrics) -->
                             <div class="mb-8 border border-teal-200 rounded-lg bg-gradient-to-br from-teal-50 to-white p-6 shadow-sm">
                                 <h2 class="text-lg font-semibold text-gray-800 mb-2">Climate impact</h2>
-                                <p class="text-sm text-gray-600 mb-5">Activity is classified as Climate Positive (measurable mitigation), Climate Resilient (adaptive capacity), or Climate Vulnerable (high exposure to climate-related stress). Eligible Climate Positive products are counted using the MDB/IDFC Common Principles for climate mitigation finance.</p>
+                                <p class="text-sm text-gray-600 mb-5">Climate <strong>Positive</strong> covers measurable mitigation: EV finance, e-mobility (incl. e-boda), solar home systems & heating, solar pumps, and other eligible lenders/products under Common Principles. <strong>Resilient</strong> builds adaptive capacity (e.g. irrigation, crop-aligned agri, risk-based pricing). <strong>Vulnerable</strong> targets exposure in drought- or disaster-prone geographies and very smallholder segments.</p>
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                                     <div class="bg-white p-4 rounded-lg border shadow-sm text-center">
                                         <p class="text-sm text-gray-500">Mitigation finance share</p>
@@ -809,10 +809,10 @@
                                         <p id="climateKpiTotalLending" class="text-2xl font-bold text-teal-600 mt-1">—</p>
                                         <p class="text-xs text-gray-500 mt-1">all categories (USD Mn)</p>
                                     </div>
-                                    <div class="bg-white p-4 rounded-lg border shadow-sm text-center">
-                                        <p class="text-sm text-gray-500">Originators (climate-tagged)</p>
-                                        <p id="climateKpiOriginators" class="text-2xl font-bold text-teal-600 mt-1">—</p>
-                                        <p class="text-xs text-gray-500 mt-1">with primary category</p>
+                                    <div class="bg-white p-4 rounded-lg border-2 border-teal-200 shadow-sm text-center">
+                                        <p class="text-sm text-gray-500">Est. CO₂e avoided (proxy)</p>
+                                        <p id="climateKpiCo2e" class="text-2xl font-bold text-teal-600 mt-1">—</p>
+                                        <p class="text-xs text-gray-500 mt-1">kt CO₂e · published mobility/solar factors</p>
                                     </div>
                                     <div class="bg-white p-4 rounded-lg border shadow-sm text-center">
                                         <p class="text-sm text-gray-500">Active climate signals</p>
@@ -820,16 +820,42 @@
                                         <p class="text-xs text-gray-500 mt-1">on Ki Monitor</p>
                                     </div>
                                 </div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                                    <div class="bg-white p-4 rounded-lg border shadow-sm text-center">
+                                        <p class="text-sm text-gray-500">Originators (climate-tagged)</p>
+                                        <p id="climateKpiOriginators" class="text-2xl font-bold text-teal-600 mt-1">—</p>
+                                        <p class="text-xs text-gray-500 mt-1">with primary category</p>
+                                    </div>
+                                </div>
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                                     <div class="bg-white p-4 rounded-lg border shadow-sm">
-                                        <h3 class="text-sm font-semibold text-gray-800 mb-2 text-center">Climate impact lending by category (USD Mn)</h3>
+                                        <h3 class="text-sm font-semibold text-gray-800 mb-2 text-center">Climate lending mix (USD Mn)</h3>
                                         <div class="chart-container h-56"><canvas id="climateLendingMixChart"></canvas></div>
                                     </div>
                                     <div class="bg-white p-4 rounded-lg border shadow-sm">
-                                        <h3 class="text-sm font-semibold text-gray-800 mb-2 text-center">Network trajectory</h3>
-                                        <div class="chart-container h-56"><canvas id="climateFinanceTrajectoryChart"></canvas></div>
+                                        <h3 class="text-sm font-semibold text-gray-800 mb-2 text-center">Climate Positive — product split (mitigation)</h3>
+                                        <p class="text-xs text-gray-500 text-center mb-2">EV, e-mobility, solar home/heating, solar pumps, other eligible</p>
+                                        <div class="chart-container h-52"><canvas id="climatePositiveSplitChart"></canvas></div>
                                     </div>
                                 </div>
+                                <div class="bg-white p-4 rounded-lg border shadow-sm mb-6">
+                                    <h3 class="text-sm font-semibold text-gray-800 mb-2 text-center">Trajectory (climate-labelled lending)</h3>
+                                    <div class="chart-container h-56"><canvas id="climateFinanceTrajectoryChart"></canvas></div>
+                                </div>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                                    <div class="border border-teal-100 rounded-lg p-4 bg-white">
+                                        <h3 class="text-sm font-semibold text-gray-800 mb-3">Climate resilient — lending categories</h3>
+                                        <p class="text-xs text-gray-600 mb-3">Adaptive capacity: diversified income, productive assets, better pricing through risk alignment.</p>
+                                        <div id="climateResilientCategories" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm"></div>
+                                    </div>
+                                    <div class="border border-orange-100 rounded-lg p-4 bg-white">
+                                        <h3 class="text-sm font-semibold text-gray-800 mb-3">Climate vulnerable — targeted exposure</h3>
+                                        <p class="text-xs text-gray-600 mb-3">Drought- or disaster-prone areas and very smallholder / high fragility segments.</p>
+                                        <div id="climateVulnerableCategories" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm"></div>
+                                    </div>
+                                </div>
+
                                 <div class="bg-white p-4 rounded-lg border shadow-sm">
                                     <h3 class="text-sm font-semibold text-gray-800 mb-3">Reported impact metrics</h3>
                                     <div class="overflow-x-auto text-sm">
@@ -844,27 +870,60 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <p class="text-xs text-gray-500 mt-3">CO₂e uses published factors for solar, clean cookstoves, and electric mobility; agricultural segments use sector proxies where loan-level data is limited.</p>
+                                    <p class="text-xs text-gray-500 mt-3">CO₂e uses published factors for solar, e-mobility, and efficient appliances; agricultural segments use sector proxies where loan-level data is limited.</p>
                                 </div>
                             </div>
-                            
-                            <!-- Top Level KPIs -->
+
+                            <!-- Climate early warning & relief (Impact-only detail) -->
+                            <div class="mb-8 border border-amber-200 rounded-lg bg-amber-50/40 p-6 shadow-sm">
+                                <h2 class="text-lg font-semibold text-gray-800 mb-2">Climate early warning &amp; relief actions</h2>
+                                <p class="text-sm text-gray-600 mb-4">Forward-looking signals by geography and segment, with recommended portfolio actions before stress materialises (restructuring, tenor, moratorium windows).</p>
+                                <div class="overflow-x-auto bg-white rounded-lg border">
+                                    <table class="w-full text-sm text-left text-gray-600">
+                                        <thead class="text-xs text-gray-700 uppercase bg-amber-50 border-b">
+                                            <tr>
+                                                <th class="px-3 py-2">Signal</th>
+                                                <th class="px-3 py-2">Geography / segment</th>
+                                                <th class="px-3 py-2">Horizon</th>
+                                                <th class="px-3 py-2">Suggested action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="climateReliefRecommendationsBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Socio-economic impact -->
+                            <div class="mb-8 border border-gray-200 rounded-lg p-6 bg-white shadow-sm">
+                                <h2 class="text-lg font-semibold text-gray-800 mb-2">Socio-economic impact</h2>
+                                <p class="text-sm text-gray-600 mb-4">Inclusive reach and estimated livelihood uplift from funded activity (demo aggregates for selected scope).</p>
+                                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+                                    <div class="bg-gray-50 p-4 rounded-lg border text-center"><p class="text-xs text-gray-500">Low-income individuals funded</p><p id="socioKpiLowIncome" class="text-lg font-bold text-teal-600 mt-1">—</p></div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border text-center"><p class="text-xs text-gray-500">NTC (new to credit)</p><p id="socioKpiNtc" class="text-lg font-bold text-teal-600 mt-1">—</p></div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border text-center"><p class="text-xs text-gray-500">Women borrowers</p><p id="socioKpiWomen" class="text-lg font-bold text-teal-600 mt-1">—</p></div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border text-center"><p class="text-xs text-gray-500">Micro-entrepreneurs</p><p id="socioKpiMicroEnt" class="text-lg font-bold text-teal-600 mt-1">—</p></div>
+                                    <div class="bg-gray-50 p-4 rounded-lg border text-center"><p class="text-xs text-gray-500">Rural outreach</p><p id="socioKpiRural" class="text-lg font-bold text-teal-600 mt-1">—</p></div>
+                                    <div class="bg-teal-50 p-4 rounded-lg border border-teal-200 text-center"><p class="text-xs text-gray-600">Est. income uplift (proxy)</p><p id="socioKpiIncomeUplift" class="text-lg font-bold text-teal-700 mt-1">—</p></div>
+                                </div>
+                            </div>
+
+                            <!-- Top Level KPIs (legacy strip — driven by scope) -->
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                                <div class="bg-white p-4 rounded-lg border shadow-sm text-center"><p class="text-sm text-gray-500">Female Borrowers</p><p class="text-2xl font-bold text-teal-600 mt-1">4,158 (44%)</p></div>
-                                <div class="bg-white p-4 rounded-lg border shadow-sm text-center"><p class="text-sm text-gray-500">Rural Outreach</p><p class="text-2xl font-bold text-teal-600 mt-1">5,197 (55%)</p></div>
-                                <div class="bg-white p-4 rounded-lg border shadow-sm text-center"><p class="text-sm text-gray-500">First-Time Borrowers</p><p class="text-2xl font-bold text-teal-600 mt-1">2,835 (30%)</p></div>
-                                <div class="bg-white p-4 rounded-lg border shadow-sm text-center"><p class="text-sm text-gray-500">Youth Borrowers (&lt;35)</p><p class="text-2xl font-bold text-teal-600 mt-1">3,780 (40%)</p></div>
+                                <div class="bg-white p-4 rounded-lg border shadow-sm text-center"><p class="text-sm text-gray-500">Female Borrowers</p><p id="impactKpiFemaleBorrowers" class="text-2xl font-bold text-teal-600 mt-1">—</p></div>
+                                <div class="bg-white p-4 rounded-lg border shadow-sm text-center"><p class="text-sm text-gray-500">Rural Outreach</p><p id="impactKpiRuralOutreach" class="text-2xl font-bold text-teal-600 mt-1">—</p></div>
+                                <div class="bg-white p-4 rounded-lg border shadow-sm text-center"><p class="text-sm text-gray-500">First-Time Borrowers</p><p id="impactKpiFirstTime" class="text-2xl font-bold text-teal-600 mt-1">—</p></div>
+                                <div class="bg-white p-4 rounded-lg border shadow-sm text-center"><p class="text-sm text-gray-500">Youth Borrowers (&lt;35)</p><p id="impactKpiYouth" class="text-2xl font-bold text-teal-600 mt-1">—</p></div>
                             </div>
 
                             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                                 <!-- Left Column -->
                                 <div class="lg:col-span-1 space-y-8">
                                     <div class="bg-white p-4 rounded-lg border shadow-sm">
-                                        <h3 class="font-semibold text-gray-800 mb-3">Gender & Social Lens</h3>
+                                        <h3 class="font-semibold text-gray-800 mb-3">Gender &amp; Social Lens</h3>
                                         <div class="space-y-3 text-sm">
-                                            <div class="flex justify-between"><span>Value to Women (KES):</span><span class="font-bold">410M</span></div>
-                                            <div class="flex justify-between"><span>Avg. Loan to Women (KES):</span><span class="font-bold">98,600</span></div>
-                                            <div class="flex justify-between"><span>Avg. Loan to Men (KES):</span><span class="font-bold">103,000</span></div>
+                                            <div class="flex justify-between"><span>Value to Women (KES):</span><span id="impactStatValueWomen" class="font-bold">—</span></div>
+                                            <div class="flex justify-between"><span>Avg. Loan to Women (KES):</span><span id="impactStatAvgLoanWomen" class="font-bold">—</span></div>
+                                            <div class="flex justify-between"><span>Avg. Loan to Men (KES):</span><span id="impactStatAvgLoanMen" class="font-bold">—</span></div>
                                         </div>
                                         <div class="chart-container h-48 mt-4"><canvas id="genderPerformanceChart"></canvas></div>
                                     </div>
@@ -877,7 +936,7 @@
                                 <!-- Right Column -->
                                 <div class="lg:col-span-2 space-y-8">
                                     <div class="bg-white p-6 rounded-lg border shadow-sm">
-                                        <h3 class="font-semibold text-gray-800 mb-4">End-Use & SDG Alignment</h3>
+                                        <h3 class="font-semibold text-gray-800 mb-4">End-Use &amp; SDG Alignment</h3>
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
                                                 <h4 class="font-medium text-center text-sm mb-2">End-Use Sector</h4>
@@ -886,10 +945,10 @@
                                              <div>
                                                 <h4 class="font-medium text-center text-sm mb-2">SDG Alignment</h4>
                                                 <div class="chart-container h-48"><canvas id="sdgDoughnutChart"></canvas></div>
-                                                <div class="text-xs space-y-1 mt-2 text-center">
-                                                    <p><span class="font-bold text-teal-600">48%</span> No Poverty (SDG 1)</p>
-                                                    <p><span class="font-bold text-teal-600">32%</span> Decent Work & Econ. Growth (SDG 8)</p>
-                                                    <p><span class="font-bold text-teal-600">20%</span> Reduced Inequality (SDG 10)</p>
+                                                <div id="sdgAlignmentPercents" class="text-xs space-y-1 mt-2 text-center">
+                                                    <p><span id="sdgPovertyPct" class="font-bold text-teal-600">—</span> No Poverty (SDG 1)</p>
+                                                    <p><span id="sdgWorkPct" class="font-bold text-teal-600">—</span> Decent Work &amp; Econ. Growth (SDG 8)</p>
+                                                    <p><span id="sdgIneqPct" class="font-bold text-teal-600">—</span> Reduced Inequality (SDG 10)</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2360,6 +2419,9 @@
             const transactionSelector = document.getElementById('transactionSelector');
             const perfTransactionSelector = document.getElementById('perfTransactionSelector');
             const impactTransactionSelector = document.getElementById('impactTransactionSelector');
+            const impactScopeSelector = document.getElementById('impactScopeSelector');
+            const impactOriginatorSelector = document.getElementById('impactOriginatorSelector');
+            const impactOriginatorWrap = document.getElementById('impactOriginatorWrap');
             const covenantStatusTableBody = document.getElementById('covenantStatusTableBody');
             const documentStatusTableBody = document.getElementById('documentStatusTableBody');
             const ewsPar90 = document.getElementById('par90EWS');
@@ -2664,7 +2726,9 @@
                 } else if (pageId === 'performancePage') {
                     renderPerformancePage(currentTxId);
                 } else if (pageId === 'impactPage') {
-                    renderImpactPage(currentTxId);
+                    const scope = impactScopeSelector?.value || 'transaction';
+                    const originator = impactOriginatorSelector?.value || '';
+                    renderImpactPage(scope, currentTxId, originator);
                 }
                 scrollAppToTop();
             }
@@ -4588,6 +4652,7 @@
                     
                     state.transactions.unshift(newTransaction);
                     renderActiveTransactions();
+                    populateTransactionSelector(newTransaction.id);
                     
                     // Update finalized pool display
                     document.getElementById('finalizedLoanCount').textContent = document.getElementById('selectedLoans')?.textContent || '9,540 loans';
@@ -5059,7 +5124,13 @@
                     dealTrackNav.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
                     e.target.classList.add('active');
                     const pageId = e.target.dataset.trackView + 'Page';
-                    const txId = transactionSelector.value;
+                    let txId = transactionSelector?.value;
+                    if (pageId === 'performancePage' && perfTransactionSelector) {
+                        txId = perfTransactionSelector.value;
+                    }
+                    if (pageId === 'impactPage' && impactTransactionSelector) {
+                        txId = impactTransactionSelector.value;
+                    }
                     updateDealTrackPage(pageId, txId);
                 }
             });
@@ -5073,68 +5144,537 @@
                     }
                 }
                 renderActiveTransactions();
+                populateTransactionSelector(tx?.id);
                 updateMainView('dealScreen');
                 showPage('dealScreenHomePage');
                 updateHomeTab('transactions');
             });
 
-            // --- Covenant Monitoring Logic ---
-            function getClimateImpactMetrics(txId) {
-                const base = {
-                    mitigationPct: 34.2,
-                    totalLendingMn: 1.77,
-                    originatorsTagged: 28,
-                    activeSignals: 2,
-                    lendingPositiveMn: 0.42,
-                    lendingResilientMn: 1.05,
-                    lendingVulnerableMn: 0.30,
-                    femaleShareClimatePct: 98,
-                    co2eKt: 124,
-                    agriHouseholdsMn: 2.51,
-                    vulnerableBorrowersMn: 1.12,
-                    fyLabels: ['FY23', 'FY24', 'FY25', 'FY26 est.'],
-                    fyResilient: [0.22, 0.51, 0.73, 1.27],
-                    fyVulnerable: [0.09, 0.20, 0.29, 0.50],
-                    fyTotal: [0.31, 0.71, 1.02, 1.77]
+            // --- Covenant Monitoring Logic (Impact metrics: scope-aware) ---
+            const FY_LABELS_IMPACT = ['FY23', 'FY24', 'FY25', 'FY26 est.'];
+
+            function hashImpactSeed(str) {
+                let h = 2166136261;
+                for (let i = 0; i < str.length; i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619);
+                return Math.abs(h) >>> 0;
+            }
+
+            function metricUnknownTx(txId) {
+                const h = hashImpactSeed(txId || 'x');
+                const baseMn = 1.35 + (h % 90) / 100;
+                const lp = baseMn * (0.18 + (h % 17) / 100);
+                const lr = baseMn * (0.55 + (h % 13) / 100);
+                const lv = baseMn - lp - lr;
+                const ps = lp > 0 ? lp : 0.01;
+                const split = {
+                    ev: ps * (0.15 + (h % 20) / 200),
+                    eMobility: ps * (0.35 + (h % 25) / 200),
+                    solarHome: ps * (0.18 + (h % 15) / 200),
+                    solarPump: ps * (0.12 + (h % 10) / 200),
+                    other: 0
                 };
-                const byTx = {
-                    'RMFB-BODA-001': { mitigationPct: 31.5, activeSignals: 3, lendingPositiveMn: 0.38, lendingResilientMn: 1.12, lendingVulnerableMn: 0.28, totalLendingMn: 1.78 },
-                    'MC-VEHICLE-001': { mitigationPct: 41.2, activeSignals: 1, lendingPositiveMn: 0.58, lendingResilientMn: 0.95, lendingVulnerableMn: 0.22, totalLendingMn: 1.75 },
-                    'JUHUDI-AGRI-021': { mitigationPct: 29.8, activeSignals: 4, lendingResilientMn: 1.18, lendingVulnerableMn: 0.34, totalLendingMn: 1.82 },
-                    'ASA-SME-005': { mitigationPct: 36.0, totalLendingMn: 1.65, activeSignals: 2 }
+                const ssum = split.ev + split.eMobility + split.solarHome + split.solarPump;
+                split.other = Math.max(0, ps - ssum);
+                return {
+                    mitigationPct: 28 + (h % 15),
+                    totalLendingMn: baseMn,
+                    originatorsTagged: 1,
+                    activeSignals: 1 + (h % 4),
+                    lendingPositiveMn: lp,
+                    lendingResilientMn: lr,
+                    lendingVulnerableMn: Math.max(0.08, lv),
+                    femaleShareClimatePct: 94 + (h % 5),
+                    co2eKt: Math.round(80 + (h % 60)),
+                    agriHouseholdsMn: 1.8 + (h % 50) / 100,
+                    vulnerableBorrowersMn: 0.85 + (h % 40) / 100,
+                    fyLabels: FY_LABELS_IMPACT,
+                    fyResilient: [0.2, 0.45, 0.65, 1.1],
+                    fyVulnerable: [0.08, 0.18, 0.26, 0.45],
+                    fyTotal: [0.28, 0.63, 0.91, 1.55],
+                    positiveSplit: split,
+                    resilientCats: [
+                        { title: 'Women — secondary income funded', mn: lr * 0.28, note: 'Side-business & diversified livelihood streams.' },
+                        { title: 'Irrigation & water productivity', mn: lr * 0.24, note: 'Solar / drip productivity-linked use.' },
+                        { title: 'Farm input & crop-cycle aligned agri', mn: lr * 0.36, note: 'Harvest-aligned repayment design.' },
+                        { title: 'Risk-based pricing benefit', mn: lr * 0.12, note: 'Ki-based pricing vs flat benchmarks.' }
+                    ],
+                    vulnerableCats: [
+                        { title: 'Drought-corridor concentration', mn: lv * 0.45, note: 'Arid/semi-arid rainfall volatility.' },
+                        { title: 'Very smallholder (<0.5 ha)', mn: lv * 0.35, note: 'High marginal climate sensitivity.' },
+                        { title: 'Secondary peril exposure', mn: lv * 0.12, note: 'Seasonal flood / landslide pockets.' },
+                        { title: 'Pastoral stress corridors', mn: lv * 0.08, note: 'Mobility / forage disruption.' }
+                    ],
+                    socio: {
+                        lowIncome: 9000 + (h % 4000),
+                        ntc: 6000 + (h % 3000),
+                        womenCount: 3800 + (h % 800),
+                        womenPct: 41 + (h % 6),
+                        microEnt: 2800 + (h % 900),
+                        ruralCount: 4800 + (h % 1000),
+                        ruralPct: 52 + (h % 8),
+                        firstTime: 2500 + (h % 700),
+                        youth: 3400 + (h % 700),
+                        incomeUpliftLow: 10 + (h % 4),
+                        incomeUpliftHigh: 15 + (h % 6),
+                        valueWomenKesM: 360 + (h % 80),
+                        avgLoanWomen: 92000 + (h % 12000),
+                        avgLoanMen: 98000 + (h % 12000),
+                        genderChart: [4.5 + (h % 10) / 10, 5.0 + (h % 10) / 10, 97 + (h % 3) / 10, 96.5 + (h % 5) / 10],
+                        ruralUrban: [4600 + (h % 600), 2200 + (h % 400), 1700 + (h % 350)],
+                        sectorMix: [32, 26, 19, 13, 10],
+                        sdg: [45, 33, 22],
+                        borrowerProfile: [2400 + (h % 500), 3300 + (h % 600), 1700 + (h % 400)]
+                    },
+                    reliefRows: [
+                        { signal: 'Climate seasonal repayment deviation', geo: 'Portfolio-weighted wards', horizon: '30–60d', action: 'Activate repayment flexibility checklist; monitor Ki cohort PAR drift vs rainfall index.' },
+                        { signal: 'Forward drought hazard uptick', geo: 'Arid/semi-arid concentration', horizon: '60–120d', action: 'Offer staged tenor extension for verified agricultural delay; document moratorium criteria.' },
+                        { signal: 'Exposure drift into hazard wards', geo: 'Originator branch footprint', horizon: 'Quarter', action: 'Repricing review & restructuring playbook for eligible repeat borrowers.' }
+                    ]
                 };
-                const m = Object.assign({}, base, byTx[txId] || {});
+            }
+
+            function finalizeMetric(m) {
                 const sumParts = m.lendingPositiveMn + m.lendingResilientMn + m.lendingVulnerableMn;
-                if (Math.abs(sumParts - m.totalLendingMn) > 0.02) {
+                if (sumParts > 0 && Math.abs(sumParts - m.totalLendingMn) > 0.02) {
                     const scale = m.totalLendingMn / sumParts;
                     m.lendingPositiveMn *= scale;
                     m.lendingResilientMn *= scale;
                     m.lendingVulnerableMn *= scale;
                 }
+                const ps = m.positiveSplit;
+                const psSum = ps.ev + ps.eMobility + ps.solarHome + ps.solarPump + ps.other;
+                if (psSum > 0 && Math.abs(psSum - m.lendingPositiveMn) > 0.001) {
+                    const sc = m.lendingPositiveMn / psSum;
+                    ps.ev *= sc; ps.eMobility *= sc; ps.solarHome *= sc; ps.solarPump *= sc; ps.other *= sc;
+                }
                 return m;
             }
 
-            function renderClimateImpactSection(txId) {
-                const m = getClimateImpactMetrics(txId);
+            const IMPACT_METRICS_BY_TX = (function () {
+                return {
+                    'RMFB-BODA-001': finalizeMetric(Object.assign({}, metricUnknownTx('RMFB-BODA-001'), {
+                        mitigationPct: 31.5, totalLendingMn: 1.78, activeSignals: 3,
+                        lendingPositiveMn: 0.38, lendingResilientMn: 1.12, lendingVulnerableMn: 0.28,
+                        femaleShareClimatePct: 97, co2eKt: 118, agriHouseholdsMn: 2.48, vulnerableBorrowersMn: 1.09,
+                        fyResilient: [0.21, 0.52, 0.74, 1.28], fyVulnerable: [0.09, 0.21, 0.31, 0.52], fyTotal: [0.30, 0.73, 1.05, 1.80],
+                        positiveSplit: { ev: 0.02, eMobility: 0.22, solarHome: 0.05, solarPump: 0.04, other: 0.05 },
+                        resilientCats: [
+                            { title: 'Women — secondary income funded', mn: 0.32, note: 'Joint-liability groups & side-business lines.' },
+                            { title: 'Irrigation & water productivity', mn: 0.28, note: 'Solar pump attachments & drip kits.' },
+                            { title: 'Farm input & crop-cycle aligned agri', mn: 0.42, note: 'Tenors aligned to regional harvest windows.' },
+                            { title: 'Risk-based pricing benefit', mn: 0.10, note: 'Ki cohort priced vs legacy flat tariff.' }
+                        ],
+                        vulnerableCats: [
+                            { title: 'Drought-corridor concentration', mn: 0.14, note: 'Western / Nyanza moisture-sensitive wards.' },
+                            { title: 'Very smallholder (<0.5 ha)', mn: 0.09, note: 'Subsistence plots with rainfall-bound income.' },
+                            { title: 'Peri-desert transition belts', mn: 0.03, note: 'Secondary drought peril overlays.' },
+                            { title: 'Pastoral stress corridors', mn: 0.02, note: 'Migration-linked repayment volatility.' }
+                        ],
+                        socio: {
+                            lowIncome: 11200, ntc: 7800, womenCount: 4020, womenPct: 43, microEnt: 3100,
+                            ruralCount: 5050, ruralPct: 54, firstTime: 2760, youth: 3620, incomeUpliftLow: 11, incomeUpliftHigh: 16,
+                            valueWomenKesM: 405, avgLoanWomen: 97200, avgLoanMen: 102400,
+                            genderChart: [4.8, 5.3, 98.5, 97.9], ruralUrban: [5197, 2362, 1891],
+                            sectorMix: [30, 28, 18, 14, 10], sdg: [46, 33, 21], borrowerProfile: [2760, 3620, 1820]
+                        },
+                        reliefRows: [
+                            { signal: 'Rainfall anomaly vs repayment', geo: 'Western / Nyanza wards', horizon: '45–75d', action: 'Tenor extension on verified crop delay; moratorium criteria pack if PAR lift > 2× baseline.' },
+                            { signal: 'Forward drought hazard uptick', geo: 'Turkana / Marsabit overlay borrowers', horizon: '60–120d', action: 'Restructuring playbook + staged grace aligned to livestock migration calendars.' },
+                            { signal: 'Crop-cycle misalignment cluster', geo: 'Lake basin periphery', horizon: 'Next harvest', action: 'Harvest-linked EMI reschedule + agronomic advisory bundle.' }
+                        ]
+                    })),
+                    'MC-VEHICLE-001': finalizeMetric(Object.assign({}, metricUnknownTx('MC-VEHICLE-001'), {
+                        mitigationPct: 41.2, totalLendingMn: 1.75, activeSignals: 1,
+                        lendingPositiveMn: 0.58, lendingResilientMn: 0.95, lendingVulnerableMn: 0.22,
+                        co2eKt: 142,
+                        positiveSplit: { ev: 0.26, eMobility: 0.18, solarHome: 0.06, solarPump: 0.03, other: 0.05 },
+                        fyResilient: [0.19, 0.47, 0.71, 1.02], fyVulnerable: [0.06, 0.14, 0.21, 0.36], fyTotal: [0.25, 0.61, 0.92, 1.38],
+                        resilientCats: [
+                            { title: 'Women — secondary income funded', mn: 0.22, note: 'Urban SME mobility-linked commerce.' },
+                            { title: 'Irrigation & water productivity', mn: 0.08, note: 'Limited on-book irrigation exposure.' },
+                            { title: 'Farm input & crop-cycle aligned agri', mn: 0.35, note: 'Seasonal transport corridor earnings linkage.' },
+                            { title: 'Risk-based pricing benefit', mn: 0.30, note: 'Strong Ki-score APR differentiation.' }
+                        ],
+                        vulnerableCats: [
+                            { title: 'Drought-corridor concentration', mn: 0.05, note: 'Urban bias lowers drought corridor share.' },
+                            { title: 'Very smallholder (<0.5 ha)', mn: 0.04, note: 'Residual peri-urban micro-farming borrowers.' },
+                            { title: 'Secondary peril exposure', mn: 0.07, note: 'Flooding on peri-urban routes to markets.' },
+                            { title: 'Pastoral stress corridors', mn: 0.06, note: 'Secondary mobility corridors.' }
+                        ],
+                        socio: {
+                            lowIncome: 9800, ntc: 6200, womenCount: 3100, womenPct: 38, microEnt: 4100,
+                            ruralCount: 3200, ruralPct: 34, firstTime: 2100, youth: 4200, incomeUpliftLow: 13, incomeUpliftHigh: 19,
+                            valueWomenKesM: 280, avgLoanWomen: 118000, avgLoanMen: 125000,
+                            genderChart: [4.2, 5.1, 98.2, 97.6], ruralUrban: [3200, 4100, 5050],
+                            sectorMix: [8, 52, 12, 22, 6], sdg: [38, 40, 22], borrowerProfile: [2100, 4200, 2600]
+                        },
+                        reliefRows: [
+                            { signal: 'Fuel-price shock pass-through', geo: 'Urban commuter corridors', horizon: '30–45d', action: 'Temporary EMI smoothing + fleet refinance advisory for verified revenue dip.' },
+                            { signal: 'Heat-wave downtime risk', geo: 'Industrial estates', horizon: 'Seasonal', action: 'Moratorium-lite template for workshop-linked borrowers on Ki watchlist.' }
+                        ]
+                    })),
+                    'JUHUDI-AGRI-021': finalizeMetric(Object.assign({}, metricUnknownTx('JUHUDI-AGRI-021'), {
+                        mitigationPct: 29.8, totalLendingMn: 1.82, activeSignals: 4,
+                        lendingPositiveMn: 0.30, lendingResilientMn: 1.18, lendingVulnerableMn: 0.34,
+                        co2eKt: 96,
+                        positiveSplit: { ev: 0.01, eMobility: 0.04, solarHome: 0.08, solarPump: 0.12, other: 0.05 },
+                        fyResilient: [0.24, 0.56, 0.82, 1.35], fyVulnerable: [0.11, 0.24, 0.36, 0.58], fyTotal: [0.35, 0.80, 1.18, 1.93],
+                        resilientCats: [
+                            { title: 'Women — secondary income funded', mn: 0.38, note: 'Agri-marketing & cooperative sidelines.' },
+                            { title: 'Irrigation & water productivity', mn: 0.42, note: 'Centre-pivot & solar lift schemes.' },
+                            { title: 'Farm input & crop-cycle aligned agri', mn: 0.28, note: 'Maize/tea seasonal repayment peaks.' },
+                            { title: 'Risk-based pricing benefit', mn: 0.10, note: 'Yield-indexed concession pricing pilots.' }
+                        ],
+                        vulnerableCats: [
+                            { title: 'Drought-corridor concentration', mn: 0.18, note: 'Eastern moisture deficit belts.' },
+                            { title: 'Very smallholder (<0.5 ha)', mn: 0.12, note: 'Tea outgrower marginal plots.' },
+                            { title: 'Secondary peril exposure', mn: 0.03, note: 'Hail / frost pockets.' },
+                            { title: 'Pastoral stress corridors', mn: 0.01, note: 'Agro-pastoral transition zones.' }
+                        ],
+                        socio: {
+                            lowIncome: 13500, ntc: 9100, womenCount: 5100, womenPct: 46, microEnt: 2900,
+                            ruralCount: 6200, ruralPct: 62, firstTime: 3300, youth: 2800, incomeUpliftLow: 9, incomeUpliftHigh: 14,
+                            valueWomenKesM: 520, avgLoanWomen: 88500, avgLoanMen: 91000,
+                            genderChart: [5.1, 5.4, 97.8, 97.2], ruralUrban: [6200, 1800, 1400],
+                            sectorMix: [10, 12, 48, 22, 8], sdg: [52, 28, 20], borrowerProfile: [3300, 2800, 2100]
+                        },
+                        reliefRows: [
+                            { signal: 'Seasonal NDVI stress vs EMI', geo: 'Eastern drought strips', horizon: 'Next 90d', action: 'Harvest-linked EMI slide + input voucher bridge for Ki-verified farmers.' },
+                            { signal: 'Very smallholder PAR drift', geo: 'Tea outgrower wards', horizon: '45d', action: 'Micro-restructuring & cooperative guarantee top-up review.' }
+                        ]
+                    })),
+                    'ASA-SME-005': finalizeMetric(Object.assign({}, metricUnknownTx('ASA-SME-005'), {
+                        mitigationPct: 36.0, totalLendingMn: 1.65, activeSignals: 2,
+                        lendingPositiveMn: 0.36, lendingResilientMn: 1.02, lendingVulnerableMn: 0.27,
+                        co2eKt: 105,
+                        positiveSplit: { ev: 0.04, eMobility: 0.08, solarHome: 0.12, solarPump: 0.05, other: 0.07 },
+                        fyResilient: [0.20, 0.49, 0.70, 1.15], fyVulnerable: [0.08, 0.19, 0.28, 0.48], fyTotal: [0.28, 0.68, 0.98, 1.63],
+                        socio: {
+                            lowIncome: 10200, ntc: 8400, womenCount: 4800, womenPct: 44, microEnt: 5200,
+                            ruralCount: 4100, ruralPct: 42, firstTime: 2900, youth: 3500, incomeUpliftLow: 12, incomeUpliftHigh: 17,
+                            valueWomenKesM: 460, avgLoanWomen: 101000, avgLoanMen: 104000,
+                            genderChart: [4.6, 5.0, 98.6, 98.0], ruralUrban: [4100, 3200, 3500],
+                            sectorMix: [22, 18, 20, 28, 12], sdg: [44, 34, 22], borrowerProfile: [2900, 3500, 3100]
+                        }
+                    })),
+                    'MC-AGRI-003': finalizeMetric(Object.assign({}, metricUnknownTx('MC-AGRI-003'), {
+                        mitigationPct: 27.5, totalLendingMn: 1.88, activeSignals: 3,
+                        lendingPositiveMn: 0.28, lendingResilientMn: 1.22, lendingVulnerableMn: 0.38,
+                        co2eKt: 88,
+                        positiveSplit: { ev: 0.01, eMobility: 0.03, solarHome: 0.07, solarPump: 0.14, other: 0.03 },
+                        socio: {
+                            lowIncome: 12800, ntc: 9500, womenCount: 4900, womenPct: 45, microEnt: 2700,
+                            ruralCount: 6800, ruralPct: 64, firstTime: 3400, youth: 2700, incomeUpliftLow: 8, incomeUpliftHigh: 13,
+                            valueWomenKesM: 498, avgLoanWomen: 86200, avgLoanMen: 89500,
+                            genderChart: [5.0, 5.5, 97.5, 96.9], ruralUrban: [6800, 1500, 1200],
+                            sectorMix: [8, 10, 52, 22, 8], sdg: [50, 30, 20], borrowerProfile: [3400, 2700, 2000]
+                        }
+                    })),
+                    'PLAT-SAL-012': finalizeMetric(Object.assign({}, metricUnknownTx('PLAT-SAL-012'), {
+                        mitigationPct: 33.1, totalLendingMn: 1.70, activeSignals: 2,
+                        lendingPositiveMn: 0.34, lendingResilientMn: 1.00, lendingVulnerableMn: 0.36,
+                        co2eKt: 101,
+                        positiveSplit: { ev: 0.03, eMobility: 0.06, solarHome: 0.14, solarPump: 0.06, other: 0.05 },
+                        socio: {
+                            lowIncome: 8800, ntc: 5100, womenCount: 3900, womenPct: 41, microEnt: 2800,
+                            ruralCount: 2900, ruralPct: 31, firstTime: 2200, youth: 4100, incomeUpliftLow: 14, incomeUpliftHigh: 20,
+                            valueWomenKesM: 310, avgLoanWomen: 105000, avgLoanMen: 108000,
+                            genderChart: [4.0, 4.8, 99.0, 98.4], ruralUrban: [2900, 3800, 5100],
+                            sectorMix: [18, 14, 16, 38, 14], sdg: [40, 38, 22], borrowerProfile: [2200, 4100, 2400]
+                        }
+                    })),
+                    'FAULU-BIZ-008': finalizeMetric(Object.assign({}, metricUnknownTx('FAULU-BIZ-008'), {
+                        mitigationPct: 30.2, totalLendingMn: 1.72, activeSignals: 3,
+                        lendingPositiveMn: 0.33, lendingResilientMn: 1.06, lendingVulnerableMn: 0.33,
+                        co2eKt: 99,
+                        socio: {
+                            lowIncome: 11500, ntc: 7200, womenCount: 4300, womenPct: 42, microEnt: 4800,
+                            ruralCount: 4600, ruralPct: 44, firstTime: 2800, youth: 3300, incomeUpliftLow: 11, incomeUpliftHigh: 16,
+                            valueWomenKesM: 395, avgLoanWomen: 95500, avgLoanMen: 99800,
+                            genderChart: [4.7, 5.2, 98.3, 97.7], ruralUrban: [4600, 2900, 3200],
+                            sectorMix: [25, 20, 18, 27, 10], sdg: [43, 35, 22], borrowerProfile: [2800, 3300, 2600]
+                        }
+                    })),
+                    'MOGO-LOGBOOK-050': finalizeMetric(Object.assign({}, metricUnknownTx('MOGO-LOGBOOK-050'), {
+                        mitigationPct: 38.5, totalLendingMn: 1.68, activeSignals: 2,
+                        lendingPositiveMn: 0.45, lendingResilientMn: 0.98, lendingVulnerableMn: 0.25,
+                        co2eKt: 128,
+                        positiveSplit: { ev: 0.08, eMobility: 0.22, solarHome: 0.06, solarPump: 0.04, other: 0.05 },
+                        socio: {
+                            lowIncome: 9200, ntc: 6800, womenCount: 2800, womenPct: 35, microEnt: 4600,
+                            ruralCount: 3400, ruralPct: 36, firstTime: 4100, youth: 4500, incomeUpliftLow: 13, incomeUpliftHigh: 18,
+                            valueWomenKesM: 240, avgLoanWomen: 122000, avgLoanMen: 128000,
+                            genderChart: [5.4, 5.8, 97.0, 96.4], ruralUrban: [3400, 4200, 4400],
+                            sectorMix: [12, 44, 14, 22, 8], sdg: [36, 42, 22], borrowerProfile: [4100, 4500, 1900]
+                        }
+                    })),
+                    'IZWE-PERS-015': finalizeMetric(Object.assign({}, metricUnknownTx('IZWE-PERS-015'), {
+                        mitigationPct: 26.4, totalLendingMn: 1.91, activeSignals: 4,
+                        lendingPositiveMn: 0.26, lendingResilientMn: 1.15, lendingVulnerableMn: 0.50,
+                        co2eKt: 82,
+                        positiveSplit: { ev: 0.02, eMobility: 0.05, solarHome: 0.09, solarPump: 0.07, other: 0.03 },
+                        socio: {
+                            lowIncome: 14200, ntc: 11200, womenCount: 5600, womenPct: 47, microEnt: 2200,
+                            ruralCount: 5900, ruralPct: 58, firstTime: 3800, youth: 3100, incomeUpliftLow: 7, incomeUpliftHigh: 12,
+                            valueWomenKesM: 540, avgLoanWomen: 78500, avgLoanMen: 82000,
+                            genderChart: [5.3, 5.6, 97.2, 96.6], ruralUrban: [5900, 2100, 1600],
+                            sectorMix: [28, 14, 24, 26, 8], sdg: [48, 30, 22], borrowerProfile: [3800, 3100, 2400]
+                        }
+                    })),
+                    'SMEP-EDU-004': finalizeMetric(Object.assign({}, metricUnknownTx('SMEP-EDU-004'), {
+                        mitigationPct: 35.7, totalLendingMn: 1.62, activeSignals: 1,
+                        lendingPositiveMn: 0.35, lendingResilientMn: 1.01, lendingVulnerableMn: 0.26,
+                        co2eKt: 108,
+                        positiveSplit: { ev: 0.02, eMobility: 0.04, solarHome: 0.18, solarPump: 0.08, other: 0.03 },
+                        socio: {
+                            lowIncome: 7600, ntc: 4200, womenCount: 3600, womenPct: 40, microEnt: 1900,
+                            ruralCount: 2800, ruralPct: 30, firstTime: 1900, youth: 5400, incomeUpliftLow: 15, incomeUpliftHigh: 22,
+                            valueWomenKesM: 265, avgLoanWomen: 88500, avgLoanMen: 91000,
+                            genderChart: [3.8, 4.2, 99.2, 98.8], ruralUrban: [2800, 3500, 5100],
+                            sectorMix: [35, 8, 12, 38, 7], sdg: [55, 28, 17], borrowerProfile: [1900, 5400, 2200]
+                        }
+                    }))
+                };
+            })();
+
+            function pickMetricForTx(txId) {
+                if (IMPACT_METRICS_BY_TX[txId]) {
+                    const z = IMPACT_METRICS_BY_TX[txId];
+                    return JSON.parse(JSON.stringify(z));
+                }
+                return finalizeMetric(metricUnknownTx(txId));
+            }
+
+            function mergeFYWeighted(seriesList, weights) {
+                const len = seriesList[0].length;
+                const W = weights.reduce((a, b) => a + b, 0) || 1;
+                const out = [];
+                for (let i = 0; i < len; i++) {
+                    let s = 0;
+                    for (let j = 0; j < seriesList.length; j++) s += seriesList[j][i] * weights[j];
+                    out.push(s / W);
+                }
+                return out;
+            }
+
+            function mergeCategoryCards(catsArr) {
+                const map = {};
+                catsArr.forEach((arr) => {
+                    arr.forEach((c) => {
+                        if (!map[c.title]) map[c.title] = { title: c.title, mn: 0, note: c.note };
+                        map[c.title].mn += c.mn;
+                    });
+                });
+                return Object.values(map);
+            }
+
+            function mergeSocioWeighted(list, weights) {
+                const W = weights.reduce((a, b) => a + b, 0) || 1;
+                const keys = ['lowIncome', 'ntc', 'womenCount', 'microEnt', 'ruralCount', 'firstTime', 'youth', 'valueWomenKesM', 'avgLoanWomen', 'avgLoanMen'];
+                const out = {};
+                keys.forEach((k) => {
+                    let s = 0;
+                    for (let j = 0; j < list.length; j++) s += list[j][k] * weights[j];
+                    out[k] = Math.round(s / W);
+                });
+                out.womenPct = Math.round(list.reduce((sum, s, j) => sum + s.womenPct * weights[j], 0) / W);
+                out.ruralPct = Math.round(list.reduce((sum, s, j) => sum + s.ruralPct * weights[j], 0) / W);
+                out.incomeUpliftLow = Math.round(list.reduce((sum, s, j) => sum + s.incomeUpliftLow * weights[j], 0) / W);
+                out.incomeUpliftHigh = Math.round(list.reduce((sum, s, j) => sum + s.incomeUpliftHigh * weights[j], 0) / W);
+                out.genderChart = [0, 1, 2, 3].map((i) =>
+                    list.reduce((sum, s, j) => sum + s.genderChart[i] * weights[j], 0) / W
+                );
+                out.ruralUrban = [0, 1, 2].map((i) =>
+                    Math.round(list.reduce((sum, s, j) => sum + s.ruralUrban[i] * weights[j], 0) / W)
+                );
+                out.sectorMix = [0, 1, 2, 3, 4].map((i) =>
+                    Math.round(list.reduce((sum, s, j) => sum + s.sectorMix[i] * weights[j], 0) / W)
+                );
+                out.sdg = [0, 1, 2].map((i) =>
+                    Math.round(list.reduce((sum, s, j) => sum + s.sdg[i] * weights[j], 0) / W)
+                );
+                out.borrowerProfile = [0, 1, 2].map((i) =>
+                    Math.round(list.reduce((sum, s, j) => sum + s.borrowerProfile[i] * weights[j], 0) / W)
+                );
+                return out;
+            }
+
+            function mergeReliefRows(metricsList) {
+                const rows = [];
+                metricsList.forEach((m, idx) => {
+                    (m.reliefRows || []).forEach((r) => {
+                        rows.push({ ...r, _src: idx });
+                    });
+                });
+                return rows.slice(0, 8);
+            }
+
+            function resolveImpactMetric(scope, txId, originatorName) {
+                let txs = [];
+                if (scope === 'transaction') {
+                    const tx = state.transactions.find((t) => t.id === txId);
+                    txs = tx ? [tx] : [];
+                } else if (scope === 'originator') {
+                    txs = state.transactions.filter((t) => t.originator === originatorName);
+                } else {
+                    txs = state.transactions.slice();
+                }
+                if (!txs.length) {
+                    const m = pickMetricForTx(txId || 'RMFB-BODA-001');
+                    m._scopeLabel = 'No transactions in scope — showing prototype profile.';
+                    return m;
+                }
+                const metrics = txs.map((t) => pickMetricForTx(t.id));
+                const weights = metrics.map((m) => m.totalLendingMn);
+                const W = weights.reduce((a, b) => a + b, 0) || 1;
+                if (metrics.length === 1) {
+                    metrics[0]._scopeLabel =
+                        scope === 'network'
+                            ? 'Network aggregate matches selected transaction set.'
+                            : scope === 'originator'
+                              ? `Originator: ${originatorName || ''}`
+                              : `Transaction: ${txs[0].name}`;
+                    return metrics[0];
+                }
+                const merged = JSON.parse(JSON.stringify(metrics[0]));
+                merged.mitigationPct = metrics.reduce((s, m, j) => s + m.mitigationPct * weights[j], 0) / W;
+                merged.totalLendingMn = metrics.reduce((s, m) => s + m.totalLendingMn, 0);
+                merged.lendingPositiveMn = metrics.reduce((s, m) => s + m.lendingPositiveMn, 0);
+                merged.lendingResilientMn = metrics.reduce((s, m) => s + m.lendingResilientMn, 0);
+                merged.lendingVulnerableMn = metrics.reduce((s, m) => s + m.lendingVulnerableMn, 0);
+                merged.co2eKt = Math.round(metrics.reduce((s, m) => s + m.co2eKt, 0));
+                merged.femaleShareClimatePct = Math.round(
+                    metrics.reduce((s, m, j) => s + m.femaleShareClimatePct * weights[j], 0) / W
+                );
+                merged.agriHouseholdsMn = metrics.reduce((s, m) => s + m.agriHouseholdsMn, 0);
+                merged.vulnerableBorrowersMn = metrics.reduce((s, m) => s + m.vulnerableBorrowersMn, 0);
+                merged.activeSignals = Math.max(...metrics.map((m) => m.activeSignals));
+                merged.originatorsTagged = new Set(txs.map((t) => t.originator)).size;
+                merged.fyLabels = FY_LABELS_IMPACT;
+                merged.fyResilient = mergeFYWeighted(
+                    metrics.map((m) => m.fyResilient),
+                    weights
+                );
+                merged.fyVulnerable = mergeFYWeighted(
+                    metrics.map((m) => m.fyVulnerable),
+                    weights
+                );
+                merged.fyTotal = mergeFYWeighted(
+                    metrics.map((m) => m.fyTotal),
+                    weights
+                );
+                const psKeys = ['ev', 'eMobility', 'solarHome', 'solarPump', 'other'];
+                merged.positiveSplit = {};
+                psKeys.forEach((k) => {
+                    merged.positiveSplit[k] = metrics.reduce((s, m) => s + m.positiveSplit[k], 0);
+                });
+                merged.resilientCats = mergeCategoryCards(metrics.map((m) => m.resilientCats));
+                merged.vulnerableCats = mergeCategoryCards(metrics.map((m) => m.vulnerableCats));
+                merged.socio = mergeSocioWeighted(
+                    metrics.map((m) => m.socio),
+                    weights
+                );
+                merged.reliefRows = mergeReliefRows(metrics);
+                merged._scopeLabel =
+                    scope === 'network'
+                        ? `Network roll-up: ${txs.length} funded transactions (demo-weighted).`
+                        : `Originator roll-up (${originatorName || ''}): ${txs.length} transactions.`;
+                return finalizeMetric(merged);
+            }
+
+            function formatKCount(n) {
+                if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+                return String(n);
+            }
+
+            function renderClimateImpactSection(scope, txId, originatorName) {
+                const m = resolveImpactMetric(scope, txId, originatorName);
                 const setText = (id, val) => {
                     const n = document.getElementById(id);
                     if (n) n.textContent = val;
                 };
+                const hint = document.getElementById('impactScopeHint');
+                if (hint) hint.textContent = m._scopeLabel || '';
+
                 setText('climateKpiMitigationPct', m.mitigationPct.toFixed(1) + '%');
                 setText('climateKpiTotalLending', m.totalLendingMn.toFixed(2));
                 setText('climateKpiOriginators', String(m.originatorsTagged));
                 setText('climateKpiSignals', String(m.activeSignals));
+                setText('climateKpiCo2e', String(m.co2eKt));
 
                 const tbody = document.getElementById('climateReportedMetricsTableBody');
                 if (tbody) {
                     tbody.innerHTML = `
                         <tr class="border-b"><td class="py-2 pr-4">Mitigation finance share (Climate Positive, Common Principles basis)</td><td class="py-2 font-medium text-gray-900">${m.mitigationPct.toFixed(1)}%</td></tr>
-                        <tr class="border-b"><td class="py-2 pr-4">Total climate impact lending by category (USD Mn)</td><td class="py-2 font-medium text-gray-900">Positive ${m.lendingPositiveMn.toFixed(2)} · Resilient ${m.lendingResilientMn.toFixed(2)} · Vulnerable ${m.lendingVulnerableMn.toFixed(2)}</td></tr>
+                        <tr class="border-b"><td class="py-2 pr-4">Climate Positive — product split (USD Mn)</td><td class="py-2 font-medium text-gray-900">EV ${m.positiveSplit.ev.toFixed(2)} · E-mobility ${m.positiveSplit.eMobility.toFixed(2)} · Solar home/heating ${m.positiveSplit.solarHome.toFixed(2)} · Solar pumps ${m.positiveSplit.solarPump.toFixed(2)} · Other ${m.positiveSplit.other.toFixed(2)}</td></tr>
+                        <tr class="border-b"><td class="py-2 pr-4">Total climate lending by pillar (USD Mn)</td><td class="py-2 font-medium text-gray-900">Positive ${m.lendingPositiveMn.toFixed(2)} · Resilient ${m.lendingResilientMn.toFixed(2)} · Vulnerable ${m.lendingVulnerableMn.toFixed(2)}</td></tr>
                         <tr class="border-b"><td class="py-2 pr-4">Agri-households reached (resilient products, Mn)</td><td class="py-2 font-medium text-gray-900">${m.agriHouseholdsMn.toFixed(2)}</td></tr>
                         <tr class="border-b"><td class="py-2 pr-4">Borrowers in climate-vulnerable segments (Mn)</td><td class="py-2 font-medium text-gray-900">${m.vulnerableBorrowersMn.toFixed(2)}</td></tr>
                         <tr class="border-b"><td class="py-2 pr-4">Female borrowers in climate-impacted segments</td><td class="py-2 font-medium text-gray-900">${m.femaleShareClimatePct}%</td></tr>
-                        <tr><td class="py-2 pr-4">Est. CO₂e avoided or sequestered (proxy, kt CO₂e)</td><td class="py-2 font-medium text-gray-900">${m.co2eKt}</td></tr>
+                        <tr><td class="py-2 pr-4">Est. CO₂e avoided (proxy, kt CO₂e)</td><td class="py-2 font-medium text-gray-900">${m.co2eKt}</td></tr>
                     `;
+                }
+
+                const resEl = document.getElementById('climateResilientCategories');
+                if (resEl) {
+                    resEl.innerHTML = (m.resilientCats || [])
+                        .map(
+                            (c) => `
+                        <div class="border border-teal-100 rounded p-3 bg-teal-50/50">
+                            <p class="font-medium text-gray-800">${c.title}</p>
+                            <p class="text-teal-700 font-semibold mt-1">${c.mn.toFixed(2)} Mn USD deployed</p>
+                            <p class="text-xs text-gray-600 mt-1">${c.note}</p>
+                        </div>`
+                        )
+                        .join('');
+                }
+                const vulEl = document.getElementById('climateVulnerableCategories');
+                if (vulEl) {
+                    vulEl.innerHTML = (m.vulnerableCats || [])
+                        .map(
+                            (c) => `
+                        <div class="border border-orange-100 rounded p-3 bg-orange-50/50">
+                            <p class="font-medium text-gray-800">${c.title}</p>
+                            <p class="text-orange-700 font-semibold mt-1">${c.mn.toFixed(2)} Mn USD deployed</p>
+                            <p class="text-xs text-gray-600 mt-1">${c.note}</p>
+                        </div>`
+                        )
+                        .join('');
+                }
+
+                const reliefBody = document.getElementById('climateReliefRecommendationsBody');
+                if (reliefBody) {
+                    reliefBody.innerHTML = (m.reliefRows || [])
+                        .map(
+                            (r) => `
+                        <tr class="border-b border-amber-100">
+                            <td class="px-3 py-2 font-medium text-gray-800">${r.signal}</td>
+                            <td class="px-3 py-2">${r.geo}</td>
+                            <td class="px-3 py-2 whitespace-nowrap">${r.horizon}</td>
+                            <td class="px-3 py-2">${r.action}</td>
+                        </tr>`
+                        )
+                        .join('');
+                }
+
+                const s = m.socio;
+                if (s) {
+                    setText('socioKpiLowIncome', formatKCount(s.lowIncome));
+                    setText('socioKpiNtc', formatKCount(s.ntc));
+                    setText('socioKpiWomen', formatKCount(s.womenCount));
+                    setText('socioKpiMicroEnt', formatKCount(s.microEnt));
+                    setText('socioKpiRural', formatKCount(s.ruralCount));
+                    setText('socioKpiIncomeUplift', `${s.incomeUpliftLow}–${s.incomeUpliftHigh}% est. household income uplift (proxy)`);
+                    setText('impactKpiFemaleBorrowers', `${formatKCount(s.womenCount)} (${s.womenPct}%)`);
+                    setText('impactKpiRuralOutreach', `${formatKCount(s.ruralCount)} (${s.ruralPct}%)`);
+                    setText('impactKpiFirstTime', formatKCount(s.firstTime));
+                    setText('impactKpiYouth', formatKCount(s.youth));
+                    setText('impactStatValueWomen', `${s.valueWomenKesM}M`);
+                    setText('impactStatAvgLoanWomen', formatKCount(s.avgLoanWomen));
+                    setText('impactStatAvgLoanMen', formatKCount(s.avgLoanMen));
+                    setText('sdgPovertyPct', s.sdg[0] + '%');
+                    setText('sdgWorkPct', s.sdg[1] + '%');
+                    setText('sdgIneqPct', s.sdg[2] + '%');
                 }
 
                 if (document.getElementById('climateLendingMixChart')) {
@@ -5142,10 +5682,12 @@
                         type: 'doughnut',
                         data: {
                             labels: ['Climate Positive', 'Climate Resilient', 'Climate Vulnerable'],
-                            datasets: [{
-                                data: [m.lendingPositiveMn, m.lendingResilientMn, m.lendingVulnerableMn],
-                                backgroundColor: ['#0d9488', '#5eead4', '#f97316']
-                            }]
+                            datasets: [
+                                {
+                                    data: [m.lendingPositiveMn, m.lendingResilientMn, m.lendingVulnerableMn],
+                                    backgroundColor: ['#0d9488', '#5eead4', '#f97316']
+                                }
+                            ]
                         },
                         options: {
                             responsive: true,
@@ -5155,15 +5697,56 @@
                         }
                     });
                 }
+                if (document.getElementById('climatePositiveSplitChart')) {
+                    const p = m.positiveSplit;
+                    createOrUpdateChart('climatePositiveSplitChart', {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['EV finance', 'E-mobility & EV fleets', 'Solar home / heating', 'Solar pumps', 'Other mitigation-eligible'],
+                            datasets: [
+                                {
+                                    data: [p.ev, p.eMobility, p.solarHome, p.solarPump, p.other],
+                                    backgroundColor: ['#0f766e', '#14b8a6', '#fbbf24', '#38bdf8', '#94a3b8']
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'right' } },
+                            cutout: '50%'
+                        }
+                    });
+                }
                 if (document.getElementById('climateFinanceTrajectoryChart')) {
                     createOrUpdateChart('climateFinanceTrajectoryChart', {
                         type: 'line',
                         data: {
                             labels: m.fyLabels,
                             datasets: [
-                                { label: 'Climate Resilient', data: m.fyResilient, borderColor: '#0d9488', backgroundColor: 'rgba(13,148,136,0.1)', tension: 0.2, fill: true },
-                                { label: 'Climate Vulnerable', data: m.fyVulnerable, borderColor: '#f97316', tension: 0.2, fill: false },
-                                { label: 'Total', data: m.fyTotal, borderColor: '#6366f1', borderDash: [4, 4], tension: 0.2, fill: false }
+                                {
+                                    label: 'Climate Resilient',
+                                    data: m.fyResilient,
+                                    borderColor: '#0d9488',
+                                    backgroundColor: 'rgba(13,148,136,0.1)',
+                                    tension: 0.2,
+                                    fill: true
+                                },
+                                {
+                                    label: 'Climate Vulnerable',
+                                    data: m.fyVulnerable,
+                                    borderColor: '#f97316',
+                                    tension: 0.2,
+                                    fill: false
+                                },
+                                {
+                                    label: 'Total',
+                                    data: m.fyTotal,
+                                    borderColor: '#6366f1',
+                                    borderDash: [4, 4],
+                                    tension: 0.2,
+                                    fill: false
+                                }
                             ]
                         },
                         options: {
@@ -5176,62 +5759,132 @@
                         }
                     });
                 }
+
+                const gc = m.socio && m.socio.genderChart;
+                if (gc && document.getElementById('genderPerformanceChart')) {
+                    createOrUpdateChart('genderPerformanceChart', {
+                        type: 'bar',
+                        data: {
+                            labels: ['PAR 30+', 'Collection %'],
+                            datasets: [
+                                { label: 'Female', data: [gc[0], gc[2]], backgroundColor: '#14b8a6' },
+                                { label: 'Male', data: [gc[1], gc[3]], backgroundColor: '#0f766e' }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'bottom' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+                if (m.socio && document.getElementById('sdgDoughnutChart')) {
+                    createOrUpdateChart('sdgDoughnutChart', {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['No Poverty', 'Decent Work', 'Reduced Inequality'],
+                            datasets: [{ data: m.socio.sdg.slice(), backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            cutout: '60%'
+                        }
+                    });
+                }
+                if (m.socio && document.getElementById('sectorDoughnutChart')) {
+                    const sm = m.socio.sectorMix;
+                    createOrUpdateChart('sectorDoughnutChart', {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Retail', 'Transport', 'Agriculture', 'Services', 'Other'],
+                            datasets: [{ data: sm.slice(), backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4'] }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'right' } },
+                            cutout: '60%'
+                        }
+                    });
+                }
+                if (m.socio && document.getElementById('ruralUrbanChart')) {
+                    createOrUpdateChart('ruralUrbanChart', {
+                        type: 'bar',
+                        data: {
+                            labels: ['Rural', 'Peri-Urban', 'Urban'],
+                            datasets: [{ label: 'Borrower Count', data: m.socio.ruralUrban.slice(), backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                    });
+                }
+                if (m.socio && document.getElementById('borrowerProfileChart')) {
+                    const bp = m.socio.borrowerProfile;
+                    createOrUpdateChart('borrowerProfileChart', {
+                        type: 'bar',
+                        data: {
+                            labels: ['First-Time Borrowers', 'Youth (<35)', 'Female Entrepreneurs'],
+                            datasets: [
+                                {
+                                    label: 'Number of Borrowers',
+                                    data: bp.slice(),
+                                    backgroundColor: ['#14b8a6', '#5eead4', '#0d9488']
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            indexAxis: 'y',
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                }
             }
 
             function renderClimateRiskSignalsPanel(txId) {
                 const tbody = document.getElementById('climateRiskSignalsTableBody');
                 if (!tbody) return;
-                const pill = { ok: 'px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full', watch: 'px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full', alert: 'px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full' };
-                const packs = {
-                    'RMFB-BODA-001': [
-                        { name: 'Geo concentration (climate-risk corridors)', status: 'Watch', cls: pill.watch, detail: 'Elevated PAR 30+ share from two drought-prone counties vs rolling baseline.', trend: '↑' },
-                        { name: 'Seasonal repayment deviation', status: 'Stable', cls: pill.ok, detail: 'Collections tracking expected harvest-linked pattern for agri-heavy cohort.', trend: '→' },
-                        { name: 'Crop-cycle alignment (agri portfolios)', status: 'Watch', cls: pill.watch, detail: 'Repayment dip exceeds seasonal norm in rainfall-stressed wards.', trend: '↑' },
-                        { name: 'Migration to climate-exposed segments', status: 'Stable', cls: pill.ok, detail: 'Share of borrowers in high exposure tags stable QoQ.', trend: '→' }
-                    ],
-                    'MC-VEHICLE-001': [
-                        { name: 'Geo concentration (climate-risk corridors)', status: 'Stable', cls: pill.ok, detail: 'Urban mobility portfolio; limited drought-corridor concentration.', trend: '→' },
-                        { name: 'Seasonal repayment deviation', status: 'Stable', cls: pill.ok, detail: 'Within seasonal baseline.', trend: '→' },
-                        { name: 'Crop-cycle alignment (agri portfolios)', status: 'N/A', cls: pill.ok, detail: 'Minimal agri exposure on this transaction.', trend: '—' },
-                        { name: 'Migration to climate-exposed segments', status: 'Stable', cls: pill.ok, detail: 'No material shift in exposure tags.', trend: '→' }
-                    ],
-                    default: [
-                        { name: 'Geo concentration (climate-risk corridors)', status: 'Stable', cls: pill.ok, detail: 'Portfolio concentration across climate-risk zones within tolerance.', trend: '→' },
-                        { name: 'Seasonal repayment deviation', status: 'Watch', cls: pill.watch, detail: 'One region below seasonal collection baseline; review scheduled.', trend: '↑' },
-                        { name: 'Crop-cycle alignment (agri portfolios)', status: 'Stable', cls: pill.ok, detail: 'Performance broadly aligned with crop income cycles.', trend: '→' },
-                        { name: 'Migration to climate-exposed segments', status: 'Stable', cls: pill.ok, detail: 'Gradual exposure mix unchanged.', trend: '→' }
-                    ]
-                };
-                const rows = packs[txId] || packs.default;
-                tbody.innerHTML = rows.map(r => `
-                    <tr class="border-b">
-                        <td class="px-4 py-2 font-medium text-gray-800">${r.name}</td>
-                        <td class="px-4 py-2"><span class="${r.cls}">${r.status}</span></td>
-                        <td class="px-4 py-2">${r.detail}</td>
-                        <td class="px-4 py-2 text-center text-xl">${r.trend}</td>
-                    </tr>
-                `).join('');
             }
 
             function populateTransactionSelector(selectedTxId) {
-                const selectors = [transactionSelector, perfTransactionSelector, impactTransactionSelector];
-                selectors.forEach(selector => {
-                    selector.innerHTML = '';
-                    const eligibleTransactions = state.transactions.filter(t => t.covenantsSet);
-                    eligibleTransactions.forEach(tx => {
+                const covenantReady = state.transactions.filter((t) => t.covenantsSet);
+                if (transactionSelector) {
+                    transactionSelector.innerHTML = '';
+                    covenantReady.forEach((tx) => {
                         const option = document.createElement('option');
                         option.value = tx.id;
                         option.textContent = tx.name;
+                        transactionSelector.appendChild(option);
+                    });
+                    if (selectedTxId && covenantReady.some((t) => t.id === selectedTxId)) {
+                        transactionSelector.value = selectedTxId;
+                    } else if (covenantReady.length && !transactionSelector.value) {
+                        transactionSelector.value = covenantReady[0].id;
+                    }
+                }
+                const allTx = state.transactions.slice();
+                [perfTransactionSelector, impactTransactionSelector].forEach((selector) => {
+                    if (!selector) return;
+                    selector.innerHTML = '';
+                    allTx.forEach((tx) => {
+                        const option = document.createElement('option');
+                        option.value = tx.id;
+                        option.textContent = tx.name + (tx.covenantsSet ? '' : ' (covenant pending)');
                         selector.appendChild(option);
                     });
-                     if (selectedTxId && eligibleTransactions.some(t => t.id === selectedTxId)) {
+                    if (selectedTxId && allTx.some((t) => t.id === selectedTxId)) {
                         selector.value = selectedTxId;
+                    } else if (allTx.length) {
+                        selector.value = allTx[0].id;
                     }
                 });
+                populateImpactOriginators();
             }
 
             function renderCovenantMonitoringPage(txId) {
-                renderClimateRiskSignalsPanel(txId);
                 const data = state.covenantData[txId];
                 if (!data) {
                     covenantStatusTableBody.innerHTML = '<tr><td colspan="6" class="text-center p-4">No covenant data available for this transaction.</td></tr>';
@@ -5418,66 +6071,65 @@
                 }
             }
 
-            function renderImpactPage(txId) {
+            function renderImpactPage(scope, txId, originatorName) {
                 try {
                     const impactPage = document.getElementById('impactPage');
                     if (!impactPage) {
                         console.warn('Impact page not found');
                         return;
                     }
-                    
-                    // Ensure page is visible
                     impactPage.classList.add('active');
 
-                    renderClimateImpactSection(txId || state.transactions.find(t => t.covenantsSet)?.id);
-                    
-                    // Check if chart elements exist before rendering
-                    if (document.getElementById('genderPerformanceChart')) {
-                createOrUpdateChart('genderPerformanceChart', {
-                    type: 'bar',
-                    data: { labels: ['PAR 30+', 'Collection %'], datasets: [ { label: 'Female', data: [4.8, 98.5], backgroundColor: '#14b8a6' }, { label: 'Male', data: [5.3, 97.9], backgroundColor: '#0f766e' } ] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
-                });
-                    }
-                    if (document.getElementById('sdgDoughnutChart')) {
-                createOrUpdateChart('sdgDoughnutChart', {
-                    type: 'doughnut',
-                    data: { labels: ['No Poverty', 'Decent Work', 'Reduced Inequality'], datasets: [{ data: [48, 32, 20], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '60%' }
-                });
-                    }
-                    if (document.getElementById('sectorDoughnutChart')) {
-                createOrUpdateChart('sectorDoughnutChart', {
-                    type: 'doughnut',
-                    data: { labels: ['Retail', 'Transport', 'Agriculture', 'Services', 'Other'], datasets: [{ data: [35, 25, 20, 15, 5], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488', '#0f766e', '#99f6e4'] }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } }, cutout: '60%' }
-                });
-                    }
-                    if (document.getElementById('ruralUrbanChart')) {
-                createOrUpdateChart('ruralUrbanChart', {
-                    type: 'bar',
-                    data: { labels: ['Rural', 'Peri-Urban', 'Urban'], datasets: [{ label: 'Borrower Count', data: [5197, 2362, 1891], backgroundColor: ['#14b8a6', '#5eead4', '#0d9488'] }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-                });
-                    }
-                    if (document.getElementById('borrowerProfileChart')) {
-                 createOrUpdateChart('borrowerProfileChart', {
-                    type: 'bar',
-                    data: {
-                        labels: ['First-Time Borrowers', 'Youth (<35)', 'Female Entrepreneurs'],
-                        datasets: [{
-                            label: 'Number of Borrowers',
-                            data: [2835, 3780, 1850],
-                            backgroundColor: ['#14b8a6', '#5eead4', '#0d9488']
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
-                });
-            }
-                    
-                    console.log('Impact page rendered for transaction:', txId);
+                    const sc = scope || impactScopeSelector?.value || 'transaction';
+                    const tid =
+                        txId ||
+                        impactTransactionSelector?.value ||
+                        state.transactions[0]?.id ||
+                        'RMFB-BODA-001';
+                    const orig =
+                        originatorName !== undefined && originatorName !== null
+                            ? originatorName
+                            : impactOriginatorSelector?.value || '';
+
+                    updateImpactScopeUi();
+                    renderClimateImpactSection(sc, tid, orig);
                 } catch (e) {
                     console.error('Error rendering impact page:', e);
+                }
+            }
+
+            function updateImpactScopeUi() {
+                const scope = impactScopeSelector?.value || 'transaction';
+                if (impactOriginatorWrap) {
+                    impactOriginatorWrap.classList.toggle('hidden', scope !== 'originator');
+                }
+            }
+
+            function refreshImpactPage() {
+                updateImpactScopeUi();
+                const scope = impactScopeSelector?.value || 'transaction';
+                const tid = impactTransactionSelector?.value || state.transactions[0]?.id;
+                const orig = impactOriginatorSelector?.value || '';
+                renderImpactPage(scope, tid, orig);
+            }
+
+            function populateImpactOriginators() {
+                if (!impactOriginatorSelector) return;
+                const names = [...new Set(state.transactions.map((t) => t.originator).filter(Boolean))].sort(
+                    (a, b) => a.localeCompare(b)
+                );
+                const prev = impactOriginatorSelector.value;
+                impactOriginatorSelector.innerHTML = '';
+                names.forEach((name) => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    impactOriginatorSelector.appendChild(opt);
+                });
+                if (prev && names.includes(prev)) {
+                    impactOriginatorSelector.value = prev;
+                } else if (names.length) {
+                    impactOriginatorSelector.value = names[0];
                 }
             }
 
@@ -7777,8 +8429,14 @@ Contact: cashmanagement@kaleidofin.com
              perfTransactionSelector.addEventListener('change', (e) => {
                 renderPerformancePage(e.target.value);
             });
-            impactTransactionSelector.addEventListener('change', (e) => {
-                renderImpactPage(e.target.value);
+            impactTransactionSelector.addEventListener('change', () => {
+                refreshImpactPage();
+            });
+            impactScopeSelector?.addEventListener('change', () => {
+                refreshImpactPage();
+            });
+            impactOriginatorSelector?.addEventListener('change', () => {
+                refreshImpactPage();
             });
 
 
@@ -8160,6 +8818,9 @@ Contact: cashmanagement@kaleidofin.com
             // Initial Load - Initialize data FIRST, then render views
             try {
             initializeData();
+            populateTransactionSelector(
+                state.transactions.find((t) => t.covenantsSet)?.id || state.transactions[0]?.id
+            );
             initializeMappingFields();
             initializeCountyMultiSelect();
                 updateMainView('dealScreen');
